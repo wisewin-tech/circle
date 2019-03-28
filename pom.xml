@@ -403,6 +403,13 @@
       <artifactId>commons-collections</artifactId>
       <version>3.2.2</version>
     </dependency>
+
+    <dependency>
+      <groupId>com.auth0</groupId>
+      <artifactId>java-jwt</artifactId>
+      <version>3.3.0</version>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -476,7 +483,7 @@
     <profile>
       <id>test</id>
       <properties>
-        <jdbc.url.ip>wisewin-tech.com:3306/hotel_test</jdbc.url.ip>
+        <jdbc.url.ip>wisewin-tech.com:3306/circle</jdbc.url.ip>
         <jdbc.username>root</jdbc.username>
         <jdbc.password>Sunshibo1</jdbc.password>
 

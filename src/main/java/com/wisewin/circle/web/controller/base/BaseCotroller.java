@@ -23,7 +23,6 @@ import java.io.*;
 import java.util.Iterator;
 import java.util.List;
 
-//import com.wisewin.circle.util.RedisUtil;
 
 /**
  * @author Shibo Sun
