@@ -6,7 +6,7 @@ import org.mybatis.spring.SqlSessionFactoryBean;
 
 /**
  * Created with IntelliJ IDEA.
- * User: Shibo Sun
+ * UserBO: Shibo Sun
  * Date: 4/14/13
  * Time: 1:32 PM
  *

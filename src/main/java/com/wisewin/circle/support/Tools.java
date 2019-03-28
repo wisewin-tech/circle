@@ -10,7 +10,7 @@ import java.text.DecimalFormat;
 
 /**
  * Created with IntelliJ IDEA.
- * User: junyi.glj
+ * UserBO: junyi.glj
  * Date: 13-12-1
  * Time: 下午4:46
  * 手机助手VM tools

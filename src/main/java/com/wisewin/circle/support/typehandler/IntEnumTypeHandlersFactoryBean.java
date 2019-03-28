@@ -26,7 +26,7 @@ import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
- * User: tgic
+ * UserBO: tgic
  * Date: 4/14/13
  * Time: 2:12 PM
  */

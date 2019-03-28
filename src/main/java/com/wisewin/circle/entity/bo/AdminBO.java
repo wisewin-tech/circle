@@ -6,25 +6,28 @@ import java.util.Date;
  * Created by yxw on 2018/11/5.
  */
 public class AdminBO {
-    private Integer id;
-    private  String phoneNumber; //电话
-    private  String password;//密码
-    private String name;//名字
-    private Date createTime;
-    private String hotelId;//酒店id
-    private Integer orderPermissions;//订单权限
-    private String uuid ; // 用户登录的UUID
-    private  Integer homePermissions;//首页权限
-    private Integer status;//0 正常  1 失效
-    private  Integer checkInPermissions;//入住中心权限
-    private  Integer memberPermissions;//会员权限
-    private  Integer hotelPermissions;//酒店管理权限
-    private  Integer formsPermissions;//报表权限
-    private  Integer setPermissions;//设置权限
-    private  Integer handPermissions;//交班权限
-    private  Integer productPermissions;//商品交易权限
-    private  Integer admin;//超级账户
-    private Integer hotelIdRemake;//登录酒店id备注
+    private Integer id; //id
+    private String phoneNumber; //手机号
+    private String name; //姓名
+    private String password; //密码
+    private Integer status; //状态
+    private Integer gender; //性别
+    private Integer admin; //管理员就标识
+    private Date createTime; //创建时间
+
+    @Override
+    public String toString() {
+        return "AdminBO{" +
+                "id=" + id +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", status=" + status +
+                ", gender=" + gender +
+                ", admin=" + admin +
+                ", createTime=" + createTime +
+                '}';
+    }
 
     public Integer getId() {
         return id;
@@ -42,14 +45,6 @@ public class AdminBO {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getName() {
         return name;
     }
@@ -58,44 +53,12 @@ public class AdminBO {
         this.name = name;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public String getPassword() {
+        return password;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getHotelId() {
-        return hotelId;
-    }
-
-    public void setHotelId(String hotelId) {
-        this.hotelId = hotelId;
-    }
-
-    public Integer getOrderPermissions() {
-        return orderPermissions;
-    }
-
-    public void setOrderPermissions(Integer orderPermissions) {
-        this.orderPermissions = orderPermissions;
-    }
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public Integer getHomePermissions() {
-        return homePermissions;
-    }
-
-    public void setHomePermissions(Integer homePermissions) {
-        this.homePermissions = homePermissions;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Integer getStatus() {
@@ -106,60 +69,12 @@ public class AdminBO {
         this.status = status;
     }
 
-    public Integer getCheckInPermissions() {
-        return checkInPermissions;
+    public Integer getGender() {
+        return gender;
     }
 
-    public void setCheckInPermissions(Integer checkInPermissions) {
-        this.checkInPermissions = checkInPermissions;
-    }
-
-    public Integer getMemberPermissions() {
-        return memberPermissions;
-    }
-
-    public void setMemberPermissions(Integer memberPermissions) {
-        this.memberPermissions = memberPermissions;
-    }
-
-    public Integer getHotelPermissions() {
-        return hotelPermissions;
-    }
-
-    public void setHotelPermissions(Integer hotelPermissions) {
-        this.hotelPermissions = hotelPermissions;
-    }
-
-    public Integer getFormsPermissions() {
-        return formsPermissions;
-    }
-
-    public void setFormsPermissions(Integer formsPermissions) {
-        this.formsPermissions = formsPermissions;
-    }
-
-    public Integer getSetPermissions() {
-        return setPermissions;
-    }
-
-    public void setSetPermissions(Integer setPermissions) {
-        this.setPermissions = setPermissions;
-    }
-
-    public Integer getHandPermissions() {
-        return handPermissions;
-    }
-
-    public void setHandPermissions(Integer handPermissions) {
-        this.handPermissions = handPermissions;
-    }
-
-    public Integer getProductPermissions() {
-        return productPermissions;
-    }
-
-    public void setProductPermissions(Integer productPermissions) {
-        this.productPermissions = productPermissions;
+    public void setGender(Integer gender) {
+        this.gender = gender;
     }
 
     public Integer getAdmin() {
@@ -170,11 +85,11 @@ public class AdminBO {
         this.admin = admin;
     }
 
-    public Integer getHotelIdRemake() {
-        return hotelIdRemake;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setHotelIdRemake(Integer hotelIdRemake) {
-        this.hotelIdRemake = hotelIdRemake;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }
