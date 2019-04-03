@@ -10,4 +10,18 @@ public interface AdminDAO {
      * @return UserDO
      */
     AdminBO queryAdminInfoByMobile(String mobile);
+
+    /**
+     * 注册管理员信息
+     * @param admin
+     * @return
+     */
+    int adminRegister(AdminBO admin);
+
+    /**
+     * 查找用户手机号是否注册过
+     * @param mobile
+     * @return
+     */
+    int selectCountByMobile(String mobile);
 }

@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 @Transactional
 public class AdminService {
     @Resource
-    private AdminDAO userDAO;
+    private AdminDAO adminDAO;
 
     /**
      * 根据手机号查找管理员信息
@@ -23,7 +23,25 @@ public class AdminService {
         if("".equals(mobile) || mobile == null){
             return null;
         }
-        return userDAO.queryAdminInfoByMobile(mobile);
+        return adminDAO.queryAdminInfoByMobile(mobile);
+    }
+
+    /**
+     * 管理员注册
+     * @param admin
+     * @return
+     */
+    public int adminRegister(AdminBO admin){
+        return adminDAO.adminRegister(admin);
+    }
+
+    /**
+     * 查找手机号是否注册过
+     * @param mobile
+     * @return
+     */
+    public int selectCountByMobile(String mobile){
+        return adminDAO.selectCountByMobile(mobile);
     }
 
 }
