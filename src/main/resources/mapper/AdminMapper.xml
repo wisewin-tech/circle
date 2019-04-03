@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 【用户】 -->
+<mapper namespace="com.wisewin.circle.dao.AdminDAO">
+
+    <select id="queryAdminInfoByMobile" parameterType="String" resultType="com.wisewin.circle.entity.bo.AdminBO">
+
+        SELECT *
+        FROM ce_admin WHERE phone_number = #{mobile}
+    </select>
+
+</mapper>
