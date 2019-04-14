@@ -5,8 +5,10 @@
 <!-- 【用户】 -->
 <mapper namespace="com.wisewin.circle.dao.TestDAO">
 
-    <select id="test" resultType="int">
-        select count(id) from hm_hotel
+    <!-- 根据手机号查找Admin用户 -->
+    <select id="queryUserInfoByMobile" parameterType="com.wisewin.circle.entity.bo.AdminBO" resultType="com.wisewin.circle.entity.bo.AdminBO">
+        SELECT *
+        FROM ce_admin WHERE phone_number = #{mobile}
     </select>
 
 </mapper>

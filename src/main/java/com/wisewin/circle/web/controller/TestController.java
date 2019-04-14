@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;
 
 /**
  * @author Shibo Sun
@@ -26,6 +26,8 @@ public class TestController extends BaseCotroller {
 
     static final Logger log = LoggerFactory.getLogger(TestController.class);
 
+
+
     @Resource
     private TestDAO testDAO;
 
@@ -33,6 +35,7 @@ public class TestController extends BaseCotroller {
     public void test(HttpServletResponse response) {
 //        hostDAO.insertHost(hostDO);
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(testDAO.test()));
+        System.out.println("aaa");
         super.safeJsonPrint(response, json);
 
     }
@@ -43,11 +46,36 @@ public class TestController extends BaseCotroller {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:ss:mm");
         Date d1 = df.parse(startTime);
         Date d2 = df.parse(endTime);
-        System.out.println(BigDecimal.valueOf(Math.ceil((((double) d2.getTime() - (double) d1.getTime()) / 3600000)% 24)));
-        System.out.println(BigDecimal.valueOf(Math.floor(((double) d2.getTime() - (double) d1.getTime()) / (3600000 * 24))));
+        //System.out.println(BigDecimal.valueOf(Math.ceil((((double) d2.getTime() - (double) d1.getTime()) / 3600000)% 24)));
+        //System.out.println(BigDecimal.valueOf(Math.floor(((double) d2.getTime() - (double) d1.getTime()) / (3600000 * 24))));
+            Map<String,Object> jsonMap = new HashMap<String, Object>();
+            jsonMap.put("谁呀","zhangsan");
+            jsonMap.put("array",1);
+            jsonMap.put("test","0");
 
-        System.out.println(BigDecimal.valueOf(Math.ceil((((double) d2.getTime() - (double) d1.getTime()-(double)900000) / 3600000)% 24)));
-        System.out.println(BigDecimal.valueOf(Math.floor(((double) d2.getTime() - (double) d1.getTime()-(double)900000) / (3600000 * 24))));
+        HashMap map = new HashMap();
+
+        map.put("a","aaaa");
+        map.put("b","bbbb");
+        map.put("c","cccc");
+        map.put("d","dddd");
+
+        Set set = map.keySet();
+
+        for(Iterator iter = set.iterator(); iter.hasNext();)
+        {
+            String key = (String)iter.next();
+            String value = (String)map.get(key);
+            //System.out.println(key+"===="+value);
+        }
+
+        Map jsonMap1 = new HashMap();
+        jsonMap1.put("array","test");
+        jsonMap1.put("","");
+        System.out.println("111");
+        System.out.print(jsonMap1.get("array"));
+       // System.out.println(BigDecimal.valueOf(Math.ceil((((double) d2.getTime() - (double) d1.getTime()-(double)900000) / 3600000)% 24)));
+        //System.out.println(BigDecimal.valueOf(Math.floor(((double) d2.getTime() - (double) d1.getTime()-(double)900000) / (3600000 * 24))));
        /* BigDecimal b=new BigDecimal(45.45);
         int a = b.intValue();
         System.out.print(a);*//*

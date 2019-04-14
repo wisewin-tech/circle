@@ -4,8 +4,8 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSdtRun;
 
 public class CircleConstants {
     /* 管理员用户信息 */
-    public static final String MAN = "man";
-    public static final String WOMEN = "women";
+    public static final String MAN = "male";
+    public static final String WOMEN = "female";
 
     /*  管理员状态 */
     public static final String NORMAL = "normal";

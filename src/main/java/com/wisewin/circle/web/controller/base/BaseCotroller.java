@@ -2,6 +2,7 @@ package com.wisewin.circle.web.controller.base;
 
 import com.wisewin.circle.common.constants.SysConstants;
 import com.wisewin.circle.entity.bo.AdminBO;
+import com.wisewin.circle.entity.bo.UserBO;
 import com.wisewin.circle.query.PageObject;
 import com.wisewin.circle.query.QueryInfo;
 import com.wisewin.circle.util.redisUtils.RedissonHandler;
@@ -230,7 +231,10 @@ public class BaseCotroller {
     public void putLoginUser (String loginId , AdminBO loginUser) {
         this.putSession(createKey(loginId, SysConstants.CURRENT_LOGIN_USER), loginUser) ;
     }
-
+    /** putLoginUser*/
+    public void putLoginUser1 (String loginId , UserBO loginUser) {
+        this.putSession(createKey(loginId, SysConstants.CURRENT_LOGIN_USER), loginUser) ;
+    }
 
 //    /** 获取登录用户*/
 //    public ClientInfo getLoginClientInfo (HttpServletRequest request ) {

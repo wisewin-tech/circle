@@ -1,32 +1,38 @@
 package com.wisewin.circle.entity.bo;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by yxw on 2018/11/5.
  */
 public class AdminBO {
-    private Integer id; //id
-    private String phoneNumber; //手机号
-    private String name; //姓名
-    private String password; //密码
-    private Integer status; //状态
-    private Integer gender; //性别
-    private Integer admin; //管理员就标识
-    private Date createTime; //创建时间
+    private Integer id;// 管理员用户
 
-    @Override
-    public String toString() {
-        return "AdminBO{" +
-                "id=" + id +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                ", status=" + status +
-                ", gender=" + gender +
-                ", admin=" + admin +
-                ", createTime=" + createTime +
-                '}';
+    private String phoneNumber; // 手机号
+
+    private String name; // 名称
+
+    private String password; // 密码
+
+    private String status; // 状态
+
+    private String gender; // 性别
+
+    private int roleId; // 角色id
+
+    private Date createTime; // 创建时间
+
+    private Date updateTime; // 修改时间
+
+    private List<MenuBO> menuBO;
+
+    public List<MenuBO> getMenuBO() {
+        return menuBO;
+    }
+
+    public void setMenuBO(List<MenuBO> menuBO) {
+        this.menuBO = menuBO;
     }
 
     public Integer getId() {
@@ -42,7 +48,7 @@ public class AdminBO {
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+        this.phoneNumber = phoneNumber == null ? null : phoneNumber.trim();
     }
 
     public String getName() {
@@ -50,7 +56,7 @@ public class AdminBO {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name == null ? null : name.trim();
     }
 
     public String getPassword() {
@@ -58,31 +64,31 @@ public class AdminBO {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = password == null ? null : password.trim();
     }
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setStatus(String status) {
+        this.status = status == null ? null : status.trim();
     }
 
-    public Integer getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(Integer gender) {
-        this.gender = gender;
+    public void setGender(String gender) {
+        this.gender = gender == null ? null : gender.trim();
     }
 
-    public Integer getAdmin() {
-        return admin;
+    public int getRoleId() {
+        return roleId;
     }
 
-    public void setAdmin(Integer admin) {
-        this.admin = admin;
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
     }
 
     public Date getCreateTime() {
@@ -91,5 +97,13 @@ public class AdminBO {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

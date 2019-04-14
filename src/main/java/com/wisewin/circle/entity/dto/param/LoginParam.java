@@ -11,7 +11,6 @@ public class LoginParam extends BaseModel implements Serializable {
 
 
     private static final long serialVersionUID = 8146980880302786091L;
-
     /**
      * 登录账号
      */
