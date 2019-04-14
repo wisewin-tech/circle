@@ -3,8 +3,10 @@ package com.wisewin.circle.test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Shibo on 17/1/5.
@@ -14,6 +16,8 @@ public class Test {
 
     public static void main(String[] args) {
 
+        new Test().test();
+
       /*  Date date=new Date();
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat sdf1=new SimpleDateFormat("mm");
@@ -21,30 +25,30 @@ public class Test {
         String b=sdf.format(date);
         System.out.println(b);
         System.out.println(a);*/
-        Calendar c = Calendar.getInstance();
-        int hour=c.get(Calendar.HOUR_OF_DAY);
-        Date date=new Date();
-        if (hour < 6) {
-            //开始时间-1天 加上 06:00:00
-            date = getDayBefore(date, 1);
-        }
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            String s1 = sdf.format(date);
-            String s2 = s1 + " 06:00:00";
-
-            SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date date1=null;
-            try {
-                date1 = sdf1.parse(s2);
-
-
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-
-        System.out.println(date1);
-
+//        Calendar c = Calendar.getInstance();
+//        int hour=c.get(Calendar.HOUR_OF_DAY);
+//        Date date=new Date();
+//        if (hour < 6) {
+//            //开始时间-1天 加上 06:00:00
+//            date = getDayBefore(date, 1);
+//        }
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//            String s1 = sdf.format(date);
+//            String s2 = s1 + " 06:00:00";
+//
+//            SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//            Date date1=null;
+//            try {
+//                date1 = sdf1.parse(s2);
+//
+//
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//
+//
+//        System.out.println(date1);
+//
 
 
 
@@ -83,5 +87,40 @@ public class Test {
         int day = c.get(Calendar.DATE);
         c.add(c.DATE,-i); //把日期往后增加i天,整数  往后推,负数往前移动
         return c.getTime();
+    }
+
+    public void test () {
+
+        List<String> list = new ArrayList<String>();
+        list.add("aaaaaaa");
+        list.add("bbbbbbb");
+        list.add("bbbbbbb");
+        list.add("ccccccc");
+        list.add("ddddddd");
+        list.add("eeeeeee");
+        list.add("fffffff");
+
+        for (int i = 0 ; i < list.size() ; i++ ) {
+//            System.out.println(list.get(i));
+            if (list.get(i).startsWith("b")){
+                list.remove(list.get(i));
+            }
+        }
+
+        System.out.println(">>>>>>>>>>>>>");
+
+        for (String s : list) {
+            System.out.println(s);
+        }
+
+    }
+
+    public void testForDeleteList () {
+        List<String > list = new ArrayList<String>();
+        list.add("a");
+        list.add("");
+        list.add("");
+        list.add("");
+        list.add("");
     }
 }
