@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class JwtUtil {
-    private static final long EXPIRE_TIME=0;
+    private static final long EXPIRE_TIME=365*24*60*60*1000;
     private static final String TOKEN_SECRET="3585751fccbf7574e266bf4ac5e14485";
 
 
@@ -22,7 +22,7 @@ public class JwtUtil {
      * @param userId
      * @return
      */
-    public static String sign(String username,String userId){
+    public static String sign(String username,int userId){
 
         try {
             Date  date=new Date(System.currentTimeMillis()+EXPIRE_TIME);
@@ -46,7 +46,7 @@ public class JwtUtil {
     /**
      * 验证是否成功
      */
-     public static String  verify(String token){
+     public static Integer  verify(String token){
          Algorithm algorithm= null;
          try {
              algorithm = Algorithm.HMAC256(TOKEN_SECRET);
@@ -55,7 +55,7 @@ public class JwtUtil {
              if(jwt!=null || jwt.getClaims()!=null){
                  Map<String, Claim> claims = jwt.getClaims();
                  Claim userId = claims.get("userId");
-                 return userId.asString();
+                 return userId.asInt();
              }
          } catch (UnsupportedEncodingException e) {
             return null;
@@ -63,13 +63,12 @@ public class JwtUtil {
              return null;
          }
          return null;
-
      }
 
      public static void main(String[] args){
-         String hexiaowen = sign("hexiaowen", "1");
+         String hexiaowen = sign("hexiaowen", 10);
          System.out.println(hexiaowen);
-         String verify = verify(hexiaowen);
+         Integer verify = verify(hexiaowen);
          System.out.println(verify);
      }
 

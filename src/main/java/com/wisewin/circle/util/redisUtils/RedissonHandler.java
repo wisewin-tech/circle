@@ -20,9 +20,9 @@ public class RedissonHandler {
 
     private final String port = "6379";
 
-    private final String ip = "wisewin-tech.com";
+    private final String ip = "localhost";//"wisewin-tech.com";
 
-    private final String password = "sunshibo1!";
+    private final String password = null;//"sunshibo1!";
 
 
     /**
@@ -308,9 +308,9 @@ public class RedissonHandler {
     public static void main(String[] args) {
 //        UserDO userDO = new UserDO();
 //        userDO.setUsername("sunshibo");
-//        RedissonHandler.getInstance().set("user", userDO, 100l);
+//        RedissonHandler.getInstance().set("UserConstant", userDO, 100l);
 
-//        RedissonHandler.getInstance().delete("user");
+//        RedissonHandler.getInstance().delete("UserConstant");
         String u2 = RedissonHandler.getInstance().get("suntestkey");
 
         System.out.println(u2);

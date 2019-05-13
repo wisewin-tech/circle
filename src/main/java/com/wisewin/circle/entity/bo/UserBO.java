@@ -5,24 +5,21 @@ import java.util.Date;
 public class UserBO {
     private Integer id; //用户
     private String phone; //手机
+    private String password;
     private String name; //姓名
-    private Integer gender; //性别0女 1男
+    private String gender; //性别0女 1男
     private Integer age; //年龄
     private String email; //邮箱
     private Integer stature; //身高(cm)
-    private String birthday; //生日
+    private Date birthday; //生日
     private String constellation; //星座
     private String birthplace; //出生地
     private String schooling; //受教育程度
     private String introduce; //介绍
     private Date createTime; //创建时间
-    private Integer authentication; //认证状态
-    private String authenticationImg; //认证图像
-    private String headPortrait; //头像
     private String work; //工作
     private String school; //学校
-    private String location; //位置
-
+    private Integer authenticationStatus; //认证状态
     @Override
     public String toString() {
         return "UserBO{" +
@@ -39,13 +36,18 @@ public class UserBO {
                 ", schooling='" + schooling + '\'' +
                 ", introduce='" + introduce + '\'' +
                 ", createTime=" + createTime +
-                ", authentication=" + authentication +
-                ", authenticationImg='" + authenticationImg + '\'' +
-                ", headPortrait='" + headPortrait + '\'' +
                 ", work='" + work + '\'' +
                 ", school='" + school + '\'' +
-                ", location='" + location + '\'' +
                 '}';
+    }
+
+
+    public UserBO() {
+    }
+
+    public UserBO(String phone, String password) {
+        this.phone = phone;
+        this.password = password;
     }
 
     public Integer getId() {
@@ -64,6 +66,14 @@ public class UserBO {
         this.phone = phone;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getName() {
         return name;
     }
@@ -72,11 +82,11 @@ public class UserBO {
         this.name = name;
     }
 
-    public Integer getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(Integer gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 
@@ -104,11 +114,11 @@ public class UserBO {
         this.stature = stature;
     }
 
-    public String getBirthday() {
+    public Date getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(String birthday) {
+    public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
 
@@ -152,30 +162,6 @@ public class UserBO {
         this.createTime = createTime;
     }
 
-    public Integer getAuthentication() {
-        return authentication;
-    }
-
-    public void setAuthentication(Integer authentication) {
-        this.authentication = authentication;
-    }
-
-    public String getAuthenticationImg() {
-        return authenticationImg;
-    }
-
-    public void setAuthenticationImg(String authenticationImg) {
-        this.authenticationImg = authenticationImg;
-    }
-
-    public String getHeadPortrait() {
-        return headPortrait;
-    }
-
-    public void setHeadPortrait(String headPortrait) {
-        this.headPortrait = headPortrait;
-    }
-
     public String getWork() {
         return work;
     }
@@ -192,11 +178,11 @@ public class UserBO {
         this.school = school;
     }
 
-    public String getLocation() {
-        return location;
+    public Integer getAuthenticationStatus() {
+        return authenticationStatus;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setAuthenticationStatus(Integer authenticationStatus) {
+        this.authenticationStatus = authenticationStatus;
     }
 }
