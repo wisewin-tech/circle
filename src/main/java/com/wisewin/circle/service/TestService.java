@@ -1,6 +1,8 @@
 package com.wisewin.circle.service;
 
 import com.wisewin.circle.dao.TestDAO;
+import com.wisewin.circle.entity.bo.AdminBO;
+import com.wisewin.circle.entity.bo.UserBO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +20,7 @@ public class TestService {
 
 
 
-   public int  test() {
-        return 0;
+   public AdminBO test() {
+        return testDAO.test();
     }
 }

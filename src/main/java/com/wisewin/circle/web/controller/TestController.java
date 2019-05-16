@@ -1,7 +1,10 @@
 package com.wisewin.circle.web.controller;
 
 import com.wisewin.circle.dao.TestDAO;
+import com.wisewin.circle.entity.bo.AdminBO;
+import com.wisewin.circle.entity.bo.UserBO;
 import com.wisewin.circle.entity.dto.ResultDTOBuilder;
+import com.wisewin.circle.service.TestService;
 import com.wisewin.circle.util.JsonUtils;
 import com.wisewin.circle.web.controller.base.BaseCotroller;
 import org.slf4j.Logger;
@@ -27,12 +30,12 @@ public class TestController extends BaseCotroller {
     static final Logger log = LoggerFactory.getLogger(TestController.class);
 
     @Resource
-    private TestDAO testDAO;
+    private TestService testService;
 
     @RequestMapping("/test")
     public void test(HttpServletResponse response) {
-//        hostDAO.insertHost(hostDO);
-        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(testDAO.test()));
+        AdminBO test = testService.test();
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(test));
         super.safeJsonPrint(response, json);
 
     }

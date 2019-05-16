@@ -1,8 +1,10 @@
 package com.wisewin.circle.dao;
 
 
+import com.wisewin.circle.entity.bo.AdminBO;
+
 public interface TestDAO {
 
-    int test() ;
+    AdminBO test() ;
 
 }

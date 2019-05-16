@@ -5,8 +5,9 @@
 <!-- 【用户】 -->
 <mapper namespace="com.wisewin.circle.dao.TestDAO">
 
-    <select id="test" resultType="int">
-        select count(id) from hm_hotel
+    <select id="test" resultType="com.wisewin.circle.entity.bo.AdminBO">
+        select  *  from ce_admin
     </select>
+
 
 </mapper>
