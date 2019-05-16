@@ -10,8 +10,8 @@ public class AdminBO {
     private String phoneNumber; //手机号
     private String name; //姓名
     private String password; //密码
-    private Integer status; //状态
-    private Integer gender; //性别
+    private String status; //状态
+    private String gender; //性别
     private Integer admin; //管理员就标识
     private Date createTime; //创建时间
 
@@ -61,19 +61,19 @@ public class AdminBO {
         this.password = password;
     }
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public Integer getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(Integer gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 
