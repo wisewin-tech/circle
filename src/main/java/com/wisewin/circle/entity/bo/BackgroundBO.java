@@ -3,26 +3,34 @@ package com.wisewin.circle.entity.bo;
 import java.util.Date;
 
 /**
- * Date模式
+ * 背景墙
  */
-public class DatepatternBO {
+public class BackgroundBO {
 
     private Integer id; //Date模式id
-    private Integer userId;//用户id
+    private Integer userid;//用户id
     private Date createTime;// 创建时间
     private Date updateTime; //修改时间
     private String nameurl; //图片地址
     private Double  rank; //排序
+    private Integer pattern;//模式id
 
-    //添加默认模式图片
-    public DatepatternBO(Integer userId, String nameurl, Double rank) {
-        this.userId = userId;
+
+    public BackgroundBO(String nameurl, Double rank, Integer pattern) {
         this.nameurl = nameurl;
         this.rank = rank;
+        this.pattern = pattern;
     }
 
-    public  DatepatternBO(){}
+    public BackgroundBO(){}
 
+    public Integer getPattern() {
+        return pattern;
+    }
+
+    public void setPattern(Integer pattern) {
+        this.pattern = pattern;
+    }
 
     public Integer getId() {
         return id;
@@ -32,12 +40,12 @@ public class DatepatternBO {
         this.id = id;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Integer getUserid() {
+        return userid;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUserid(Integer userid) {
+        this.userid = userid;
     }
 
     public Date getCreateTime() {

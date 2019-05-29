@@ -3,7 +3,8 @@ package com.wisewin.circle.service;
 
 import com.wisewin.circle.common.constants.UserConstants;
 import com.wisewin.circle.dao.UserDAO;
-import com.wisewin.circle.entity.bo.DatepatternBO;
+import com.wisewin.circle.entity.bo.BackgroundBO;
+import com.wisewin.circle.entity.bo.PatternBO;
 import com.wisewin.circle.entity.bo.UserBO;
 import com.wisewin.circle.util.MD5Util;
 import com.wisewin.circle.util.RandomUtils;
@@ -98,9 +99,9 @@ public class UserService {
      * String nameurl; //图片地址
      * Double  rank; //排序
      */
-    public boolean getaddDatepattern(Integer userId, String nameurl, Double rank) {
-        DatepatternBO datepatternBO = new DatepatternBO(userId, nameurl, rank);
-        return userDAO.addDatepattern(datepatternBO) > 0;
+    public boolean getaddDatepattern( String nameurl, Double rank,Integer patternid) {
+        BackgroundBO backgroundBO = new BackgroundBO(nameurl, rank,patternid);
+        return userDAO.addDatepattern(backgroundBO) > 0;
     }
 
     /**
@@ -123,6 +124,30 @@ public class UserService {
         map.put("gender", gender);
         map.put("birthday", birthday);
         return userDAO.updateUserDate(map) > 0;
+    }
+
+    /**
+     * 添加用户模式以用户的关系模式
+     * Integer userid; //用户id
+     * String  type; //模式  DATE/BFF模式
+     */
+    public boolean getaddPattern(Integer userid,String  type){
+        PatternBO patternBO=new PatternBO(userid,type);
+        return  userDAO.addPattern(patternBO)>0;
+    }
+
+    /**
+     * 通过用户id查询模式id
+     */
+    public PatternBO getqueryPattern(Integer id){
+        return  userDAO.queryPattern(id);
+    }
+
+    /**
+     * 查询模式总数
+     */
+    public int getcountPattern(Integer id){
+        return  userDAO.countPattern(id);
     }
 
 }

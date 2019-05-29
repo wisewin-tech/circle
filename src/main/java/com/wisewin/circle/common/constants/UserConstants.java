@@ -9,7 +9,9 @@ public enum UserConstants {
         /*  验证码登录*/VERIFICATIONCODE("verificationCode"),
         /*  密码登录*/ PASSWORD("password"),
         /*  Yes  */  Yes("yes"),
-        /*  No  */  No("no");
+        /*  No  */  No("no"),
+        /* 默认模式 */DATE("date"),
+        /*BFF模式 */ BFF("bff");
 
 
 

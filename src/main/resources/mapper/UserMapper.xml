@@ -97,16 +97,16 @@
     </update>
 
     <!--添加Date模式图片-->
-    <insert id="addDatepattern" parameterType="com.wisewin.circle.entity.bo.DatepatternBO">
+    <insert id="addDatepattern" parameterType="com.wisewin.circle.entity.bo.BackgroundBO">
         INSERT  INTO
-        ce_user_ background (
-        userid,create_time,
+        ce_user_background(
+        create_time,
         update_time,nameurl,
-        rank
+        rank,pattern
         )VALUES(
-        #{userId},now(),
+        now(),
         now(),#{nameurl},
-        #{rank}
+        #{rank},#{pattern}
         )
     </insert>
 
@@ -121,5 +121,43 @@
         id=#{id}
 
     </update>
+
+    <!--添加用户模式以用户的关系-->
+    <insert id="addPattern"  parameterType="com.wisewin.circle.entity.bo.PatternBO">
+         INSERT  INTO
+            ce_user_pattern(
+              userid,update_time,
+              type
+          )VALUES (
+              #{userid},now(),
+              #{type}
+            )
+    </insert>
+
+    <!--查询数据的总条数-->
+    <select id="countPattern" resultType="int">
+      SELECT
+        COUNT(id)
+      FROM
+         ce_user_pattern
+        WHERE
+          userid=#{id}
+        AND
+          type='date'
+    </select>
+
+
+    <!--查询数据-->
+    <select id="queryPattern" resultType="com.wisewin.circle.entity.bo.PatternBO">
+        SELECT
+          id,userid,
+          type
+        FROM
+          ce_user_pattern
+        WHERE
+          userid=#{id}
+        AND
+          type='date'
+    </select>
 
 </mapper>

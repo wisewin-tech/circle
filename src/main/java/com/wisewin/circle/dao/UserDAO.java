@@ -1,7 +1,8 @@
 package com.wisewin.circle.dao;
 
 
-import com.wisewin.circle.entity.bo.DatepatternBO;
+import com.wisewin.circle.entity.bo.BackgroundBO;
+import com.wisewin.circle.entity.bo.PatternBO;
 import com.wisewin.circle.entity.bo.UserBO;
 import org.apache.ibatis.annotations.Param;
 
@@ -66,13 +67,28 @@ public interface UserDAO {
 
 
     //添加默认模式图片
-    Integer  addDatepattern(DatepatternBO datepatternBO);
+    Integer  addDatepattern(BackgroundBO backgroundBO);
 
     /**
      *
      *修改用户基本信息
      */
     Integer updateUserDate(Map<String,Object> map);
+
+    /**
+     * 添加用户模式以用户的关系模式
+     */
+    Integer addPattern(PatternBO patternBO);
+
+    /**
+     * 通过用户id查询模式id
+     */
+    PatternBO queryPattern(@Param("id") Integer id);
+
+    /**
+     * 查询模式总数
+     */
+    int countPattern(@Param("id") Integer id);
 
 
 }
