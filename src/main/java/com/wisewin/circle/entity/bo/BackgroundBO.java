@@ -14,12 +14,31 @@ public class BackgroundBO {
     private String nameurl; //图片地址
     private Double  rank; //排序
     private Integer pattern;//模式id
+    private String state; //模式
+    private String stateone; //模式1
 
 
     public BackgroundBO(String nameurl, Double rank, Integer pattern) {
         this.nameurl = nameurl;
         this.rank = rank;
         this.pattern = pattern;
+    }
+
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getStateone() {
+        return stateone;
+    }
+
+    public void setStateone(String stateone) {
+        this.stateone = stateone;
     }
 
     public BackgroundBO(){}

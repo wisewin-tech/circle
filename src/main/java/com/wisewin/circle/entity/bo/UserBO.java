@@ -23,6 +23,14 @@ public class UserBO extends BaseModel {
     private String school; //学校
     private String authenticationStatus; //认证状态
     private Date authenticationTime;//认证时间
+    private String pattern; //模式
+    private Integer updateCount; //修改次数
+    private String longitude;//经度
+    private String latitude;//纬度
+    private String accountstatus;//账号状态
+    private String inquireage; //查询年龄开始
+    private String inquiresexl; //查询性别
+    private String inquireageover; //查询年龄结束
 
 
     public UserBO() {
@@ -31,6 +39,78 @@ public class UserBO extends BaseModel {
     public UserBO(String phone, String password) {
         this.phoneNumber = phone;
         this.password = password;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getPattern() {
+        return pattern;
+    }
+
+    public void setPattern(String pattern) {
+        this.pattern = pattern;
+    }
+
+    public Integer getUpdateCount() {
+        return updateCount;
+    }
+
+    public void setUpdateCount(Integer updateCount) {
+        this.updateCount = updateCount;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getAccountstatus() {
+        return accountstatus;
+    }
+
+    public void setAccountstatus(String accountstatus) {
+        this.accountstatus = accountstatus;
+    }
+
+    public String getInquireage() {
+        return inquireage;
+    }
+
+    public void setInquireage(String inquireage) {
+        this.inquireage = inquireage;
+    }
+
+    public String getInquiresexl() {
+        return inquiresexl;
+    }
+
+    public void setInquiresexl(String inquiresexl) {
+        this.inquiresexl = inquiresexl;
+    }
+
+    public String getInquireageover() {
+        return inquireageover;
+    }
+
+    public void setInquireageover(String inquireageover) {
+        this.inquireageover = inquireageover;
     }
 
     public Integer getId() {

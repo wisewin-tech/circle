@@ -1,5 +1,7 @@
 package com.wisewin.circle.entity.dto.param;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 /**
@@ -16,6 +18,7 @@ public class DatepatternParam {
     private String name; //姓名
     private String password; //密码
     private String gender; //性别0女 1男
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date birthday; //生日
 
 

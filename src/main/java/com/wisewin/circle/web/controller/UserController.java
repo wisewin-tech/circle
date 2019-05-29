@@ -285,7 +285,7 @@ public class UserController extends BaseCotroller {
 
         //如果为空将结束
         if (userBO.getId()==null || param.getNameurl().equals("") || param.getName().equals("") || param.getPassword().equals("")
-                || param.getGender().equals("") || param.getBirthday().equals("")){
+                || param.getGender().equals("")){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
@@ -302,7 +302,7 @@ public class UserController extends BaseCotroller {
         }
 
         //通过获取当前id来修改方式添加用户基本信息
-        boolean updateUserDatejoin=userService.getupdateUserDate(userBO.getId(),param.getName(),param.getPassword(),param.getGender(),param.getBirthday());
+        boolean updateUserDatejoin=userService.getupdateUserDate(userBO.getId(),param.getName(),MD5Util.digest(param.getPassword()),param.getGender(),param.getBirthday());
         if (updateUserDatejoin){
             //获取当前id进行添加模式表关系以及默认模式
             boolean addPatternjoin=userService.getaddPattern(userBO.getId(),UserConstants.DATE.getValue());
