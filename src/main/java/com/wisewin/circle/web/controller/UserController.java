@@ -4,6 +4,7 @@ import com.wisewin.circle.common.constants.SysConstants;
 import com.wisewin.circle.common.constants.UserConstants;
 import com.wisewin.circle.entity.bo.UserBO;
 import com.wisewin.circle.entity.dto.ResultDTOBuilder;
+import com.wisewin.circle.entity.dto.param.DatepatternParam;
 import com.wisewin.circle.service.UserService;
 import com.wisewin.circle.util.AccountValidatorUtil;
 import com.wisewin.circle.util.JsonUtils;
@@ -268,5 +269,39 @@ public class UserController extends BaseCotroller {
         return true;
     }
 
+    /**
+     * 添加默认模式图片和基本资料
+     * Integer userId;//用户id
+     * String nameurl; //图片地址
+     * Double  rank; //排序
+     */
+    @RequestMapping("/addDatepattern")
+    public void addDatepattern(HttpServletRequest request, HttpServletResponse response, DatepatternParam param){
 
+        //获取用户id
+        UserBO userBO=new UserBO();
+        userBO.setId(1);
+
+        //如果为空将结束
+        if (userBO.getId()==null || param.getNameurl().equals("")){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            super.safeJsonPrint(response, json);
+            return;
+
+        }
+        //添加默认模式头像
+        boolean addDatepatternjoin=userService.getaddDatepattern(userBO.getId(),param.getNameurl(),param.getRank());
+        if (addDatepatternjoin){
+
+            boolean updateUserDatejoin=userService.getupdateUserDate(userBO.getId(),param.getName(),param.getPassword(),param.getGender(),param.getBirthday());
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("添加成功"));
+            super.safeJsonPrint(response, json);
+            return;
+
+
+        }
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000002"));
+        super.safeJsonPrint(response, json);
+        return;
+    }
 }

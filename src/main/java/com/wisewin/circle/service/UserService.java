@@ -1,10 +1,9 @@
 package com.wisewin.circle.service;
 
 
-
-
 import com.wisewin.circle.common.constants.UserConstants;
 import com.wisewin.circle.dao.UserDAO;
+import com.wisewin.circle.entity.bo.DatepatternBO;
 import com.wisewin.circle.entity.bo.UserBO;
 import com.wisewin.circle.util.MD5Util;
 import com.wisewin.circle.util.RandomUtils;
@@ -14,6 +13,9 @@ import com.wisewin.circle.util.redisUtils.RedissonHandler;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class UserService {
@@ -36,12 +38,12 @@ public class UserService {
         RedissonHandler.getInstance().set(phone + UserConstants.VERIFY_LOSE.getValue(), number, 60L);
         //次数
         String count = RedissonHandler.getInstance().get(phone + UserConstants.DEGREE.getValue());
-        if(count!=null){
+        if (count != null) {
             //累加
-            Integer coun=Integer.parseInt(count);
-            coun=coun+1;
+            Integer coun = Integer.parseInt(count);
+            coun = coun + 1;
             RedissonHandler.getInstance().set(phone + UserConstants.DEGREE.getValue(), coun.toString(), 86400L);
-        }else{
+        } else {
             //添加
             RedissonHandler.getInstance().set(phone + UserConstants.DEGREE.getValue(), "1", 86400L);
         }
@@ -59,6 +61,7 @@ public class UserService {
         return userDAO.selectByPhone(phone);
 
     }
+
     /**
      * 通过id查询用户信息
      */
@@ -74,20 +77,52 @@ public class UserService {
      */
     public void insertUser(UserBO userBO) {
         userDAO.insertUser(userBO);
-}
+    }
 
     /**
      * 修改用户信息
+     *
      * @param userParam
      */
     public void updateUser(UserBO userParam) {
         //如果用户有修改密码,对密码进行加密
-        if (!StringUtils.isEmpty(userParam.getPassword())){
+        if (!StringUtils.isEmpty(userParam.getPassword())) {
             userParam.setPassword(MD5Util.digest(userParam.getPassword()));
         }
         userDAO.updateUser(userParam);
     }
 
+    /**
+     * 添加默认模式图片
+     * Integer userId;//用户id
+     * String nameurl; //图片地址
+     * Double  rank; //排序
+     */
+    public boolean getaddDatepattern(Integer userId, String nameurl, Double rank) {
+        DatepatternBO datepatternBO = new DatepatternBO(userId, nameurl, rank);
+        return userDAO.addDatepattern(datepatternBO) > 0;
+    }
 
+    /**
+     * 修改用户基本信息
+     * 根据用户id进行修改
+     * 名字
+     * 密码
+     * 性别
+     * 生日
+     *
+     * @param
+     * @return
+     */
+    public boolean getupdateUserDate(Integer id, String name, String password, String gender, Date birthday) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        //用户id
+        map.put("id", id);
+        map.put("name", name);
+        map.put("password", password);
+        map.put("gender", gender);
+        map.put("birthday", birthday);
+        return userDAO.updateUserDate(map) > 0;
+    }
 
 }

@@ -1,6 +1,7 @@
 package com.wisewin.circle.dao;
 
 
+import com.wisewin.circle.entity.bo.DatepatternBO;
 import com.wisewin.circle.entity.bo.UserBO;
 import org.apache.ibatis.annotations.Param;
 
@@ -64,15 +65,14 @@ public interface UserDAO {
     void updateLanguage(@Param("id") Integer id, @Param("studyingLanguageId") Integer studyingLanguageId);
 
 
+    //添加默认模式图片
+    Integer  addDatepattern(DatepatternBO datepatternBO);
+
+    /**
+     *
+     *修改用户基本信息
+     */
+    Integer updateUserDate(Map<String,Object> map);
 
 
-
-    //获取当前用户
-    UserBO selectUser(@Param("id") Integer id);
-
-    //扣减用户咖豆
-    void updateUserCrrency(@Param("id") String id, @Param("price") Integer price);
-
-    //用户充值咖豆
-    Integer updateUserAugment(Map<String, Object> map);
 }

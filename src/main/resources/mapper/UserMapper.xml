@@ -50,7 +50,7 @@
         id=#{id}
     </update>
     <!--通过id查找用户信息-->
-    <select id="selectAllById" resultType="com.wisewin.api.entity.bo.UserBO">
+    <select id="selectAllById" resultType="com.wisewin.circle.entity.bo.UserBO">
         select
         `id` ,`name` ,`nickname` ,`password` ,`email` ,`mobile`,`age_group` ,
 `head_portrait_url`,`sex`,`birthday` ,`source` ,`career` ,`integral` ,`currency` ,`learning_goal` ,`studying_language_id` ,
@@ -64,7 +64,7 @@
     </select>
 
     <!--后面的所有留待备用-->
-    <update id="updatePassword" parameterType="com.wisewin.api.entity.bo.UserBO">
+    <update id="updatePassword" parameterType="com.wisewin.circle.entity.bo.UserBO">
         update lt_user
         <set>
 
@@ -78,7 +78,7 @@
     </update>
 
     <!--通过用户名查询用户信息-->
-    <select id="selectUserByUsername" resultType="com.wisewin.api.entity.bo.UserBO">
+    <select id="selectUserByUsername" resultType="com.wisewin.circle.entity.bo.UserBO">
         select
         id,name,phone,password,birthday,gender
         from
@@ -96,6 +96,30 @@
         WHERE id=#{id}
     </update>
 
+    <!--添加Date模式图片-->
+    <insert id="addDatepattern" parameterType="com.wisewin.circle.entity.bo.DatepatternBO">
+        INSERT  INTO
+        ce_user_ background (
+        userid,create_time,
+        update_time,nameurl,
+        rank
+        )VALUES(
+        #{userId},now(),
+        now(),#{nameurl},
+        #{rank}
+        )
+    </insert>
 
+    <!--修改用户信息-->
+    <update id="updateUserDate" parameterType="java.util.Map">
+        UPDATE
+        ce_user
+        SET
+        name=#{name},password=#{password},
+        gender=#{gender},birthday=#{birthday}
+        WHERE
+        id=#{id}
+
+    </update>
 
 </mapper>
