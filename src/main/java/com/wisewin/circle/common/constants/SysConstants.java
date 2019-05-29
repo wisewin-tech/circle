@@ -59,6 +59,7 @@ public class SysConstants {
      * 7天的毫秒数
      */
     public static final int SEVEN_DAY_TIME = OND_DAY_TIME * 7 ;
+    public static final String  LOGIN_IDENTIFICATION ="_uuid" ;
 
     /**
      * 合法的IMEI号的长度

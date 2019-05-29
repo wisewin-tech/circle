@@ -1,10 +1,12 @@
 package com.wisewin.circle.entity.bo;
 
+import com.wisewin.circle.entity.bo.common.base.BaseModel;
+
 import java.util.Date;
 
-public class UserBO {
+public class UserBO extends BaseModel {
     private Integer id; //用户
-    private String phone; //手机
+    private String phoneNumber; //手机
     private String password;
     private String name; //姓名
     private String gender; //性别0女 1男
@@ -19,34 +21,15 @@ public class UserBO {
     private Date createTime; //创建时间
     private String work; //工作
     private String school; //学校
-    private Integer authenticationStatus; //认证状态
-    @Override
-    public String toString() {
-        return "UserBO{" +
-                "id=" + id +
-                ", phone='" + phone + '\'' +
-                ", name='" + name + '\'' +
-                ", gender=" + gender +
-                ", age=" + age +
-                ", email='" + email + '\'' +
-                ", stature=" + stature +
-                ", birthday='" + birthday + '\'' +
-                ", constellation='" + constellation + '\'' +
-                ", birthplace='" + birthplace + '\'' +
-                ", schooling='" + schooling + '\'' +
-                ", introduce='" + introduce + '\'' +
-                ", createTime=" + createTime +
-                ", work='" + work + '\'' +
-                ", school='" + school + '\'' +
-                '}';
-    }
+    private String authenticationStatus; //认证状态
+    private Date authenticationTime;//认证时间
 
 
     public UserBO() {
     }
 
     public UserBO(String phone, String password) {
-        this.phone = phone;
+        this.phoneNumber = phone;
         this.password = password;
     }
 
@@ -59,11 +42,11 @@ public class UserBO {
     }
 
     public String getPhone() {
-        return phone;
+        return phoneNumber;
     }
 
     public void setPhone(String phone) {
-        this.phone = phone;
+        this.phoneNumber = phone;
     }
 
     public String getPassword() {
@@ -178,11 +161,20 @@ public class UserBO {
         this.school = school;
     }
 
-    public Integer getAuthenticationStatus() {
+
+    public String getAuthenticationStatus() {
         return authenticationStatus;
     }
 
-    public void setAuthenticationStatus(Integer authenticationStatus) {
+    public void setAuthenticationStatus(String authenticationStatus) {
         this.authenticationStatus = authenticationStatus;
+    }
+
+    public Date getAuthenticationTime() {
+        return authenticationTime;
+    }
+
+    public void setAuthenticationTime(Date authenticationTime) {
+        this.authenticationTime = authenticationTime;
     }
 }

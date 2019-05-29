@@ -5,7 +5,6 @@ import com.wisewin.circle.entity.bo.AdminBO;
 import com.wisewin.circle.entity.bo.UserBO;
 import com.wisewin.circle.query.PageObject;
 import com.wisewin.circle.query.QueryInfo;
-import com.wisewin.circle.service.TokenService;
 import com.wisewin.circle.util.redisUtils.RedissonHandler;
 import com.google.common.collect.Lists;
 import org.apache.commons.fileupload.FileItem;
@@ -17,7 +16,6 @@ import org.apache.log4j.Logger;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -226,12 +224,12 @@ public class BaseCotroller {
     }
 
     /** 获取登录用户*/
-    public AdminBO getLoginUser (HttpServletRequest request ) {
-        return (AdminBO)this.getSession(request, SysConstants.CURRENT_LOGIN_USER) ;
+    public UserBO getLoginUser (HttpServletRequest request ) {
+        return (UserBO)this.getSession(request, SysConstants.CURRENT_LOGIN_USER) ;
     }
 
     /** putLoginUser*/
-    public void putLoginUser (String loginId , AdminBO loginUser) {
+    public void putLoginUser (String loginId , UserBO loginUser) {
         this.putSession(createKey(loginId, SysConstants.CURRENT_LOGIN_USER), loginUser) ;
     }
 
