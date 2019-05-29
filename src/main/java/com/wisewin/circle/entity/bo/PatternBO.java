@@ -7,15 +7,15 @@ import java.util.Date;
 public class PatternBO {
 
     private Integer id;  //用户模式
-    private Integer userid; //用户id
+    private Integer userId; //用户id
     private Date updateTime; //最后修改时间
     private String describe; //描述
     private String interest; //兴起
     private String  type; //模式  DATE/BFF模式
 
 
-    public PatternBO(Integer userid, String type) {
-        this.userid = userid;
+    public PatternBO(Integer userId, String type) {
+        this.userId = userId;
         this.type = type;
     }
 
@@ -29,12 +29,12 @@ public class PatternBO {
         this.id = id;
     }
 
-    public Integer getUserid() {
-        return userid;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUserid(Integer userid) {
-        this.userid = userid;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public Date getUpdateTime() {

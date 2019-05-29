@@ -284,7 +284,8 @@ public class UserController extends BaseCotroller {
         userBO.setId(1);
 
         //如果为空将结束
-        if (userBO.getId()==null || param.getNameurl().equals("")){
+        if (userBO.getId()==null || param.getNameurl().equals("") || param.getName().equals("") || param.getPassword().equals("")
+                || param.getGender().equals("") || param.getBirthday().equals("")){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;

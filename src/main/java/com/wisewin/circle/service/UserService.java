@@ -131,8 +131,8 @@ public class UserService {
      * Integer userid; //用户id
      * String  type; //模式  DATE/BFF模式
      */
-    public boolean getaddPattern(Integer userid,String  type){
-        PatternBO patternBO=new PatternBO(userid,type);
+    public boolean getaddPattern(Integer userId,String  type){
+        PatternBO patternBO=new PatternBO(userId,type);
         return  userDAO.addPattern(patternBO)>0;
     }
 

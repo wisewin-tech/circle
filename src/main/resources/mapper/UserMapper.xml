@@ -126,10 +126,10 @@
     <insert id="addPattern"  parameterType="com.wisewin.circle.entity.bo.PatternBO">
          INSERT  INTO
             ce_user_pattern(
-              userid,update_time,
+              user_id,update_time,
               type
           )VALUES (
-              #{userid},now(),
+              #{userId},now(),
               #{type}
             )
     </insert>
@@ -141,7 +141,7 @@
       FROM
          ce_user_pattern
         WHERE
-          userid=#{id}
+          user_id=#{id}
         AND
           type='date'
     </select>
@@ -150,12 +150,12 @@
     <!--查询数据-->
     <select id="queryPattern" resultType="com.wisewin.circle.entity.bo.PatternBO">
         SELECT
-          id,userid,
+          id,user_id,
           type
         FROM
           ce_user_pattern
         WHERE
-          userid=#{id}
+          user_id=#{id}
         AND
           type='date'
     </select>
