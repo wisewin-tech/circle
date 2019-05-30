@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 /**
  * Created by Administrator on 2018/2/28.
  */
-@Service("storeService")
+@Service("TestService")
 @Transactional
 public class TestService {
     @Resource

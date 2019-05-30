@@ -7,6 +7,7 @@ import com.wisewin.circle.util.env.Env;
  * Created by sunshibo on 2016/3/16.
  */
 public class ResultDTOBuilder {
+    public static  final Object success=new Object();
 
     public ResultDTOBuilder() {
     }
@@ -32,7 +33,7 @@ public class ResultDTOBuilder {
 
     public static ResultDTO failure(String errCode) {
         Env env = new Env();
-        ResultDTO<String> instance = getInstance(errCode, StringUtils.clearNull(env.getProperty(errCode)), false, "");
+        ResultDTO<Object> instance = getInstance(errCode, StringUtils.clearNull(env.getProperty(errCode)), false,success);
         return instance;
     }
 

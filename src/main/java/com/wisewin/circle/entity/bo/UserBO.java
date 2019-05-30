@@ -27,10 +27,10 @@ public class UserBO extends BaseModel {
     private Integer updateCount; //修改次数
     private String longitude;//经度
     private String latitude;//纬度
-    private String accountstatus;//账号状态
-    private String inquireage; //查询年龄开始
-    private String inquiresexl; //查询性别
-    private String inquireageover; //查询年龄结束
+    private String accountStatus;//账号状态
+    private String inquireAge; //查询年龄开始
+    private String inquireSex; //查询性别
+    private String inquireAgeOver; //查询年龄结束
 
 
     public UserBO() {
@@ -81,36 +81,36 @@ public class UserBO extends BaseModel {
         this.latitude = latitude;
     }
 
-    public String getAccountstatus() {
-        return accountstatus;
+    public String getAccountStatus() {
+        return accountStatus;
     }
 
-    public void setAccountstatus(String accountstatus) {
-        this.accountstatus = accountstatus;
+    public void setAccountStatus(String accountStatus) {
+        this.accountStatus = accountStatus;
     }
 
-    public String getInquireage() {
-        return inquireage;
+    public String getInquireAge() {
+        return inquireAge;
     }
 
-    public void setInquireage(String inquireage) {
-        this.inquireage = inquireage;
+    public void setInquireAge(String inquireAge) {
+        this.inquireAge = inquireAge;
     }
 
-    public String getInquiresexl() {
-        return inquiresexl;
+    public String getInquireSex() {
+        return inquireSex;
     }
 
-    public void setInquiresexl(String inquiresexl) {
-        this.inquiresexl = inquiresexl;
+    public void setInquireSex(String inquireSex) {
+        this.inquireSex = inquireSex;
     }
 
-    public String getInquireageover() {
-        return inquireageover;
+    public String getInquireAgeOver() {
+        return inquireAgeOver;
     }
 
-    public void setInquireageover(String inquireageover) {
-        this.inquireageover = inquireageover;
+    public void setInquireAgeOver(String inquireAgeOver) {
+        this.inquireAgeOver = inquireAgeOver;
     }
 
     public Integer getId() {

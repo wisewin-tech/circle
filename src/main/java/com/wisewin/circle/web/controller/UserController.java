@@ -42,10 +42,9 @@ public class UserController extends BaseCotroller {
     public void send(String phone, HttpServletResponse response) {
         //手机号非空+格式判断
         if (this.phoneFormt(phone, response)) {
-            //获取缓存中的失效验证码
-            String mobileAuthCode = RedissonHandler.getInstance().get(phone + UserConstants.VERIFY_LOSE.getValue());
-            if (mobileAuthCode != null) {
-                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000012"));
+            String time = RedissonHandler.getInstance().get(phone + UserConstants.VERIFY_LOSE.getValue());
+            if(time!=null){
+                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000009"));
                 super.safeJsonPrint(response, json);
                 return;
             }
@@ -53,13 +52,13 @@ public class UserController extends BaseCotroller {
             if (count != null) {
                 int coun = Integer.valueOf(count);
                 if (coun >= 20) {
-                    String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000025"));
+                    String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000008"));
                     super.safeJsonPrint(response, json);
                     return;
                 }
             }
             userService.send(phone);
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null));
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(ResultDTOBuilder.success));
             super.safeJsonPrint(response, json);
 
         }
@@ -70,7 +69,7 @@ public class UserController extends BaseCotroller {
      * @param phone
      * @param verify 用户注册
      */
-    @RequestMapping("/register")
+    @RequestMapping("/userRegister")
     public void register(String phone, String verify, HttpServletResponse response, HttpServletRequest request) {
         //手机号非空+格式判断
         if (!this.phoneFormt(phone, response)) {

@@ -7,12 +7,7 @@
 
     <!--通过phone查看库里有没有这个账号-->
     <select id="selectByPhone" resultType="com.wisewin.circle.entity.bo.UserBO">
-        select
-        *
-        from
-        lt_user
-        where
-        phone_number=#{phoneNumber}
+        select  *  from  ce_user   where   phone_number=#{phoneNumber}
     </select>
 
     <insert id="insertUser"     parameterType="com.wisewin.circle.entity.bo.UserBO"
