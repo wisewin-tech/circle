@@ -10,7 +10,7 @@ public class PatternBO {
     private Integer userId; //用户id
     private Date updateTime; //最后修改时间
     private String describe; //描述
-    private String interest; //兴起
+    private String interest; //兴趣
     private String  type; //模式  DATE/BFF模式
 
 

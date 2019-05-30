@@ -118,7 +118,7 @@
     </update>
 
     <!--添加用户模式以用户的关系-->
-    <insert id="addPattern"  parameterType="com.wisewin.circle.entity.bo.PatternBO">
+    <insert id="addPattern"  parameterType="com.wisewin.circle.entity.bo.PatternBO"    useGeneratedKeys="true" keyProperty="id">
          INSERT  INTO
             ce_user_pattern(
               user_id,update_time,

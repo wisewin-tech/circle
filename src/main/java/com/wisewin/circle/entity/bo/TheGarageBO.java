@@ -7,10 +7,10 @@ public class TheGarageBO {
     private String brandModel; //品牌型号
     private String headingCode;  //车辆识别码
     private String certificationPictures; //认证图片
-    private Integer status; //认证状态
+    private String status; //认证状态
 
 
-    public TheGarageBO(Integer userId, String plateNumber, String brandModel, String headingCode, String certificationPictures, Integer status) {
+    public TheGarageBO(Integer userId, String plateNumber, String brandModel, String headingCode, String certificationPictures, String status) {
         this.userId = userId;
         this.plateNumber = plateNumber;
         this.brandModel = brandModel;
@@ -79,11 +79,11 @@ public class TheGarageBO {
         this.certificationPictures = certificationPictures;
     }
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 }
