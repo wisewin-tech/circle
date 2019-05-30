@@ -6,6 +6,7 @@ import com.wisewin.circle.dao.UserDAO;
 import com.wisewin.circle.entity.bo.BackgroundBO;
 import com.wisewin.circle.entity.bo.PatternBO;
 import com.wisewin.circle.entity.bo.UserBO;
+import com.wisewin.circle.entity.dto.param.DatepatternParam;
 import com.wisewin.circle.util.MD5Util;
 import com.wisewin.circle.util.RandomUtils;
 import com.wisewin.circle.util.StringUtils;
@@ -93,61 +94,29 @@ public class UserService {
         userDAO.updateUser(userParam);
     }
 
-    /**
-     * 添加默认模式图片
-     * Integer userId;//用户id
-     * String nameurl; //图片地址
-     * Double  rank; //排序
-     */
-    public boolean getaddDatepattern( String nameurl, Double rank,Integer patternid) {
-        BackgroundBO backgroundBO = new BackgroundBO(nameurl, rank,patternid);
-        return userDAO.addDatepattern(backgroundBO) > 0;
+
+
+    //添加基本资料
+    public boolean   addDatepattern(Integer id, DatepatternParam param){
+        Map<String,Object> map=new HashMap<String, Object>();
+        map.put("id",id);
+        map.put("name",param.getName());
+        map.put("gender",param.getGender());
+        map.put("birthday",param.getBirthday());
+        //添加用户信息
+        userDAO.updateUserDate(map);
+
+        PatternBO patternBO=new PatternBO(id,UserConstants.DATE.getValue());
+        //添加模式
+        userDAO.addPattern(patternBO);
+
+        //添加背景图PatternBO
+        BackgroundBO backgroundBO=new BackgroundBO(param.getNameurl(),param.getRank(),patternBO.getId());
+        return userDAO.addDatepattern(backgroundBO)>0;
+
+
     }
 
-    /**
-     * 修改用户基本信息
-     * 根据用户id进行修改
-     * 名字
-     * 密码
-     * 性别
-     * 生日
-     *
-     * @param
-     * @return
-     */
-    public boolean getupdateUserDate(Integer id, String name, String password, String gender, Date birthday) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        //用户id
-        map.put("id", id);
-        map.put("name", name);
-        map.put("password", password);
-        map.put("gender", gender);
-        map.put("birthday", birthday);
-        return userDAO.updateUserDate(map) > 0;
-    }
 
-    /**
-     * 添加用户模式以用户的关系模式
-     * Integer userid; //用户id
-     * String  type; //模式  DATE/BFF模式
-     */
-    public boolean getaddPattern(Integer userId,String  type){
-        PatternBO patternBO=new PatternBO(userId,type);
-        return  userDAO.addPattern(patternBO)>0;
-    }
-
-    /**
-     * 通过用户id查询模式id
-     */
-    public PatternBO getqueryPattern(Integer id){
-        return  userDAO.queryPattern(id);
-    }
-
-    /**
-     * 查询模式总数
-     */
-    public int getcountPattern(Integer id){
-        return  userDAO.countPattern(id);
-    }
 
 }

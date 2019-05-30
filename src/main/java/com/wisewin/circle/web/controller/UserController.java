@@ -278,54 +278,29 @@ public class UserController extends BaseCotroller {
     @RequestMapping("/addDatepattern")
     public void addDatepattern(HttpServletRequest request, HttpServletResponse response, DatepatternParam param){
 
-        //获取用户id
-        UserBO userBO=new UserBO();
-        userBO.setId(1);
+        //获取当前用户
+        UserBO loginUser = super.getLoginUser(request);
+        Integer id = loginUser.getId();
 
         //如果为空将结束
-        if (userBO.getId()==null || param.getNameurl().equals("") || param.getName().equals("") || param.getPassword().equals("")
-                || param.getGender().equals("")){
+        if (id==null || StringUtils.isEmpty(param.getNameurl()) || StringUtils.isEmpty(param.getName())
+                || StringUtils.isEmpty(param.getGender())){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
         }
 
-        /**查询模式的条数，如果是零条说明用户没有注册过可以通行，如果有数据说明用户注册过
-        *因为每种模式只有有一个用户id,不能出现多个
-         */
-        int counPattern=userService.getcountPattern(userBO.getId());
-        if (counPattern>0){
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000007"));
+
+        boolean addDatepatternjoin=userService.addDatepattern(id,param);
+        if (addDatepatternjoin){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(""));
             super.safeJsonPrint(response, json);
             return;
-        }
-
-        //通过获取当前id来修改方式添加用户基本信息
-        boolean updateUserDatejoin=userService.getupdateUserDate(userBO.getId(),param.getName(),MD5Util.digest(param.getPassword()),param.getGender(),param.getBirthday());
-        if (updateUserDatejoin){
-            //获取当前id进行添加模式表关系以及默认模式
-            boolean addPatternjoin=userService.getaddPattern(userBO.getId(),UserConstants.DATE.getValue());
-                if (addPatternjoin){
-                    //通过当前id获取模式信息
-                    PatternBO patternBO=userService.getqueryPattern(userBO.getId());
-                    if (patternBO.equals("")){
-                        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
-                        super.safeJsonPrint(response, json);
-                        return;
-                    }
-
-                    //进行添加模式id和背景墙的关系
-                    boolean addDatepatternjoin=userService.getaddDatepattern(param.getNameurl(),param.getRank(),patternBO.getId());
-                    if (addDatepatternjoin){
-                        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("添加成功"));
-                        super.safeJsonPrint(response, json);
-                        return;
-                    }
-                }
         }
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
         super.safeJsonPrint(response, json);
         return;
+
 
     }
 }
