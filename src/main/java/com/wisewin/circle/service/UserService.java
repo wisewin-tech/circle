@@ -1,6 +1,7 @@
 package com.wisewin.circle.service;
 
 
+import com.wisewin.circle.common.constants.PatternConstants;
 import com.wisewin.circle.common.constants.UserConstants;
 import com.wisewin.circle.dao.UserDAO;
 import com.wisewin.circle.entity.bo.BackgroundBO;
@@ -106,7 +107,7 @@ public class UserService {
         //添加用户信息
         userDAO.updateUserDate(map);
 
-        PatternBO patternBO=new PatternBO(id,UserConstants.DATE.getValue());
+        PatternBO patternBO=new PatternBO(id, PatternConstants.DATE);
         //添加模式
         userDAO.addPattern(patternBO);
 
