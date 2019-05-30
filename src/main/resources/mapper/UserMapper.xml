@@ -27,7 +27,7 @@
     <update id="updateUser" parameterType="com.wisewin.circle.entity.bo.UserBO">
         update ce_user
         <set>
-            <if test="name!=null and name!=''">         `name`=#{name},</if>
+            <if test="name!=null and name!=''">         name=#{name},</if>
             <if test="password!=null and password!='' ">   password=#{password},</if>
             <if test="gender!=null">      gender=#{gender},</if>
             <if test="phoneNumber!=null and phoneNumber!=''">         phone_number=#{phoneNumber},</if>
@@ -58,11 +58,11 @@
     <!--通过id查找用户信息-->
     <select id="selectAllById" resultType="com.wisewin.circle.entity.bo.UserBO">
         select
-        `id` ,`name` ,`nickname` ,`password` ,`email` ,`mobile`,`age_group` ,
-`head_portrait_url`,`sex`,`birthday` ,`source` ,`career` ,`integral` ,`currency` ,`learning_goal` ,`studying_language_id` ,
-`language_like_id` ,`invite_code` ,`by_invite` ,`job`,`qq_openid` ,`wx_openid` ,`continuous_sign` ,`cumulative_sign` ,
-`last_sign` ,`continuous_learning` ,`cumulative_learning` ,`study_date` datetime ,`status` ,
-`create_id`,`update_id` ,`create_time` ,`update_time`
+        id ,name ,nickname ,password ,email ,mobile,age_group ,
+head_portrait_url,sex,birthday ,source ,career ,integral ,currency ,learning_goal ,studying_language_id ,
+language_like_id ,invite_code ,by_invite ,job,qq_openid ,wx_openid ,continuous_sign ,cumulative_sign ,
+last_sign ,continuous_learning ,cumulative_learning ,study_date datetime ,status ,
+create_id,update_id ,create_time ,update_time
         from
         lt_user
         where
