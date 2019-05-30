@@ -1,23 +1,13 @@
-package com.wisewin.circle.entity.bo;
+package com.wisewin.circle.entity.dto.param;
 
-public class TheGarageBO {
+public class TheGarageParam {
     private Integer id; //车库
     private Integer userId; //用户id
     private String plateNumber; //车牌号
     private String brandModel; //品牌型号
-    private String headingCode;  //车辆识别码
     private String certificationPictures; //认证图片
     private Integer status; //认证状态
-
-
-    public TheGarageBO(Integer userId, String plateNumber, String brandModel, String headingCode, String certificationPictures, Integer status) {
-        this.userId = userId;
-        this.plateNumber = plateNumber;
-        this.brandModel = brandModel;
-        this.headingCode = headingCode;
-        this.certificationPictures = certificationPictures;
-        this.status = status;
-    }
+    private String headingCode;  //车辆识别码
 
     @Override
     public String toString() {

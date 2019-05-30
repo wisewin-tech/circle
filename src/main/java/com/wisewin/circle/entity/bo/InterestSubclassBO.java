@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * 兴趣子类
  */
-public class InterestsubclassBO {
+public class InterestSubclassBO {
 
     private Integer id;  //兴趣子类
     private Integer fatherId;//父id
@@ -15,7 +15,7 @@ public class InterestsubclassBO {
     private Integer createUserId; //创建人
     private Integer updateUserId; //修改人
 
-    public InterestsubclassBO(){}
+    public InterestSubclassBO(){}
 
     public Integer getId() {
         return id;

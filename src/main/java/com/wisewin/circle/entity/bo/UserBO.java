@@ -36,6 +36,13 @@ public class UserBO extends BaseModel {
     public UserBO() {
     }
 
+    public UserBO(Integer id, String phoneNumber, String password, String name) {
+        this.id = id;
+        this.phoneNumber = phoneNumber;
+        this.password = password;
+        this.name = name;
+    }
+
     public UserBO(String phone, String password) {
         this.phoneNumber = phone;
         this.password = password;

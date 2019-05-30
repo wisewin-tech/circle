@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 车库 -->
+<mapper namespace="com.wisewin.circle.dao.TheGarageDAO">
+
+    <!--用户车库认证-->
+    <insert id="addTheGarage" parameterType="com.wisewin.circle.entity.bo.TheGarageBO">
+        INSERT  INTO
+          ce_the_garage(
+            user_id,plate_number,
+            bran_model,heading_code,
+            certification_pictures,status,
+            update_time,create_time
+         )VALUES (
+            #{userId},#{plateNumber},
+            #{brandModel},#{headingCode},
+            #{certificationPictures},#{status},
+            now(),now()
+          )
+    </insert>
+
+
+</mapper>
