@@ -76,8 +76,8 @@ public class UserService {
      *
      * @param userBO
      */
-    public void insertUser(UserBO userBO) {
-        userDAO.insertUser(userBO);
+    public void addUser(UserBO userBO) {
+        userDAO.addUser(userBO);
     }
 
     /**
