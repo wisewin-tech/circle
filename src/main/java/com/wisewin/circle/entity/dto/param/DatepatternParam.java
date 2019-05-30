@@ -20,6 +20,9 @@ public class DatepatternParam {
     private String gender; //性别0女 1男
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date birthday; //生日
+    private String describe; //描述
+    private String interest; //兴趣
+    private String  type; //模式  DATE/BFF模式
 
 
     public String getName() {

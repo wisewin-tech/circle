@@ -223,11 +223,16 @@ public class BaseCotroller {
 //        RedisUtil.del(createKey(this.getLoginID(request), key)) ;
     }
 
+
+    /** 获取登录用户*/
+ /*   public UserBO getLoginUser (HttpServletRequest request ) {
+        return (UserBO)this.getSession(request, SysConstants.CURRENT_LOGIN_USER) ;
+    }*/
     /** 获取登录用户*/
     public UserBO getLoginUser (HttpServletRequest request ) {
-        return (UserBO)this.getSession(request, SysConstants.CURRENT_LOGIN_USER) ;
+        UserBO userBO = new UserBO(1,"1235555255","123","测试");
+        return  userBO;
     }
-
     /** putLoginUser*/
     public void putLoginUser (String loginId , UserBO loginUser) {
         this.putSession(createKey(loginId, SysConstants.CURRENT_LOGIN_USER), loginUser) ;

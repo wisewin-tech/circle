@@ -21,5 +21,15 @@
           )
     </insert>
 
+    <!--查询车库是否存在车牌-->
+   <select id="findTheGarage" resultType="int">
+        SELECT
+          COUNT(id)
+        FROM
+          ce_the_garage
+        WHERE
+          plate_number=#{plateNumber}
+   </select>
+
 
 </mapper>

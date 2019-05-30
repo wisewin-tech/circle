@@ -177,12 +177,6 @@
       <artifactId>mysql-connector-java</artifactId>
       <version>5.1.22</version>
     </dependency>-->
-    <dependency>
-      <groupId>postgresql</groupId>
-      <artifactId>postgresql</artifactId>
-      <version>9.1-901-1.jdbc4</version>
-    </dependency>
-
 
     <dependency>
       <groupId>org.mybatis</groupId>
@@ -273,11 +267,12 @@
     </dependency>
 
     <!--postgresql-->
-    <dependency>
-      <groupId>org.postgresql</groupId>
-      <artifactId>postgresql</artifactId>
-      <version>9.3-1102-jdbc41</version>
-    </dependency>
+         <dependency>
+          <groupId>org.postgresql</groupId>
+          <artifactId>postgresql</artifactId>
+          <version>42.2.5</version>
+      </dependency>
+
 
     <!-- velocity -->
     <dependency>
