@@ -1,28 +1,23 @@
 package com.wisewin.circle.entity.bo;
 
 import com.wisewin.circle.entity.bo.common.base.BaseModel;
-
-import java.util.Date;
-
 public class UserBO extends BaseModel {
     private Integer id; //用户
     private String phoneNumber; //手机
     private String password;
     private String name; //姓名
-    private String gender; //性别0女 1男
+    private String gender; //性别 帅哥|美女
     private Integer age; //年龄
     private String email; //邮箱
     private Integer stature; //身高(cm)
-    private Date birthday; //生日
+    private String birthday; //生日
     private String constellation; //星座
     private String birthplace; //出生地
     private String schooling; //受教育程度
     private String introduce; //介绍
-    private Date createTime; //创建时间
     private String work; //工作
     private String school; //学校
     private String authenticationStatus; //认证状态
-    private Date authenticationTime;//认证时间
     private String pattern; //模式
     private Integer updateCount; //修改次数
     private String longitude;//经度
@@ -35,12 +30,20 @@ public class UserBO extends BaseModel {
 
     public UserBO() {
     }
-
     public UserBO(Integer id, String phoneNumber, String password, String name) {
         this.id = id;
         this.phoneNumber = phoneNumber;
         this.password = password;
         this.name = name;
+    }
+    /**
+     * 注册初始化
+     * @param phoneNumber
+     */
+    public  UserBO(String phoneNumber){
+        this.phoneNumber=phoneNumber;
+        this.updateCount=0;
+        this.accountStatus="yes";
     }
 
     public UserBO(String phone, String password) {
@@ -128,13 +131,6 @@ public class UserBO extends BaseModel {
         this.id = id;
     }
 
-    public String getPhone() {
-        return phoneNumber;
-    }
-
-    public void setPhone(String phone) {
-        this.phoneNumber = phone;
-    }
 
     public String getPassword() {
         return password;
@@ -184,17 +180,18 @@ public class UserBO extends BaseModel {
         this.stature = stature;
     }
 
-    public Date getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 
     public String getConstellation() {
         return constellation;
     }
+
 
     public void setConstellation(String constellation) {
         this.constellation = constellation;
@@ -224,14 +221,6 @@ public class UserBO extends BaseModel {
         this.introduce = introduce;
     }
 
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
     public String getWork() {
         return work;
     }
@@ -257,11 +246,5 @@ public class UserBO extends BaseModel {
         this.authenticationStatus = authenticationStatus;
     }
 
-    public Date getAuthenticationTime() {
-        return authenticationTime;
-    }
 
-    public void setAuthenticationTime(Date authenticationTime) {
-        this.authenticationTime = authenticationTime;
-    }
 }

@@ -2,10 +2,10 @@ package com.wisewin.circle.common.constants;
 
 public enum UserConstants {
 
-        /*  验证码标识` */  VERIFY("verify"),
+        /*  验证码标识 */  VERIFY("verify"),
         /*  手机发送验证码记录  */RECORD("record"),
-        /*  验证码失效标识` */ VERIFY_LOSE("verify_lose"),
-        /*  发送验证码次数` */ DEGREE("degree"),
+        /*  验证码失效标识 */ VERIFY_LOSE("verify_lose"),
+        /*  发送验证码次数 */ DEGREE("degree"),
         /*  验证码登录*/VERIFICATIONCODE("verificationCode"),
         /*  密码登录*/ PASSWORD("password"),
         /*  Yes  */  Yes("yes"),

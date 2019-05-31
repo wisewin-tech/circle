@@ -620,32 +620,10 @@ public class DateUtils {
 	}
 
 
-	//获取指定分钟之前的时间
-	public static  String  gettheTimeBeforeTheMinute(int zminute){
-		Date  now=new Date();
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String specifiedDay=simpleDateFormat.format(now);
+	/**
+	 * 获取当前日志时间字符串
+	 */
 
-		Calendar c = Calendar.getInstance();
-		Date date=null;
-		try {
-			date = new SimpleDateFormat("yy-MM-dd HH:mm:ss").parse(specifiedDay);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		c.setTime(date);
-		int minute=c.get(Calendar.MINUTE);
-
-		c.set(Calendar.MINUTE, minute-zminute);
-		String dayBefore=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(c.getTime());
-		return dayBefore;
-	}
-	//查询当前时间5时前
-	public static String getFiveHoursBefore(){
-		Date date=new Date();
-		String dayBefore=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
-		return dayBefore;
-	}
 
 
 }

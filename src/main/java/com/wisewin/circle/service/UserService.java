@@ -1,6 +1,7 @@
 package com.wisewin.circle.service;
 
 
+import com.wisewin.circle.common.constants.PatternConstants;
 import com.wisewin.circle.common.constants.UserConstants;
 import com.wisewin.circle.dao.UserDAO;
 import com.wisewin.circle.entity.bo.BackgroundBO;
@@ -77,8 +78,8 @@ public class UserService {
      *
      * @param userBO
      */
-    public void insertUser(UserBO userBO) {
-        userDAO.insertUser(userBO);
+    public void addUser(UserBO userBO) {
+        userDAO.addUser(userBO);
     }
 
     /**
@@ -95,6 +96,10 @@ public class UserService {
     }
 
 
+    //查询数据的总条数
+    public int countPattern(Integer id){
+        return  userDAO.countPattern(id);
+    }
 
     //添加基本资料
     public boolean   addDatepattern(Integer id, DatepatternParam param){
@@ -106,7 +111,7 @@ public class UserService {
         //添加用户信息
         userDAO.updateUserDate(map);
 
-        PatternBO patternBO=new PatternBO(id,UserConstants.DATE.getValue());
+        PatternBO patternBO=new PatternBO(id, PatternConstants.DATE);
         //添加模式
         userDAO.addPattern(patternBO);
 

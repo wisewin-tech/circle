@@ -31,5 +31,25 @@
           plate_number=#{plateNumber}
    </select>
 
+    <!--查询当前用户是否审核通过或者是否有数据-->
+    <select id="queryTheGarage" resultType="int">
+        SELECT
+          count(id)
+        FROM
+          ce_the_garage
+        WHERE
+          user_id=#{userId}
+        AND
+          status="authenticated"
+    </select>
 
+    <!--通过用户id来换取到当前车库id-->
+    <select id="findIdTheGarage"  resultType="com.wisewin.circle.entity.bo.TheGarageBO" >
+        SELECT
+            id
+        FROM
+          ce_the_garage
+        WHERE
+            user_id=#{userId}
+    </select>
 </mapper>

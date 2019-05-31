@@ -10,36 +10,47 @@
         select  *  from  ce_user   where   phone_number=#{phoneNumber}
     </select>
 
-    <insert id="insertUser"     parameterType="com.wisewin.circle.entity.bo.UserBO"
-            useGeneratedKeys="true" keyProperty="id">
-      INSERT INTO "ce_user"("name", "password", "gender", "phone_number", "email",
+    <insert id="addUser"     parameterType="com.wisewin.circle.entity.bo.UserBO"   >
+     INSERT INTO "ce_user"( "name", "password", "gender", "phone_number", "email",
                             "stature", "birthday", "constellation", "birthplace", "introduce",
-                            "create_time", "work", "school", "authentication_status", "authentication_time")
-                    VALUES (#{name},#{password},#{gender},#{phoneNumber},#{email},
-                               #{stature},#{birthday}, #{constellation}, #{birthplace}, #{introduce},
-                                #{createTime},#{work},#{school}, #{authenticationStatus},#{authenticationTime});
-
+                             "create_time", "work", "school", "authentication_status",
+                             "schooling", "pattern", "update_count", "longitude", "latitude",
+                              "account_status", "inquire_age", "inquire_sex", "inquire_age_over")
+                    VALUES (#{name},#{password}, #{gender},#{phoneNumber},#{email},
+                              #{stature},to_timestamp(#{birthday},'yyyy-MM-dd hh24:mi:ss'),#{constellation},#{birthplace},#{introduce},
+                               NOW(),#{work}, #{school}, #{authenticationStatus},
+                               #{schooling},#{pattern},#{updateCount},#{longitude},#{latitude},
+                               #{accountStatus},#{inquireAge},#{inquireSex},#{inquireAgeOver});
     </insert>
 
 
     <update id="updateUser" parameterType="com.wisewin.circle.entity.bo.UserBO">
         update ce_user
         <set>
-            <if test="name!=null and name!=''">         `name`=#{name},</if>
+            <if test="name!=null and name!=''">         name=#{name},</if>
             <if test="password!=null and password!='' ">   password=#{password},</if>
             <if test="gender!=null">      gender=#{gender},</if>
             <if test="phoneNumber!=null and phoneNumber!=''">         phone_number=#{phoneNumber},</if>
             <if test="email!=null and email!=''">     email=#{email},</if>
             <if test="stature!=null">         stature=#{stature},</if>
-            <if test="birthday!=null">  birthday=#{birthday},</if>
+            <if test="birthday!=null">  birthday=to_timestamp(#{birthday},'yyyy-MM-dd'),</if>
             <if test="constellation!=null and constellation!=''">  constellation=#{constellation},</if>
             <if test="birthplace!=null and birthplace!=''">  birthplace=#{birthplace},</if>
             <if test="introduce!=null and introduce!=''">  introduce=#{introduce},</if>
             <if test="schooling!=null and schooling!=''">  schooling=#{schooling},</if>
             <if test="work!=null and work!=''">  work=#{work},</if>
             <if test="school!=null and school!=''">  school=#{school},</if>
-            <if test="authentication_status!=null and authentication_status!=''">  authentication_status=#{authenticationStatus},</if>
-            <if test="authentication_time!=null ">  authentication_time=#{authenticationTime},</if>
+            <if test="authenticationStatus!=null and authenticationStatus!=''">  authentication_status=#{authenticationStatus},</if>
+
+            <if test="schooling!=null and schooling!=''" > schooling=#{schooling} ,  </if>
+            <if test="pattern!=null and pattern!=''" > pattern=#{pattern} ,  </if>
+            <if test="updateCount!=null" > update_count=#{updateCount} ,  </if>
+            <if test="longitude!=null and longitude!=''" > longitude=#{longitude} ,  </if>
+            <if test="latitude!=null and latitude!=''" > latitude=#{latitude} ,  </if>
+            <if test="accountStatus!=null and accountStatus!=''" > account_status=#{accountStatus} ,  </if>
+            <if test="inquireAge!=null" > inquire_age=#{inquireAge} ,  </if>
+            <if test="inquireSex!=null and inquireSex!=''" > inquire_sex=#{inquireSex} ,  </if>
+            <if test="inquireAgeOver!=null" > inquire_age_over=#{inquireAgeOver} ,  </if>
         </set>
         where
         id=#{id}
@@ -47,11 +58,11 @@
     <!--通过id查找用户信息-->
     <select id="selectAllById" resultType="com.wisewin.circle.entity.bo.UserBO">
         select
-        `id` ,`name` ,`nickname` ,`password` ,`email` ,`mobile`,`age_group` ,
-`head_portrait_url`,`sex`,`birthday` ,`source` ,`career` ,`integral` ,`currency` ,`learning_goal` ,`studying_language_id` ,
-`language_like_id` ,`invite_code` ,`by_invite` ,`job`,`qq_openid` ,`wx_openid` ,`continuous_sign` ,`cumulative_sign` ,
-`last_sign` ,`continuous_learning` ,`cumulative_learning` ,`study_date` datetime ,`status` ,
-`create_id`,`update_id` ,`create_time` ,`update_time`
+        id ,name ,nickname ,password ,email ,mobile,age_group ,
+head_portrait_url,sex,birthday ,source ,career ,integral ,currency ,learning_goal ,studying_language_id ,
+language_like_id ,invite_code ,by_invite ,job,qq_openid ,wx_openid ,continuous_sign ,cumulative_sign ,
+last_sign ,continuous_learning ,cumulative_learning ,study_date datetime ,status ,
+create_id,update_id ,create_time ,update_time
         from
         lt_user
         where
@@ -118,15 +129,9 @@
     </update>
 
     <!--添加用户模式以用户的关系-->
-    <insert id="addPattern"  parameterType="com.wisewin.circle.entity.bo.PatternBO"    useGeneratedKeys="true" keyProperty="id">
-         INSERT  INTO
-            ce_user_pattern(
-              user_id,update_time,
-              type
-          )VALUES (
-              #{userId},now(),
-              #{type}
-            )
+    <insert id="addPattern"  parameterType="com.wisewin.circle.entity.bo.PatternBO"  useGeneratedKeys="true"  keyProperty="id"  >
+       INSERT INTO "ce_user_pattern"( "user_id", "update_time", "type")
+            VALUES ( #{userId}, NOW(),#{type});
     </insert>
 
     <!--查询数据的总条数-->

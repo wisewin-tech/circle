@@ -7,6 +7,7 @@ import com.wisewin.circle.common.base.BaseModel;
 import java.util.Date;
 
 public class AboutUsBO extends BaseModel {
+
     private Integer id;//关于我们
     private String imageUrl;//图片路径
     private String content;//内容

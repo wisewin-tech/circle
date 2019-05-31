@@ -16,7 +16,7 @@ public interface UserDAO {
      * 添加用户信息
      * @param user
      */
-    void insertUser(UserBO user);
+    void addUser(UserBO user);
 
     /**
      * 通过phone查询用户信息
