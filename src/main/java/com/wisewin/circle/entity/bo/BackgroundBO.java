@@ -8,7 +8,6 @@ import java.util.Date;
 public class BackgroundBO {
 
     private Integer id; //Date模式id
-    private Integer userId;//用户id
     private Date createTime;// 创建时间
     private Date updateTime; //修改时间
     private String nameurl; //图片地址
@@ -59,13 +58,7 @@ public class BackgroundBO {
         this.id = id;
     }
 
-    public Integer getUserId() {
-        return userId;
-    }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
 
     public Date getCreateTime() {
         return createTime;

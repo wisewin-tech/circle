@@ -20,4 +20,14 @@ public interface TheGarageDAO {
      */
     int findTheGarage(@Param("plateNumber")String plateNumber);
 
+    /**
+     * 查询当前用户是否审核通过或者是否有数据
+     */
+    int queryTheGarage(@Param("userId")Integer userId);
+
+    /**
+     * 通过用户id来查询车库id
+     */
+    TheGarageBO findIdTheGarage(@Param("id") Integer userId);
+
 }

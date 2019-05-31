@@ -42,4 +42,18 @@ public class TheGarageService {
         return  theGarageDAO.findTheGarage(plateNumber);
     }
 
+    /**
+     * 查询当前用户是否审核通过或者是否有数据
+     */
+    public int queryTheGarage(Integer userId){
+        return  theGarageDAO.queryTheGarage(userId);
+    }
+
+    /**
+     *   根据用户id换取车库id
+     */
+    public TheGarageBO findIdTheGarage(Integer userId){
+        return  theGarageDAO.findIdTheGarage(userId);
+    }
+
 }

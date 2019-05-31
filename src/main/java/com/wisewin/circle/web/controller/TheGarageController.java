@@ -6,6 +6,7 @@ import com.wisewin.circle.entity.dto.ResultDTOBuilder;
 import com.wisewin.circle.entity.dto.param.TheGarageParam;
 import com.wisewin.circle.service.TheGarageService;
 import com.wisewin.circle.util.JsonUtils;
+import com.wisewin.circle.util.StringUtils;
 import com.wisewin.circle.web.controller.base.BaseCotroller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,7 +42,7 @@ public class TheGarageController extends BaseCotroller {
         Integer id = loginUser.getId();
 
         //判断参数是否为空
-        if (id.equals("")  || param.getPlateNumber().equals("") || param.getBrandModel().equals("") || param.getHeadingCode().equals("")){
+        if (id.equals("")  || StringUtils.isEmpty(param.getPlateNumber()) || StringUtils.isEmpty(param.getBrandModel()) || StringUtils.isEmpty(param.getHeadingCode())){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
@@ -57,11 +58,12 @@ public class TheGarageController extends BaseCotroller {
         //添加车库信息
         boolean addTheGaragejoin=theGarageService.getaddTheGarage(id,param.getPlateNumber(),param.getBrandModel(),param.getHeadingCode(),param.getCertificationPictures(),TheGarageConstants.UNREVIEWED.getValue());
         if (addTheGaragejoin){
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("添加成功"));
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(" "));
             super.safeJsonPrint(response, json);
             return;
         }
     }
+
 
 
 }

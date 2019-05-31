@@ -289,6 +289,13 @@ public class UserController extends BaseCotroller {
             super.safeJsonPrint(response, json);
             return;
         }
+        //查询是否有数据
+        int countPatternjoin=userService.countPattern(id);
+        if (countPatternjoin>0){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000007"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
 
 
         boolean addDatepatternjoin=userService.addDatepattern(id,param);

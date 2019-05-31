@@ -1,16 +1,12 @@
-package com.wisewin.circle.entity.bo;
+package com.wisewin.circle.entity.dto.param;
 
-public class TheGarageImgBO {
+public class TheGarageImgParam {
     private Integer id; //车库图片
     private Integer theGarageId; //车库主键
     private String imgUrl; //图片路径
     private Integer sort; //排序
 
-    public TheGarageImgBO(Integer theGarageId, String imgUrl, Integer sort) {
-        this.theGarageId = theGarageId;
-        this.imgUrl = imgUrl;
-        this.sort = sort;
-    }
+
 
     public Integer getId() {
         return id;

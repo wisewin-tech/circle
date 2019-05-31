@@ -96,6 +96,10 @@ public class UserService {
     }
 
 
+    //查询数据的总条数
+    public int countPattern(Integer id){
+        return  userDAO.countPattern(id);
+    }
 
     //添加基本资料
     public boolean   addDatepattern(Integer id, DatepatternParam param){
