@@ -28,6 +28,6 @@ public interface TheGarageDAO {
     /**
      * 通过用户id来查询车库id
      */
-    TheGarageBO findIdTheGarage(@Param("id") Integer userId);
+    TheGarageBO findIdTheGarage(@Param("userId") Integer userId);
 
 }
