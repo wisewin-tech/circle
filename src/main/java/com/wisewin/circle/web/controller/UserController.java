@@ -81,22 +81,20 @@ public class UserController extends BaseCotroller {
             super.safeJsonPrint(response, json);
             return;
         }
-
         //获取Redis中的用户验证码
         System.out.println(phone + UserConstants.VERIFY.getValue());
         String verificationCode = this.getVerificationCode(phone);
         //如果和用户收到的验证码相同
         if (verify.equals(verificationCode)) {
-            UserBO user = new UserBO();
-            user.setPhone(phone);
-            userService.insertUser(user);
+            UserBO user = new UserBO(phone);
+            userService.addUser(user);
             //将只带有手机号的user对象存入cookie中
             this.putUser(response, user);
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(user));
             super.safeJsonPrint(response, json);
             return;
         }
-        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000004"));
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000006"));
         super.safeJsonPrint(response, json);
         return;
     }
@@ -130,7 +128,7 @@ public class UserController extends BaseCotroller {
 
         if (UserConstants.PASSWORD.getValue().equals(type)) {
             //密码登录
-            if (!StringUtils.isEmpty(password)) {
+            if (StringUtils.isEmpty(password)) {
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
                 super.safeJsonPrint(response, json);
                 return;
@@ -153,6 +151,8 @@ public class UserController extends BaseCotroller {
             String verificationCode = this.getVerificationCode(phone);
             if (code.equals(verificationCode)) {
                 this.putUser(response, userBO);
+                String key = phone + UserConstants.VERIFY.getValue();
+                RedissonHandler.getInstance().delete(key);
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(userBO));
                 super.safeJsonPrint(response, json);
                 return;
@@ -164,10 +164,16 @@ public class UserController extends BaseCotroller {
         super.safeJsonPrint(response, json);
     }
 
+
     /**
      * 忘记密码
-     * 重置密码
+     * @param request
+     * @param response
+     * @param phone  手机号
+     * @param code   验证码
+     * @param password  密码
      */
+    @RequestMapping("/forgetPassword")
     public void forgetPassword(HttpServletRequest  request,HttpServletResponse  response,String phone,String code,String password){
         if(StringUtils.isEmpty(phone) || StringUtils.isEmpty(code) || StringUtils.isEmpty(password)){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
@@ -187,6 +193,9 @@ public class UserController extends BaseCotroller {
         if(code.equals(verificationCode)){   //修改密码
             userBO.setPassword(MD5Util.digest(password));
             userService.updateUser(userBO);
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(ResultDTOBuilder.success));
+            super.safeJsonPrint(response, json);
+            return;
         }
         //不能修改
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000006"));
@@ -203,9 +212,6 @@ public class UserController extends BaseCotroller {
     private String getVerificationCode(String phoneNumnber) {
         String key = phoneNumnber + UserConstants.VERIFY.getValue();
         String mobileAuthCode = RedissonHandler.getInstance().get(key);
-        if(mobileAuthCode!=null) {
-            RedissonHandler.getInstance().delete(key);
-        }
         return mobileAuthCode;
     }
 
