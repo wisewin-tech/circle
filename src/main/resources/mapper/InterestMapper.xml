@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--二级兴趣管理-->
+<mapper namespace="com.wisewin.circle.dao.InterestDAO">
+
+    <!--添加兴趣-->
+    <insert id="addInterest" parameterType="com.wisewin.circle.entity.bo.InterestBO">
+        insert into
+        ce_interest
+        (interest_type_id,interest_name,grade,create_time,create_user_id,update_time,update_user_id)
+        values
+        (#{interestTypeId},#{interestName},#{grade},now(),#{createUserId},now(),#{createUserId})
+    </insert>
+
+    <!--通过兴趣分类id查询分类下的兴趣-->
+    <select id="getInterestsByTypeId" resultType="com.wisewin.circle.entity.bo.InterestBO"
+            parameterType="java.lang.Integer">
+        select * from ce_interest where interest_type_id=#{interestTypeId} order by update_time desc
+    </select>
+
+    <!--删除兴趣-->
+    <delete id="delInterest">
+        delete from ce_interest
+        <where>
+            <if test="id!=null and id!=''">and id=#{id}</if>
+            <if test="typeId!=null and typeId!=''">and interest_type_id=#{typeId}</if>
+        </where>
+    </delete>
+
+</mapper>

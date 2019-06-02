@@ -44,7 +44,7 @@
     </select>
 
     <!--通过用户id来换取到当前车库id-->
-    <select id="findIdTheGarage"  resultType="com.wisewin.circle.entity.bo.TheGarageBO" >
+    <select id="findIdTheGarage" parameterType="java.lang.Integer" resultType="com.wisewin.circle.entity.bo.TheGarageBO" >
         SELECT
             id
         FROM

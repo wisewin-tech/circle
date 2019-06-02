@@ -2,21 +2,15 @@ package com.wisewin.circle.entity.bo;
 
 import java.util.Date;
 
-/**
- * 兴趣
- */
-public class InterestBO {
-
-    private Integer id; //兴趣id
-    private Integer interestTypeId; //兴趣分类id
-    private String interestName; //兴趣名称
+public class CaseBO {
+    private Integer id;//认证案例图片
+    private String imgUrl;//图片路径
+    private String status;//状态
     private Date createTime; //创建时间
     private Date updateTime; //修改时间
     private Integer createUserId; //创建人
     private Integer updateUserId; //修改人
-    private String grade;//等级
 
-    public InterestBO(){}
     public Integer getId() {
         return id;
     }
@@ -25,20 +19,20 @@ public class InterestBO {
         this.id = id;
     }
 
-    public Integer getInterestTypeId() {
-        return interestTypeId;
+    public String getImgUrl() {
+        return imgUrl;
     }
 
-    public void setInterestTypeId(Integer interestTypeId) {
-        this.interestTypeId = interestTypeId;
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 
-    public String getInterestName() {
-        return interestName;
+    public String getStatus() {
+        return status;
     }
 
-    public void setInterestName(String interestName) {
-        this.interestName = interestName;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public Date getCreateTime() {
@@ -71,13 +65,5 @@ public class InterestBO {
 
     public void setUpdateUserId(Integer updateUserId) {
         this.updateUserId = updateUserId;
-    }
-
-    public String getGrade() {
-        return grade;
-    }
-
-    public void setGrade(String grade) {
-        this.grade = grade;
     }
 }
