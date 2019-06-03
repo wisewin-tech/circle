@@ -1,13 +1,10 @@
 package com.wisewin.circle.web.controller;
 
-import com.wisewin.circle.entity.bo.AdminBO;
 import com.wisewin.circle.entity.bo.UserAuthImgBO;
 import com.wisewin.circle.entity.bo.UserBO;
 import com.wisewin.circle.entity.dto.ResultDTOBuilder;
-import com.wisewin.circle.service.TestService;
 import com.wisewin.circle.service.UserAuthImgService;
 import com.wisewin.circle.util.JsonUtils;
-import com.wisewin.circle.util.StringUtils;
 import com.wisewin.circle.web.controller.base.BaseCotroller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,10 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * 认证

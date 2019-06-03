@@ -3,9 +3,9 @@ package com.wisewin.circle.common.constants;
 public enum TheGarageConstants {
 
 
-    /*未认证*/ UNVERIFIED("unverified"),
-    /*已认证*/ AUTHENTICATED("authenticated"),
-    /*未审核*/  UNREVIEWED("unreviewed");
+    /*未通过认证*/ UNVERIFIED("unverified"),
+    /*已通过认证*/ AUTHENTICATED("authenticated"),
+    /*未经过审核*/  UNREVIEWED("unreviewed");
 
 
 

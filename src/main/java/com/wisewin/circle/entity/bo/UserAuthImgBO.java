@@ -1,28 +1,29 @@
 package com.wisewin.circle.entity.bo;
 
+
+import com.wisewin.circle.entity.bo.common.base.BaseModel;
+
 import java.util.Date;
 
 /**
- * 用户认证
- * */
-public class UserAuthImgBO {
-    private Integer id;//认证id
-    private Integer userId;//用户id
-    private String status;//审核状态
-    private String caseId;//案例id
-    private String imgUrl;//审核图片路径
-    private String adminId;//审核员id
-    private String adminName;//审核员姓名
-    private Date createTime;//创建时间
-    private Date updateTime;//修改时间
+ * Created by 王彬 on 2019/5/16.
+ */
+public class UserAuthImgBO extends BaseModel {
+    //id
+    private Integer id;
+    //用户id
+    private Integer userId;
+    //状态
+    private String status;
+    //图片路径
+    private String imgUrl;
+    //审核员id
+    private Integer adminId;
 
-    public String getCaseId() {
-        return caseId;
-    }
-
-    public void setCaseId(String caseId) {
-        this.caseId = caseId;
-    }
+    private Date createTime;
+    private Date updateTime;
+    //通知给用户的信息
+    private String notice;
 
     public Integer getId() {
         return id;
@@ -38,6 +39,30 @@ public class UserAuthImgBO {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getNotice() {
+        return notice;
+    }
+
+    public void setNotice(String notice) {
+        this.notice = notice;
     }
 
     public String getStatus() {
@@ -56,35 +81,11 @@ public class UserAuthImgBO {
         this.imgUrl = imgUrl;
     }
 
-    public String getAdminId() {
+    public Integer getAdminId() {
         return adminId;
     }
 
-    public void setAdminId(String adminId) {
+    public void setAdminId(Integer adminId) {
         this.adminId = adminId;
-    }
-
-    public String getAdminName() {
-        return adminName;
-    }
-
-    public void setAdminName(String adminName) {
-        this.adminName = adminName;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
     }
 }
