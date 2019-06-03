@@ -1,5 +1,6 @@
 package com.wisewin.circle.service;
 
+import com.wisewin.circle.common.constants.CaseConstants;
 import com.wisewin.circle.dao.CaseDAO;
 import com.wisewin.circle.entity.bo.CaseBO;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ public class CaseService {
 
     //随机查询一张示例图片
     public CaseBO getCases(){
-        List<CaseBO> caseBOS=caseDAO.getCases();
+        List<CaseBO> caseBOS=caseDAO.getCases(CaseConstants.YES.getValue());
         Integer random=(int)(1+Math.random()*(caseBOS.size()-1+1));
         return caseBOS.get(random-1);
     }

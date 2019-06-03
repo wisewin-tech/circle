@@ -8,5 +8,5 @@ import java.util.List;
 public interface CaseDAO {
 
     //查询示例图片
-    List<CaseBO> getCases();
+    List<CaseBO> getCases(String status);
 }
