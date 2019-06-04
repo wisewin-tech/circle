@@ -5,6 +5,7 @@ import com.wisewin.circle.entity.bo.UserBO;
 import com.wisewin.circle.entity.dto.ResultDTOBuilder;
 import com.wisewin.circle.service.FeedbackService;
 import com.wisewin.circle.util.JsonUtils;
+import com.wisewin.circle.util.StringUtils;
 import com.wisewin.circle.web.controller.base.BaseCotroller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +23,8 @@ public class FeedBackController extends BaseCotroller{
     @RequestMapping("/addFeedBack")
     public void addFeedBack(FeedBackBO feedBackBO, HttpServletRequest request, HttpServletResponse response){
         //参数验证
-        if (feedBackBO==null){
+        if (StringUtils.isEmpty(feedBackBO.getContent())||StringUtils.isEmpty(feedBackBO.getContactWay())
+                ||StringUtils.isEmpty(feedBackBO.getContactNumber())){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
