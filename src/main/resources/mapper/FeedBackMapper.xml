@@ -11,5 +11,5 @@
           ce_feedback(user_id,content,contact_way,contact_number,status,create_time)VALUES(
                     #{userId},#{content},#{contactWay},#{contactNumber},'unread',now())
     </insert>
-    
+
 </mapper>
