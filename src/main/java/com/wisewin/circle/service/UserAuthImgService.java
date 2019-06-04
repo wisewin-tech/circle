@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 //账号认证
 @Service("UserAuthImgService")
@@ -20,6 +21,13 @@ public class UserAuthImgService {
     public Integer addUserAuthImg(UserAuthImgBO userAuthImgBO){
         userAuthImgBO.setStatus(TheGarageConstants.UNREVIEWED.getValue());
         return userAuthImgDAO.addUserAuthImg(userAuthImgBO);
+    }
+
+    /*
+     *查询用户认证信息
+     */
+    public UserAuthImgBO getUserAuth(Integer userId){
+        return userAuthImgDAO.getUserAuth(userId);
     }
 
 }
