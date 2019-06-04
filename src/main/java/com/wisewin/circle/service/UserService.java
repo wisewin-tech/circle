@@ -13,9 +13,11 @@ import com.wisewin.circle.util.RandomUtils;
 import com.wisewin.circle.util.StringUtils;
 import com.wisewin.circle.util.message.SendMessageUtil;
 import com.wisewin.circle.util.redisUtils.RedissonHandler;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -65,12 +67,14 @@ public class UserService {
 
     }
 
+
     /**
      * 通过id查询用户信息
      */
-    public UserBO selectById(Integer id) {
-        return userDAO.selectAllById(id);
-
+    public UserBO selectById(Integer id) throws Exception {
+        UserBO userBO=userDAO.selectAllById(id);
+        userBO.setAge(getAge(userBO.getBirthday()));
+        return userBO;
     }
 
     /**
@@ -87,14 +91,47 @@ public class UserService {
      *
      * @param userParam
      */
-    public void updateUser(UserBO userParam) {
+    public boolean updateUser(UserBO userParam) {
         //如果用户有修改密码,对密码进行加密
         if (!StringUtils.isEmpty(userParam.getPassword())) {
             userParam.setPassword(MD5Util.digest(userParam.getPassword()));
         }
-        userDAO.updateUser(userParam);
+        //如果有性别 判断第几次修改性别
+        if(userParam.getGender()!=null&&userParam.getGender().length()!=0){
+            if(userDAO.selectUpdSexCount(userParam.getId())>1){
+                return false;
+            }
+        }
+        return userDAO.updateUser(userParam)>0;
     }
 
+    //通过日期过去年龄
+    public static  int getAge(Date birthDay) throws Exception {
+        Calendar cal = Calendar.getInstance();
+        if (cal.before(birthDay)) {
+            throw new IllegalArgumentException(
+                    "The birthDay is before Now.It's unbelievable!");
+        }
+        int yearNow = cal.get(Calendar.YEAR);
+        int monthNow = cal.get(Calendar.MONTH);
+        int dayOfMonthNow = cal.get(Calendar.DAY_OF_MONTH);
+        cal.setTime(birthDay);
+
+        int yearBirth = cal.get(Calendar.YEAR);
+        int monthBirth = cal.get(Calendar.MONTH);
+        int dayOfMonthBirth = cal.get(Calendar.DAY_OF_MONTH);
+
+        int age = yearNow - yearBirth;
+
+        if (monthNow <= monthBirth) {
+            if (monthNow == monthBirth) {
+                if (dayOfMonthNow < dayOfMonthBirth) age--;
+            }else{
+                age--;
+            }
+        }
+        return age;
+    }
 
     //查询数据的总条数
     public int countPattern(Integer id){

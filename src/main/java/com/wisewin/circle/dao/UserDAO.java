@@ -30,13 +30,19 @@ public interface UserDAO {
      * @param userBO
      * @return
      */
-    void updateUser(UserBO userBO);
+    Integer updateUser(UserBO userBO);
+
     /**
-     * 通过id查找用户user
+     * 通过id 模式查找用户user
      * @param id
      * @return
      */
     UserBO selectAllById(Integer id);
+
+    /**
+     * 查询用户修改性别的次数
+     */
+    Integer selectUpdSexCount(Integer id);
 
 
         /* 后面的功能留作备用*/

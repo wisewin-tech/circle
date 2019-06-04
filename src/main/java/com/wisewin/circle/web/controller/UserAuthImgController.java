@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * 认证
@@ -38,7 +39,7 @@ public class UserAuthImgController extends BaseCotroller {
             super.safeJsonPrint(response, json);
             return;
         }
-        if(userAuthImgBO==null||userAuthImgBO.getImgUrl()==null||userAuthImgBO.getImgUrl().length()==0){
+        if(userAuthImgBO==null||userAuthImgBO.getImgUrl()==null||userAuthImgBO.getImgUrl().length()==0||userAuthImgBO.getSampleImgUrl()==null||userAuthImgBO.getSampleImgUrl().length()==0){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
@@ -49,4 +50,19 @@ public class UserAuthImgController extends BaseCotroller {
 
     }
 
+    //获取认证信息
+    @RequestMapping("/getUserAuthImg")
+    public void getUserAuth(HttpServletResponse response, HttpServletRequest request) {
+        //获取当前用户
+        UserBO loginUser = super.getLoginUser(request);
+        //判断参数是否为空
+        if (loginUser==null){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000000"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
+        UserAuthImgBO result=userAuthImgService.getUserAuth(loginUser.getId());
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(result));
+        super.safeJsonPrint(response, json);
+    }
 }

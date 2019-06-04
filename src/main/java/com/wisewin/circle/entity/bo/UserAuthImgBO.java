@@ -3,6 +3,7 @@ package com.wisewin.circle.entity.bo;
 
 import com.wisewin.circle.entity.bo.common.base.BaseModel;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -15,8 +16,10 @@ public class UserAuthImgBO extends BaseModel {
     private Integer userId;
     //状态
     private String status;
-    //图片路径
+    //认证图片路径
     private String imgUrl;
+    //认证示例图片的路径
+    private String sampleImgUrl;
     //审核员id
     private Integer adminId;
 
@@ -24,6 +27,14 @@ public class UserAuthImgBO extends BaseModel {
     private Date updateTime;
     //通知给用户的信息
     private String notice;
+
+    public String getSampleImgUrl() {
+        return sampleImgUrl;
+    }
+
+    public void setSampleImgUrl(String sampleImgUrl) {
+        this.sampleImgUrl = sampleImgUrl;
+    }
 
     public Integer getId() {
         return id;
@@ -41,16 +52,20 @@ public class UserAuthImgBO extends BaseModel {
         this.userId = userId;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public String getCreateTime() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd- HH:mm:ss");
+        String timeStr = sdf.format(this.createTime);
+        return timeStr;
     }
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
-    public Date getUpdateTime() {
-        return updateTime;
+    public String getUpdateTime() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String timeStr = sdf.format(this.updateTime);
+        return timeStr;
     }
 
     public void setUpdateTime(Date updateTime) {

@@ -8,10 +8,16 @@
     <insert id="addUserAuthImg" parameterType="com.wisewin.circle.entity.bo.UserAuthImgBO">
         insert into
         ce_user_auth_img
-        (user_id,status,img_url,create_time,update_time)
+        (user_id,status,img_url,sampleImgUrl,create_time,update_time)
         values
-        (#{userId},#{status},#{imgUrl},now(),now())
+        (#{userId},#{status},#{imgUrl},#{sampleImgUrl},now(),now())
     </insert>
 
+    <select id="getUserAuth" parameterType="java.lang.Integer" resultType="com.wisewin.circle.entity.bo.UserAuthImgBO">
+        select * from ce_user_auth_img
+        where user_id=#{userId}
+        order by create_time desc
+        limit 1
+    </select>
 
 </mapper>

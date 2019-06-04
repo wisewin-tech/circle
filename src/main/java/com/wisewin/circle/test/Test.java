@@ -12,7 +12,7 @@ import java.util.Date;
 public class Test {
 
 
-    public static void main(String[] args) {
+    public static void main2(String[] args) {
 
       /*  Date date=new Date();
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
@@ -84,4 +84,9 @@ public class Test {
         c.add(c.DATE,-i); //把日期往后增加i天,整数  往后推,负数往前移动
         return c.getTime();
     }
+    public static void main(String[] args){
+        double random=Math.random()*4;
+        System.err.println(random);
+    }
+
 }

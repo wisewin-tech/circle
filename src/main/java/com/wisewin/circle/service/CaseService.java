@@ -20,7 +20,10 @@ public class CaseService {
     //随机查询一张示例图片
     public CaseBO getCases(){
         List<CaseBO> caseBOS=caseDAO.getCases(CaseConstants.YES.getValue());
-        Integer random=(int)(1+Math.random()*(caseBOS.size()-1+1));
-        return caseBOS.get(random-1);
+        if(caseBOS.size()==0){
+            return null;
+        }
+        Integer random=(int)(Math.random()*caseBOS.size());
+        return caseBOS.get(random);
     }
 }
