@@ -322,11 +322,21 @@ public class UserController extends BaseCotroller {
      */
     @RequestMapping("/updateUser")
     public void updateUser(HttpServletRequest request, HttpServletResponse response,UserBO userBO){
-        if(userBO==null||userBO.getId()==null||userBO.getId().equals("")||userBO.getPattern()==null){
+        //获取当前用户
+        UserBO loginUser = super.getLoginUser(request);
+        //如果为空将结束
+        if (loginUser==null){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000000"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
+        if(userBO==null||userBO.getId()==null||userBO.getId().equals("")){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
         }
+        Integer id = loginUser.getId();
+        userBO.setId(id);
         if(userService.updateUser(userBO)){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("修改成功"));
             super.safeJsonPrint(response, json);
@@ -344,13 +354,16 @@ public class UserController extends BaseCotroller {
      * 获取用户信息
      */
     @RequestMapping("/getUserInfo")
-    public void getUserInfo(HttpServletRequest request, HttpServletResponse response,Integer id) throws Exception {
-        if(id==null||id.equals("")){
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+    public void getUserInfo(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        //获取当前用户
+        UserBO loginUser = super.getLoginUser(request);
+        //如果为空将结束
+        if (loginUser==null){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000000"));
             super.safeJsonPrint(response, json);
             return;
         }
-
+        Integer id = loginUser.getId();
         UserBO userBO=userService.selectById(id);
         String json = JsonUtils.getJsonString4JavaPOJO(userBO);
         super.safeJsonPrint(response, json);

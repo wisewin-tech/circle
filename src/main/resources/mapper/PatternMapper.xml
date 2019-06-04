@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 【用户】 -->
+<mapper namespace="com.wisewin.circle.dao.PatternDAO">
+
+    <update id="updatePattern" parameterType="com.wisewin.circle.entity.bo.PatternBO">
+        update ce_user_pattern
+        <set>
+            <if test="describe!=null and describe!=''">
+                "describe"=#{describe},
+            </if>
+            <if test="interest!=null and interest!=''">
+                interest=#{interest},
+            </if>
+            <if test="inquireAge!=null and inquireAge!=''">
+                inquire_age=#{inquireAge},
+            </if>
+            <if test="inquireSex!=null and inquireSex!=''">
+                inquire_sex=#{inquireSex},
+            </if>
+            <if test="inquireAgeOver!=null and inquireAgeOver!=''">
+                inquire_age_over=#{inquireAgeOver},
+            </if>
+            <if test="queryLocation!=null and queryLocation!=''">
+                query_location=#{queryLocation},
+            </if>
+            update_time=now(),
+        </set>
+        where user_id=#{userId} and "type"=#{type}
+    </update>
+
+
+</mapper>
