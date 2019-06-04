@@ -35,8 +35,8 @@ public class PatternController extends BaseCotroller {
     private PatternService patternService;
 
     //修改筛选条件
-    @RequestMapping("/updateInquire")
-    public void updateInquire(HttpServletResponse response, HttpServletRequest request, PatternBO patternBO) {
+    @RequestMapping("/updatePattern")
+    public void updatePattern(HttpServletResponse response, HttpServletRequest request, PatternBO patternBO) {
         //获取当前用户
         UserBO loginUser = super.getLoginUser(request);
         //如果为空将结束
