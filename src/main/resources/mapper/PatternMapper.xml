@@ -31,5 +31,8 @@
         where user_id=#{userId} and "type"=#{type}
     </update>
 
+    <select id="getPatternBO" resultType="com.wisewin.circle.entity.bo.PatternBO">
+        select * from ce_user_pattern where "type"=#{type} and user_id=#{id}
+    </select>
 
 </mapper>

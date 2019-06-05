@@ -22,4 +22,9 @@ public class PatternService {
     public boolean updatePattern(PatternBO patternBO){
         return patternDAO.updatePattern(patternBO)>0;
     }
+
+    //获取模式信息
+    public PatternBO getPatternBO(String type,Integer id){
+        return patternDAO.getPatternBO(type,id);
+    }
 }

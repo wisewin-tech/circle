@@ -13,6 +13,8 @@ public class PatternBO {
     private String interest; //兴趣
     private String  type; //模式  DATE/BFF模式
 
+
+
     private Integer inquireAge;//查询年龄开始
     private Integer inquireSex;//查询性别
     private Integer inquireAgeOver;//查询年龄结束

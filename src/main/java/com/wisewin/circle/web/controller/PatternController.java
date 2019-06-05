@@ -34,6 +34,29 @@ public class PatternController extends BaseCotroller {
     @Resource
     private PatternService patternService;
 
+    //查询模式信息
+    @RequestMapping("/getPattern")
+    public void getPattern(HttpServletResponse response, HttpServletRequest request,String type) {
+        //获取当前用户
+        UserBO loginUser = super.getLoginUser(request);
+        //如果为空将结束
+        if (loginUser==null){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000000"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
+        //参数异常
+        if(type==null||type.equals("")){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
+        Integer id = loginUser.getId();
+        PatternBO patternBO=patternService.getPatternBO(type,id);
+        String json = JsonUtils.getJsonString4JavaPOJO(patternBO);
+        super.safeJsonPrint(response, json);
+    }
+
     //修改筛选条件
     @RequestMapping("/updatePattern")
     public void updatePattern(HttpServletResponse response, HttpServletRequest request, PatternBO patternBO) {
