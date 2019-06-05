@@ -53,6 +53,9 @@ public class UserAuthImgBO extends BaseModel {
     }
 
     public String getCreateTime() {
+        if(this.createTime==null||this.createTime.equals("")){
+            return null;
+        }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd- HH:mm:ss");
         String timeStr = sdf.format(this.createTime);
         return timeStr;
@@ -63,6 +66,9 @@ public class UserAuthImgBO extends BaseModel {
     }
 
     public String getUpdateTime() {
+        if(this.updateTime==null||this.updateTime.equals("")){
+            return null;
+        }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String timeStr = sdf.format(this.updateTime);
         return timeStr;

@@ -1,5 +1,6 @@
 package com.wisewin.circle.entity.bo;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -41,16 +42,26 @@ public class InterestBO {
         this.interestName = interestName;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public String getCreateTime() {
+        if(this.createTime==null||this.createTime.equals("")){
+            return null;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String timeStr = sdf.format(this.createTime);
+        return timeStr;
     }
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
-    public Date getUpdateTime() {
-        return updateTime;
+    public String getUpdateTime() {
+        if(this.updateTime==null||this.updateTime.equals("")){
+            return null;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String timeStr = sdf.format(this.updateTime);
+        return timeStr;
     }
 
     public void setUpdateTime(Date updateTime) {

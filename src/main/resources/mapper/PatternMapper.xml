@@ -26,6 +26,7 @@
             <if test="queryLocation!=null and queryLocation!=''">
                 query_location=#{queryLocation},
             </if>
+
             update_time=now(),
         </set>
         where user_id=#{userId} and "type"=#{type}

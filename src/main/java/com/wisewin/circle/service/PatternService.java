@@ -4,10 +4,13 @@ import com.wisewin.circle.dao.PatternDAO;
 import com.wisewin.circle.dao.TestDAO;
 import com.wisewin.circle.entity.bo.AdminBO;
 import com.wisewin.circle.entity.bo.PatternBO;
+import com.wisewin.circle.util.JsonUtils;
+import org.json.JSONArray;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by Administrator on 2018/2/28.
@@ -26,5 +29,29 @@ public class PatternService {
     //获取模式信息
     public PatternBO getPatternBO(String type,Integer id){
         return patternDAO.getPatternBO(type,id);
+    }
+
+    //修改兴趣
+    public boolean updateInterest(String type,Integer id,String interestJson){
+        PatternBO patternBO=new PatternBO();
+        patternBO.setUserId(id);
+        patternBO.setType(type);
+        patternBO.setInterest(interestJson);
+        return patternDAO.updatePattern(patternBO)>0;
+    }
+
+    //查看兴趣
+    public List<String> getInterest(String type,Integer id){
+        PatternBO patternBO=patternDAO.getPatternBO(type,id);
+        if(patternBO==null){
+            return null;
+        }
+        String interestJson=patternBO.getInterest();
+        if(interestJson==null){
+            return null;
+        }
+        JSONArray objar = new JSONArray(interestJson);
+        List<String> interestList=(List)objar.toList();
+        return  interestList;
     }
 }

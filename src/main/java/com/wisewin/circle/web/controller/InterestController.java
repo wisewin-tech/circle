@@ -3,9 +3,11 @@ package com.wisewin.circle.web.controller;
 import com.wisewin.circle.entity.bo.AdminBO;
 import com.wisewin.circle.entity.bo.InterestBO;
 import com.wisewin.circle.entity.bo.InterestTypeBO;
+import com.wisewin.circle.entity.bo.UserBO;
 import com.wisewin.circle.entity.dto.ResultDTOBuilder;
 import com.wisewin.circle.service.InterestService;
 import com.wisewin.circle.service.InterestTypeService;
+import com.wisewin.circle.service.PatternService;
 import com.wisewin.circle.util.JsonUtils;
 import com.wisewin.circle.web.controller.base.BaseCotroller;
 import org.slf4j.Logger;
@@ -35,29 +37,27 @@ public class InterestController extends BaseCotroller {
     @Resource
     private InterestTypeService interestTypeService;
 
+    @Resource
+    private PatternService patternService;
+
     /**
      * 查询兴趣
      * return 兴趣分类 兴趣
      * */
     @RequestMapping("/getInterest")
-    public void getInterest(Integer typeId, HttpServletRequest request, HttpServletResponse response) {
-        //参数异常
-        if(typeId==null||typeId.equals("")||typeId==0){
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
-            super.safeJsonPrint(response, json);
-        }
-
+    public void getInterest(HttpServletRequest request, HttpServletResponse response) {
         //查询兴趣分类
-       // List<InterestTypeBO> interestTypeBOS=interestTypeService.getInterestsType();
+        List<InterestTypeBO> interestTypeBOS=interestTypeService.getInterestsType();
         //查询兴趣
-        List<InterestBO> interestBOS=interestService.getInterestsByTypeId(typeId);
+        List<InterestBO> interestBOS=interestService.getInterestsByTypeId(null);
 
         Map<String,Object> map=new HashMap<String, Object>();
-        //map.put("interestTypeBOS",interestTypeBOS);
+        map.put("interestTypeBOS",interestTypeBOS);
         map.put("interestBOS",interestBOS);
         String json= JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(map));
         super.safeJsonPrint(response,json);
     }
+
 
 
 
