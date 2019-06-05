@@ -17,7 +17,13 @@
     <!--通过兴趣分类id查询分类下的兴趣-->
     <select id="getInterestsByTypeId" resultType="com.wisewin.circle.entity.bo.InterestBO"
             parameterType="java.lang.Integer">
-        select * from ce_interest where interest_type_id=#{interestTypeId} order by update_time desc
+        select * from ce_interest
+        <where>
+           <if test="interestTypeId!=null and interestTypeId!=''">
+               and interest_type_id=#{interestTypeId}
+           </if>
+        </where>
+        order by update_time desc
     </select>
 
     <!--删除兴趣-->

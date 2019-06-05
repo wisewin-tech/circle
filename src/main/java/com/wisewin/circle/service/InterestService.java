@@ -10,7 +10,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /*
-* 一级兴趣管理
+* 兴趣
 * */
 @Service("InterestService")
 @Transactional
@@ -21,7 +21,7 @@ public class InterestService {
     @Resource
     InterestSubclassDAO interestSubclassDAO;
 
-    //查询一级兴趣
+    //查询兴趣
     public List<InterestBO> getInterestsByTypeId(Integer interestTypeId){
         return interestDAO.getInterestsByTypeId(interestTypeId);
     }

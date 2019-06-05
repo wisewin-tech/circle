@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * 二级兴趣
+ * 兴趣分类
  * */
 @Service("InterestTypeService")
 @Transactional
@@ -19,12 +19,6 @@ public class InterestTypeService {
 
     @Resource
     InterestTypeDAO interestTypeDAO;
-
-    @Resource
-    InterestDAO interestDAO;
-
-    @Resource
-    InterestSubclassDAO interestSubclassDAO;
 
     /**
      * 通过一级兴趣的id 查询二级兴趣
