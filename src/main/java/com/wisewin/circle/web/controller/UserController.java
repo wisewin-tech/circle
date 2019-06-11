@@ -337,16 +337,10 @@ public class UserController extends BaseCotroller {
         }
         Integer id = loginUser.getId();
         userBO.setId(id);
-        if(userService.updateUser(userBO)){
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("修改成功"));
-            super.safeJsonPrint(response, json);
-            return;
-        }else{
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("1111111"));
-            super.safeJsonPrint(response, json);
-            return;
-
-        }
+        userService.updateUser(userBO);
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("修改成功"));
+        super.safeJsonPrint(response, json);
+        return;
 
     }
 
