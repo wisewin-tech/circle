@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 【兴趣】 -->
+<mapper namespace="com.wisewin.circle.dao.UserInterestDAO">
+    <!-- 根据模式id查询兴趣相关信息 -->
+    <select id="selectInterestByPatternId" resultType="com.wisewin.circle.entity.bo.UserInterestBO" parameterType="java.lang.Integer">
+        select * from ce_user_interest where pattern_id=#{pattern_id}
+    </select>
+</mapper>

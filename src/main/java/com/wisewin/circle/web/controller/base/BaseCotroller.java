@@ -230,7 +230,7 @@ public class BaseCotroller {
     }*/
     /** 获取登录用户*/
     public UserBO getLoginUser (HttpServletRequest request ) {
-        UserBO userBO = new UserBO(1,"1235555255","123","测试");
+        UserBO userBO = new UserBO(1,"15214440324","15214440324","小汶");
         return  userBO;
     }
     /** putLoginUser*/

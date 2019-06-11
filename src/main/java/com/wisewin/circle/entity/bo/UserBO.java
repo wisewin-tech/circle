@@ -1,10 +1,6 @@
 package com.wisewin.circle.entity.bo;
 
 import com.wisewin.circle.entity.bo.common.base.BaseModel;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.util.Date;
-
 public class UserBO extends BaseModel {
     private Integer id; //用户
     private String phoneNumber; //手机
@@ -14,37 +10,22 @@ public class UserBO extends BaseModel {
     private Integer age; //年龄
     private String email; //邮箱
     private Integer stature; //身高(cm)
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date birthday; //生日
+    private String birthday; //生日
     private String constellation; //星座
     private String birthplace; //出生地
-    private String createTime;//创建时间
     private String schooling; //受教育程度
     private String work; //工作
     private String school; //学校
     private String authenticationStatus; //认证状态
-    private Date authenticationTime;//认证时间
     private String pattern; //模式
     private Integer updateCount; //修改次数
     private String longitude;//经度
     private String latitude;//纬度
     private String accountStatus;//账号状态
+    private String inquireAge; //查询年龄开始
+    private String inquireSex; //查询性别
+    private String inquireAgeOver; //查询年龄结束
 
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getAuthenticationTime() {
-        return authenticationTime;
-    }
-
-    public void setAuthenticationTime(Date authenticationTime) {
-        this.authenticationTime = authenticationTime;
-    }
 
     public UserBO() {
     }
@@ -117,6 +98,29 @@ public class UserBO extends BaseModel {
         this.accountStatus = accountStatus;
     }
 
+    public String getInquireAge() {
+        return inquireAge;
+    }
+
+    public void setInquireAge(String inquireAge) {
+        this.inquireAge = inquireAge;
+    }
+
+    public String getInquireSex() {
+        return inquireSex;
+    }
+
+    public void setInquireSex(String inquireSex) {
+        this.inquireSex = inquireSex;
+    }
+
+    public String getInquireAgeOver() {
+        return inquireAgeOver;
+    }
+
+    public void setInquireAgeOver(String inquireAgeOver) {
+        this.inquireAgeOver = inquireAgeOver;
+    }
 
     public Integer getId() {
         return id;
@@ -175,11 +179,11 @@ public class UserBO extends BaseModel {
         this.stature = stature;
     }
 
-    public Date getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 
@@ -207,6 +211,8 @@ public class UserBO extends BaseModel {
     public void setSchooling(String schooling) {
         this.schooling = schooling;
     }
+
+
 
     public String getWork() {
         return work;

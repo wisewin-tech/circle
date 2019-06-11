@@ -97,4 +97,5 @@ public interface UserDAO {
     int countPattern(@Param("id") Integer id);
 
 
+     PatternBO queryCondition(String type, Integer userId);
 }

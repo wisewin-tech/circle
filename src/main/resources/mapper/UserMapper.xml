@@ -3,21 +3,21 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- 【用户】 -->
-<mapper namespace="com.wisewin.circle.dao.UserDAO" >
+<mapper namespace="com.wisewin.circle.dao.UserDAO">
 
     <!--通过phone查看库里有没有这个账号-->
     <select id="selectByPhone" resultType="com.wisewin.circle.entity.bo.UserBO">
         select  *  from  ce_user   where   phone_number=#{phoneNumber}
     </select>
 
-    <insert id="addUser"     parameterType="com.wisewin.circle.entity.bo.UserBO"   >
+    <insert id="addUser" parameterType="com.wisewin.circle.entity.bo.UserBO">
      INSERT INTO "ce_user"( "name", "password", "gender", "phone_number", "email",
-                            "stature", "birthday", "constellation", "birthplace", "introduce",
+                            "stature", "birthday", "constellation", "birthplace",
                              "create_time", "work", "school", "authentication_status",
                              "schooling", "pattern", "update_count", "longitude", "latitude",
                               "account_status", "inquire_age", "inquire_sex", "inquire_age_over")
                     VALUES (#{name},#{password}, #{gender},#{phoneNumber},#{email},
-                              #{stature},to_timestamp(#{birthday},'yyyy-MM-dd hh24:mi:ss'),#{constellation},#{birthplace},#{introduce},
+                              #{stature},to_timestamp(#{birthday},'yyyy-MM-dd hh24:mi:ss'),#{constellation},#{birthplace},
                                NOW(),#{work}, #{school}, #{authenticationStatus},
                                #{schooling},#{pattern},#{updateCount},#{longitude},#{latitude},
                                #{accountStatus},#{inquireAge},#{inquireSex},#{inquireAgeOver});
@@ -27,53 +27,52 @@
     <update id="updateUser" parameterType="com.wisewin.circle.entity.bo.UserBO">
         update ce_user
         <set>
-            <if test="name!=null and name!=''">"name"=#{name},</if>
-            <if test="password!=null and password!='' ">   password=#{password},</if>
-            <if test="gender!=null and gender!='' ">      gender=#{gender},update_count=update_count+1, </if>
-            <if test="phoneNumber!=null and phoneNumber!=''">         phone_number=#{phoneNumber},</if>
-            <if test="email!=null and email!=''">     email=#{email},</if>
-            <if test="stature!=null">         stature=#{stature},</if>
-            <if test="birthday!=null">  birthday=to_timestamp(#{birthday},'yyyy-MM-dd'),</if>
-            <if test="constellation!=null and constellation!=''">  constellation=#{constellation},</if>
-            <if test="birthplace!=null and birthplace!=''">  birthplace=#{birthplace},</if>
-            <if test="schooling!=null and schooling!=''">  schooling=#{schooling},</if>
-            <if test="work!=null and work!=''">  "work"=#{work},</if>
-            <if test="school!=null and school!=''">  school=#{school},</if>
-            <if test="longitude!=null and longitude!=''" > longitude=#{longitude} ,  </if>
-            <if test="latitude!=null and latitude!=''" > latitude=#{latitude} ,  </if>
-            <if test="pattern!=null and pattern!=''" > pattern=#{pattern} ,  </if>
+            <if test="name!=null and name!=''">name=#{name},</if>
+            <if test="password!=null and password!='' ">password=#{password},</if>
+            <if test="gender!=null">gender=#{gender},</if>
+            <if test="phoneNumber!=null and phoneNumber!=''">phone_number=#{phoneNumber},</if>
+            <if test="email!=null and email!=''">email=#{email},</if>
+            <if test="stature!=null">stature=#{stature},</if>
+            <if test="birthday!=null">birthday=to_timestamp(#{birthday},'yyyy-MM-dd'),</if>
+            <if test="constellation!=null and constellation!=''">constellation=#{constellation},</if>
+            <if test="birthplace!=null and birthplace!=''">birthplace=#{birthplace},</if>
+            <if test="schooling!=null and schooling!=''">schooling=#{schooling},</if>
+            <if test="work!=null and work!=''">work=#{work},</if>
+            <if test="school!=null and school!=''">school=#{school},</if>
+            <if test="authenticationStatus!=null and authenticationStatus!=''">
+                authentication_status=#{authenticationStatus},
+            </if>
+
+            <if test="schooling!=null and schooling!=''">schooling=#{schooling} ,</if>
+            <if test="pattern!=null and pattern!=''">pattern=#{pattern} ,</if>
+            <if test="updateCount!=null">update_count=#{updateCount} ,</if>
+            <if test="longitude!=null and longitude!=''">longitude=#{longitude} ,</if>
+            <if test="latitude!=null and latitude!=''">latitude=#{latitude} ,</if>
+            <if test="accountStatus!=null and accountStatus!=''">account_status=#{accountStatus} ,</if>
+            <if test="inquireAge!=null">inquire_age=#{inquireAge} ,</if>
+            <if test="inquireSex!=null and inquireSex!=''">inquire_sex=#{inquireSex} ,</if>
+            <if test="inquireAgeOver!=null">inquire_age_over=#{inquireAgeOver} ,</if>
         </set>
         where
         id=#{id}
     </update>
-
-    <!--通过id 模式查找用户信息-->
-    <select id="selectAllById" parameterType="java.lang.Integer" resultType="com.wisewin.circle.entity.bo.UserBO">
+    <!--通过id查找用户信息-->
+    <select id="selectAllById" resultType="com.wisewin.circle.entity.bo.UserBO">
         select
-        id,"name",gender,phone_number,email,stature,birthday,constellation,birthplace,
-        create_time,"work",school,authentication_status,authentication_time,schooling,pattern,
-        update_count,longitude,latitude,account_status
+                id ,name ,nickname ,password ,email ,mobile,age_group ,
+        head_portrait_url,sex,birthday ,source ,career ,integral ,currency ,learning_goal ,studying_language_id ,
+        language_like_id ,invite_code ,by_invite ,job,qq_openid ,wx_openid ,continuous_sign ,cumulative_sign ,
+        last_sign ,continuous_learning ,cumulative_learning ,study_date datetime ,status ,
+        create_id,update_id ,create_time ,update_time
         from
-        ce_user
+        lt_user
         where
         id=#{id}
     </select>
 
-
-
-
-    <!--查询用户修改信息次数-->
-    <select id="selectUpdSexCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-         select
-        update_count
-        from
-        ce_user
-        where
-        id=#{id}
-    </select>
     <!--后面的所有留待备用-->
     <update id="updatePassword" parameterType="com.wisewin.circle.entity.bo.UserBO">
-        update ce_user
+        update lt_user
         <set>
 
             <if test="password!=null">
@@ -99,7 +98,7 @@
     <update id="updateLanguage" parameterType="java.lang.Integer">
         UPDATE lt_user
         <set>
-                studying_language_id=#{studyingLanguageId}
+            studying_language_id=#{studyingLanguageId}
         </set>
         WHERE id=#{id}
     </update>
@@ -109,7 +108,7 @@
         INSERT  INTO
         ce_user_background(
         create_time,
-        update_time,nameurl,
+        update_time,img_url,
         rank,pattern
         )VALUES(
         now(),
@@ -131,7 +130,8 @@
     </update>
 
     <!--添加用户模式以用户的关系-->
-    <insert id="addPattern"  parameterType="com.wisewin.circle.entity.bo.PatternBO"  useGeneratedKeys="true"  keyProperty="id"  >
+    <insert id="addPattern" parameterType="com.wisewin.circle.entity.bo.PatternBO" useGeneratedKeys="true"
+            keyProperty="id">
        INSERT INTO "ce_user_pattern"( "user_id", "update_time", "type")
             VALUES ( #{userId}, NOW(),#{type});
     </insert>
@@ -160,6 +160,12 @@
           user_id=#{id}
         AND
           type='date'
+    </select>
+
+<!--查询用户筛选条件-->
+    <select id="queryCondition"   resultType="com.wisewin.circle.entity.bo.PatternBO" >
+        SELECT  *  FROM    ce_user_pattern  cup LEFT  JOIN  ce_user cu ON cu.id=cup.user_id
+         WHERE  cup.user_id=#{userId}   AND   cup.type=#{type}
     </select>
 
 </mapper>

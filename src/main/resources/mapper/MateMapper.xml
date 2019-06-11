@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 查询用户 -->
+<mapper namespace="com.wisewin.circle.dao.MateDAO">
+
+
+    <select id="queryLikeId" resultType="java.lang.Integer"  parameterType="map">
+
+        SELECT  ation.id   FROM   ce_relation cmain  LEFT JOIN   ce_relation ation  ON ation.user_id=cmain.user_id_main
+                                                       LEFT JOIN  ce_user  us  ON  us.id=cmain.user_id_main
+        <where>  ation.user_id=#{userId}  and ation.status ='yes'  AND  cmain.id IS NULL   AND type=#{type}
+
+         <if test="gender!=null">
+             AND   us.gender=#{gender}
+         </if>
+         <if test="startAge!=null and endAge!=null" >
+             AND  us.birthday  BETWEEN #{startAge}  AND  #{endAge}
+         </if>
+
+         <if test="distance!=null"  >
+             AND     cast(st_distance_sphere(us.geom,#{location}) /1000   AS decimal(10,2))   &lt;=  #{distance}
+         </if>
+            LIMIT  #{count}  OFFSET  0
+        </where>
+
+    </select>
+
+
+    <!--按条件查询-->
+    <select id="queryUserIdCondition"   resultType="java.lang.Integer"   parameterType="map"  >
+        SELECT (id) FROM ce_user cu LEFT JOIN  ce_user_pattern  cup ON  cup.user_id=cu.id
+        <if test="gender!=null">
+            cu.gender=#{gender} AND
+        </if>
+        <if test="startAge!=null and endAge!=null" >
+            cu.birthday  BETWEEN #{startAge}  AND  #{endAge}  AND
+        </if>
+        <if test="distance!=null" >
+            cast(st_distance_sphere(cu.geom,#{location}) /1000   AS decimal(10,2))
+            &lt;=  #{distance}    AND
+        </if>
+        cu.status='yes'  AND  cup.type=#{type}
+        <if test="list!=null" >
+            <foreach collection="list" item="id" separator="," open="and cu.id NOT IN (" close=")">
+                #{id}
+            </foreach>
+        </if>
+        ORDER  BY cup.like_sum  DESC
+        LIMIT  #{count}  OFFSET  0
+    </select>
+
+
+
+
+
+
+
+
+    <resultMap id="msgMapper" type="com.wisewin.circle.entity.bo.UserMsgBO">
+        <id column="id" property="id" />
+        <result column="name"  property="name" />
+        <result column="birthday"  property="birthday" />
+        <result column="work"  property="work" />
+        <result column="school"  property="school" />
+        <result column="describe"  property="describe" />
+        <result column="distance"  property="distance" />
+
+        <collection property="pictures" ofType="java.lang.String" >
+            <result column="img_url"/>
+        </collection>
+
+        <collection  property="interest"  ofType="com.wisewin.circle.entity.bo.InteriorInterestBO" >
+            <result column="type_name"  property="type" />
+            <result column="interest_string"  property="countent" />
+        </collection>
+    </resultMap>
+
+
+    <!--查10个用户信息-->
+    <select id="selectUserMsgByUserIds" parameterType="map" resultMap="msgMapper">
+
+        SELECT  cu.id,cu.name,cu.birthday ,cu.work,cu.school,cup.describe ,
+        back.img_url ,ctype.type_name,cist.interest_string ,
+        cast(st_distance_sphere(geom,#{geom}) /1000   AS decimal(10,2))  AS distance
+        FROM  ce_user cu LEFT JOIN ce_user_pattern  cup ON  cup.user_id=cu.id  LEFT JOIN  ce_user_background back
+        ON back.pattern=cup.id   LEFT JOIN  ce_user_interest cist ON  cist.pattern_id = cup.id  LEFT JOIN
+        ce_interest_type ctype  ON ctype.id=cist.interest_type_id
+        WHERE  cup.type=#{type}
+
+        <foreach collection="list" item="id" separator="," open="and cu.id in(" close=")">
+            #{id}
+        </foreach>
+    </select>
+
+
+
+
+</mapper>

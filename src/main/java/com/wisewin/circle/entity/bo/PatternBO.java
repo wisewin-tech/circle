@@ -12,6 +12,16 @@ public class PatternBO {
     private String describe; //描述
     private String interest; //兴趣
     private String  type; //模式  DATE/BFF模式
+    private Integer inquireAge;//查询年龄开始
+    private Integer inquireAgeOver;//查询年龄结束
+    private String  inquireSex; //查询性别
+    private Integer queryLocation;//查询位置
+    private Integer likeSum;//被喜欢次数
+    private String geom;//geom
+
+
+
+
 
 
 
@@ -113,6 +123,55 @@ public class PatternBO {
     }
 
     public void setType(String type) {
+
         this.type = type;
+    }
+
+    public Integer getInquireAge() {
+        return inquireAge;
+    }
+
+    public void setInquireAge(Integer inquireAge) {
+        this.inquireAge = inquireAge;
+    }
+
+    public Integer getInquireAgeOver() {
+        return inquireAgeOver;
+    }
+
+    public void setInquireAgeOver(Integer inquireAgeOver) {
+        this.inquireAgeOver = inquireAgeOver;
+    }
+
+    public String getInquireSex() {
+        return inquireSex;
+    }
+
+    public void setInquireSex(String inquireSex) {
+        this.inquireSex = inquireSex;
+    }
+
+    public Integer getQueryLocation() {
+        return queryLocation;
+    }
+
+    public void setQueryLocation(Integer queryLocation) {
+        this.queryLocation = queryLocation;
+    }
+
+    public Integer getLikeSum() {
+        return likeSum;
+    }
+
+    public void setLikeSum(Integer likeSum) {
+        this.likeSum = likeSum;
+    }
+
+    public String getGeom() {
+        return geom;
+    }
+
+    public void setGeom(String geom) {
+        this.geom = geom;
     }
 }
