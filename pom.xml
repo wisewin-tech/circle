@@ -417,6 +417,23 @@
       <artifactId>aliyun-java-sdk-core</artifactId>
       <version>4.0.6</version>
     </dependency>
+    <!--http://ai.baidu.com/sdk    调sdk，所需依赖-->
+    <dependency>
+      <groupId>com.baidu.aip</groupId>
+      <artifactId>java-sdk</artifactId>
+      <version>4.11.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+      <version>5.1.5.RELEASE</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.squareup.okhttp3</groupId>
+      <artifactId>okhttp</artifactId>
+      <version>3.14.2</version>
+    </dependency>
 
   </dependencies>
 
