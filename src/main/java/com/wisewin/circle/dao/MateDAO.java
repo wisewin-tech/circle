@@ -27,5 +27,5 @@ public interface MateDAO {
      * 取出用户信息
      */
 
-    List<UserMsgBO>  selectUserMsgByUserIds(@Param("list")List<Integer>  list);
+    List<UserMsgBO>  selectUserMsgByUserIds(Map<String,Object>  map);
 }

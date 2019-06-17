@@ -8,9 +8,11 @@
 
     <select id="queryLikeId" resultType="java.lang.Integer"  parameterType="map">
 
-        SELECT  ation.id   FROM   ce_relation cmain  LEFT JOIN   ce_relation ation  ON ation.user_id=cmain.user_id_main
-                                                       LEFT JOIN  ce_user  us  ON  us.id=cmain.user_id_main
-        <where>  ation.user_id=#{userId}  and ation.status ='yes'  AND  cmain.id IS NULL   AND type=#{type}
+        SELECT  ation.id   FROM   ce_relation ation
+                            LEFT JOIN    ce_relation cmain  ON ation.user_id_main=cmain.user_id
+                            LEFT JOIN  ce_user  us  ON  us.id=ation.user_id_main
+        <where>
+          ation.user_id=#{userId}  and ation.status ='yes'  AND  cmain.id IS NULL   AND ation.type=#{type}
 
          <if test="gender!=null">
              AND   us.gender=#{gender}
@@ -20,7 +22,7 @@
          </if>
 
          <if test="distance!=null"  >
-             AND     cast(st_distance_sphere(us.geom,#{location}) /1000   AS decimal(10,2))   &lt;=  #{distance}
+             AND     cast(st_distance_sphere(us.geom ,'${location}')/1000   AS decimal(10,2))   &lt;=  #{distance}
          </if>
             LIMIT  #{count}  OFFSET  0
         </where>
@@ -30,7 +32,8 @@
 
     <!--按条件查询-->
     <select id="queryUserIdCondition"   resultType="java.lang.Integer"   parameterType="map"  >
-        SELECT (id) FROM ce_user cu LEFT JOIN  ce_user_pattern  cup ON  cup.user_id=cu.id
+        SELECT (cu.id) FROM ce_user cu LEFT JOIN  ce_user_pattern  cup ON  cup.user_id=cu.id
+        WHERE
         <if test="gender!=null">
             cu.gender=#{gender} AND
         </if>
@@ -38,12 +41,12 @@
             cu.birthday  BETWEEN #{startAge}  AND  #{endAge}  AND
         </if>
         <if test="distance!=null" >
-            cast(st_distance_sphere(cu.geom,#{location}) /1000   AS decimal(10,2))
+            cast(st_distance_sphere(cu.geom,'${location}') /1000   AS decimal(10,2))
             &lt;=  #{distance}    AND
         </if>
-        cu.status='yes'  AND  cup.type=#{type}
+        cu.account_status='yes'  AND  cup.type=#{type}
         <if test="list!=null" >
-            <foreach collection="list" item="id" separator="," open="and cu.id NOT IN (" close=")">
+            <foreach collection="list" item="id" separator="," open="and  cu.id  NOT IN (" close=")"  >
                 #{id}
             </foreach>
         </if>
@@ -80,10 +83,9 @@
 
     <!--查10个用户信息-->
     <select id="selectUserMsgByUserIds" parameterType="map" resultMap="msgMapper">
-
         SELECT  cu.id,cu.name,cu.birthday ,cu.work,cu.school,cup.describe ,
         back.img_url ,ctype.type_name,cist.interest_string ,
-        cast(st_distance_sphere(geom,#{geom}) /1000   AS decimal(10,2))  AS distance
+        cast(st_distance_sphere(geom,'${location}') /1000   AS decimal(10,2))  AS distance
         FROM  ce_user cu LEFT JOIN ce_user_pattern  cup ON  cup.user_id=cu.id  LEFT JOIN  ce_user_background back
         ON back.pattern=cup.id   LEFT JOIN  ce_user_interest cist ON  cist.pattern_id = cup.id  LEFT JOIN
         ce_interest_type ctype  ON ctype.id=cist.interest_type_id

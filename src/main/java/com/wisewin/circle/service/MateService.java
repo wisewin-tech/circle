@@ -41,14 +41,20 @@ public class MateService {
 
         if(count>userIds.size()){ //数量不够
             map.put("count",count-userIds.size());
-            map.put("list",userIds);
+            if(userIds.size()>0) {
+                map.put("list", userIds);
+            }
             List<Integer> ids = this.queryUserIdCondition(map);
             userIds.addAll(ids);
         }
         Collections.shuffle(userIds); //元素随机
         //返回信息
 
-        List<UserMsgBO> userMsgBOS = mateDAO.selectUserMsgByUserIds(userIds);
+        if(userIds==null || userIds.size()<1){
+            return  new ArrayList<UserMsgBO>();
+        }
+        map.put("list",userIds);
+        List<UserMsgBO> userMsgBOS = mateDAO.selectUserMsgByUserIds(map);
 
         return userMsgBOS;
     }
@@ -59,7 +65,8 @@ public class MateService {
      * @return
      */
     public List<Integer> like(Map<String,Object>  queryMap){
-      queryMap.put("count",SystemConfig.getString("like_sum"));
+        String like_sum = SystemConfig.getString("like_sum");
+        queryMap.put("count",new Integer(like_sum));
       return mateDAO.queryLikeId(queryMap);
     }
 
