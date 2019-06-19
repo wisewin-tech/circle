@@ -4,12 +4,16 @@
 
 <!-- 关系 -->
 <mapper namespace="com.wisewin.circle.dao.RelationDAO">
-
+    <!-- 添加 -->
     <insert id="addRelation" parameterType="com.wisewin.circle.entity.bo.RelationBO">
         insert  into ce_relation
         (user_id_main, user_id, status, create_time, "type")
         values
         (#{userIdMain},#{userId},#{status},now(),#{type})
     </insert>
+    <!-- 查询是否喜欢过 -->
+    <select id="checkUserLike" resultType="java.lang.Integer">
+        select
+    </select>
 
 </mapper>

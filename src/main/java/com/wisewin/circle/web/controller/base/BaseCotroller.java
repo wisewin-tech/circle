@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -235,14 +236,14 @@ public class BaseCotroller {
     }
     /** putLoginUser*/
     public void putLoginUser (String loginId , UserBO loginUser) {
-        this.putSession(createKey(loginId, SysConstants.CURRENT_LOGIN_USER), loginUser) ;
+        this.putSession(createKey(loginId, SysConstants.CURRENT_LOGIN_USER), loginUser,null) ;
     }
 
     /**
      * 存放登录用户信息
      */
     public void putUser(String  loginId,UserBO userBO){
-        this.putSession(createKey(loginId, SysConstants.CURRENT_LOGIN_CLIENT), userBO) ;
+        this.putSession(createKey(loginId, SysConstants.CURRENT_LOGIN_CLIENT), userBO,null) ;
     }
 
     /**
@@ -264,7 +265,7 @@ public class BaseCotroller {
 
     /** putSession */
     public void putSession (HttpServletRequest request, String key , String value ) {
-        this.putSession(createKey(this.getLoginID(request), key), value) ;
+        this.putSession(createKey(this.getLoginID(request), key), value,null) ;
     }
     /**
      * 获取登录ID (从cookie中获取)
@@ -297,8 +298,8 @@ public class BaseCotroller {
     /**
      * session赋值
      */
-    private void putSession (String key , Object value) {
-        RedissonHandler.getInstance().set(key , value , null);
+    private void putSession (String key , Object value, Long expire) {
+        RedissonHandler.getInstance().set(key , value , expire);
         // FIXME xiaowen 过期时间不可以未null
 //        RedisUtil.set(value , key) ;
     }
