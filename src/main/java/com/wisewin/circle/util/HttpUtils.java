@@ -1,311 +1,281 @@
 package com.wisewin.circle.util;
 
-import  java.io.UnsupportedEncodingException ;
-import  java.net.URLEncoder ;
-import  java.security.KeyManagementException ;
-import  java.security.NoSuchAlgorithmException ;
-import  java.security.cert.X509Certificate ;
-import  java.util.ArrayList ;
-import  java.util.List ;
-import  java.util.Map ;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
-import  javax.net.ssl.SSLContext ;
-import  javax.net.ssl.TrustManager ;
-import  javax.net.ssl.X509TrustManager ;
+import okhttp3.FormBody.Builder;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
-import  org.apache.commons.lang.StringUtils ;
-import  org.apache.http.HttpResponse ;
-import  org.apache.http.NameValuePair ;
-import  org.apache.http.client.HttpClient ;
-import  org.apache.http.client.entity.UrlEncodedFormEntity ;
-import  org.apache.http.client.methods.HttpDelete ;
-import  org.apache.http.client.methods.HttpGet ;
-import  org.apache.http.client.methods.HttpPost ;
-import  org.apache.http.client.methods.HttpPut ;
-import  org.apache.http.conn.ClientConnectionManager ;
-import  org.apache.http.conn.scheme.Scheme ;
-import  org.apache.http.conn.scheme.SchemeRegistry ;
-import  org.apache.http.conn.ssl.SSLSocketFactory ;
-import  org.apache.http.entity.ByteArrayEntity ;
-import  org.apache.http.entity.StringEntity ;
-import  org.apache.http.impl.client.DefaultHttpClient ;
-import  org.apache.http.message.BasicNameValuePair ;
+/**
+ * okhttp和okio需要同时使用
+ *
+ * okhttp git https://github.com/square/okhttp
+ * 依赖 implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+ *
+ * okio git https://github.com/square/okio
+ * 依赖 implementation 'com.squareup.okio:okio:1.14.1'
+ */
+
+
+
 public class HttpUtils {
+    private final OkHttpClient client;
 
-	 /** get
-      ** @param host
-	 * @param path
-	 * @param method
-	 * @param headers
-	 * @param querys
-	 * @return
-      * @throws Exception
-	 */
-    public static HttpResponse doGet(String host, String path, String method,
-                                     Map<String, String> headers,
-                                     Map<String, String> querys)
-            throws Exception {
-        HttpClient httpClient = wrapClient(host);
+    //设置默认字符编码  UTF-8 GBK 等...
+    private final String POST_ENCODE_TYPE = "UTF-8";
+    private final String GET_ENCODE_TYPE = "UTF-8";
 
-        HttpGet request = new HttpGet(buildUrl(host, path, querys));
-        for (Map.Entry<String, String> e : headers.entrySet()) {
-            request.addHeader(e.getKey(), e.getValue());
-        }
 
-        return httpClient.execute(request);
+    public HttpUtils() {
+        client = new OkHttpClient.Builder()
+                // Set Timeout
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS)
+                // Set Others
+                .build();
     }
+
+
+    private void toastMsg(Response response) {
+    }
+
+    private void toastMsg(String str) {
+    }
+
 
     /**
-     * post form
-     *
-     * @param host
-     * @param path
-     * @param method
-     * @param headers
-     * @param querys
-     * @param bodys
-     * @return
-     * @throws Exception
+     * 生成Request.Builder
+     * 带有请求头参数
      */
-    public static HttpResponse doPost(String host, String path, String method,
-                                      Map<String, String> headers,
-                                      Map<String, String> querys,
-                                      Map<String, String> bodys)
-            throws Exception {
-        HttpClient httpClient = wrapClient(host);
-
-        HttpPost request = new HttpPost(buildUrl(host, path, querys));
-        for (Map.Entry<String, String> e : headers.entrySet()) {
-            request.addHeader(e.getKey(), e.getValue());
-        }
-
-        if (bodys != null) {
-            List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
-
-            for (String key : bodys.keySet()) {
-                nameValuePairList.add(new BasicNameValuePair(key, bodys.get(key)));
-            }
-            UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(nameValuePairList, "utf-8");
-            formEntity.setContentType("application/x-www-form-urlencoded; charset=UTF-8");
-            request.setEntity(formEntity);
-        }
-
-        return httpClient.execute(request);
-    }
-
-    /**
-     * Post String
-     *
-     * @param host
-     * @param path
-     * @param method
-     * @param headers
-     * @param querys
-     * @param body
-     * @return
-     * @throws Exception
-     */
-    public static HttpResponse doPost(String host, String path, String method,
-                                      Map<String, String> headers,
-                                      Map<String, String> querys,
-                                      String body)
-            throws Exception {
-        HttpClient httpClient = wrapClient(host);
-
-        HttpPost request = new HttpPost(buildUrl(host, path, querys));
-        for (Map.Entry<String, String> e : headers.entrySet()) {
-            request.addHeader(e.getKey(), e.getValue());
-        }
-
-        if (StringUtils.isNotBlank(body)) {
-            request.setEntity(new StringEntity(body, "utf-8"));
-        }
-
-        return httpClient.execute(request);
-    }
-
-    /**
-     * Post stream
-     *
-     * @param host
-     * @param path
-     * @param method
-     * @param headers
-     * @param querys
-     * @param body
-     * @return
-     * @throws Exception
-     */
-    public static HttpResponse doPost(String host, String path, String method,
-                                      Map<String, String> headers,
-                                      Map<String, String> querys,
-                                      byte[] body)
-            throws Exception {
-        HttpClient httpClient = wrapClient(host);
-
-        HttpPost request = new HttpPost(buildUrl(host, path, querys));
-        for (Map.Entry<String, String> e : headers.entrySet()) {
-            request.addHeader(e.getKey(), e.getValue());
-        }
-
-        if (body != null) {
-            request.setEntity(new ByteArrayEntity(body));
-        }
-
-        return httpClient.execute(request);
-    }
-
-    /**
-     * Put String
-     * @param host
-     * @param path
-     * @param method
-     * @param headers
-     * @param querys
-     * @param body
-     * @return
-     * @throws Exception
-     */
-    public static HttpResponse doPut(String host, String path, String method,
-                                     Map<String, String> headers,
-                                     Map<String, String> querys,
-                                     String body)
-            throws Exception {
-        HttpClient httpClient = wrapClient(host);
-
-        HttpPut request = new HttpPut(buildUrl(host, path, querys));
-        for (Map.Entry<String, String> e : headers.entrySet()) {
-            request.addHeader(e.getKey(), e.getValue());
-        }
-
-        if (StringUtils.isNotBlank(body)) {
-            request.setEntity(new StringEntity(body, "utf-8"));
-        }
-
-        return httpClient.execute(request);
-    }
-
-    /**
-     * Put stream
-     * @param host
-     * @param path
-     * @param method
-     * @param headers
-     * @param querys
-     * @param body
-     * @return
-     * @throws Exception
-     */
-    public static HttpResponse doPut(String host, String path, String method,
-                                     Map<String, String> headers,
-                                     Map<String, String> querys,
-                                     byte[] body)
-            throws Exception {
-        HttpClient httpClient = wrapClient(host);
-
-        HttpPut request = new HttpPut(buildUrl(host, path, querys));
-        for (Map.Entry<String, String> e : headers.entrySet()) {
-            request.addHeader(e.getKey(), e.getValue());
-        }
-
-        if (body != null) {
-            request.setEntity(new ByteArrayEntity(body));
-        }
-
-        return httpClient.execute(request);
-    }
-
-    /**
-     * Delete
-     *
-     * @param host
-     * @param path
-     * @param method
-     * @param headers
-     * @param querys
-     * @return
-     * @throws Exception
-     */
-    public static HttpResponse doDelete(String host, String path, String method,
-                                        Map<String, String> headers,
-                                        Map<String, String> querys)
-            throws Exception {
-        HttpClient httpClient = wrapClient(host);
-
-        HttpDelete request = new HttpDelete(buildUrl(host, path, querys));
-        for (Map.Entry<String, String> e : headers.entrySet()) {
-            request.addHeader(e.getKey(), e.getValue());
-        }
-
-        return httpClient.execute(request);
-    }
-
-    private static String buildUrl(String host, String path, Map<String, String> querys) throws UnsupportedEncodingException {
-        StringBuilder sbUrl = new StringBuilder();
-        sbUrl.append(host);
-        if (!StringUtils.isBlank(path)) {
-            sbUrl.append(path);
-        }
-        if (null != querys) {
-            StringBuilder sbQuery = new StringBuilder();
-            for (Map.Entry<String, String> query : querys.entrySet()) {
-                if (0 < sbQuery.length()) {
-                    sbQuery.append("&");
-                }
-                if (StringUtils.isBlank(query.getKey()) && !StringUtils.isBlank(query.getValue())) {
-                    sbQuery.append(query.getValue());
-                }
-                if (!StringUtils.isBlank(query.getKey())) {
-                    sbQuery.append(query.getKey());
-                    if (!StringUtils.isBlank(query.getValue())) {
-                        sbQuery.append("=");
-                        sbQuery.append(URLEncoder.encode(query.getValue(), "utf-8"));
-                    }
-                }
-            }
-            if (0 < sbQuery.length()) {
-                sbUrl.append("?").append(sbQuery);
+    private Request.Builder createBuilder(String url, Map<String, String> addHeaderParameters, Map<String, String> setHeaderParameters) {
+        Request.Builder builder = new Request.Builder().url(url);
+        if (addHeaderParameters != null) {//增加header参数
+            Set<Entry<String, String>> entrys = addHeaderParameters.entrySet();
+            for (Entry entry : entrys) {
+                builder.addHeader(entry.getKey() + "", entry.getValue() + "");
             }
         }
-
-        return sbUrl.toString();
-    }
-
-    private static HttpClient wrapClient(String host) {
-        HttpClient httpClient = new DefaultHttpClient();
-        if (host.startsWith("https://")) {
-            sslClient(httpClient);
+        if (setHeaderParameters != null) {//定义header参数
+            Set<Entry<String, String>> entrys = setHeaderParameters.entrySet();
+            for (Entry entry : entrys) {
+                builder.header(entry.getKey() + "", entry.getValue() + "");
+            }
         }
-
-        return httpClient;
+        return builder;
     }
 
-    private static void sslClient(HttpClient httpClient) {
+
+    /**
+     * 生成Request.Builder,添加的默认的header参数，不同项目需要修改
+     */
+    private Request.Builder createBuilder(String url) {
+        Map mapSet = new HashMap();
+        mapSet.put("Content-Type", "application/x-www-form-urlencoded");
+        return createBuilder(url, null, mapSet);
+    }
+
+
+    /**
+     * Get请求，使用默认Header设置
+     *
+     * @param url           请求地址
+     * @param getParameters 携带参数
+     */
+    public Response get(String url, Map getParameters) throws Exception {
+        if (getParameters != null) {
+            Set<Entry> entrys = getParameters.entrySet();
+            int i = 0;
+            for (Entry entry : entrys) {
+                if (i == 0) {
+                    url = url + "?" + entry.getKey() + "=" + formatStringGet(entry.getValue() + "");
+                } else {
+                    url = url + "&" + entry.getKey() + "=" + formatStringGet(entry.getValue() + "");
+                }
+                i++;
+            }
+        }
+        Request request = createBuilder(url)
+                .build();
+        Response response = client.newCall(request).execute();
+        if (!response.isSuccessful()) {
+            toastMsg(response);
+            throw new IOException("Unexpected Code/响应失败" + response);
+        }
+        return response;
+    }
+
+    /**
+     * Get请求，使用自定义Header设置
+     *
+     * @param url                 请求地址
+     * @param getParameters       携带参数
+     * @param addHeaderParameters 增加的请求头参数
+     * @param setHeaderParameters 修改的请求头参数
+     */
+    public Response get(String url, Map getParameters, Map<String, String> addHeaderParameters, Map<String, String> setHeaderParameters) throws Exception {
+        if (getParameters != null) {
+            Set<Entry> entrys = getParameters.entrySet();
+            int i = 0;
+            for (Entry entry : entrys) {
+                if (i == 0) {
+                    url = url + "?" + entry.getKey() + "=" + formatStringGet(entry.getValue() + "");
+                } else {
+                    url = url + "&" + entry.getKey() + "=" + formatStringGet(entry.getValue() + "");
+                }
+                i++;
+            }
+        }
+        Request request = createBuilder(url, addHeaderParameters, setHeaderParameters)
+                .build();
+        Response response = client.newCall(request).execute();
+        if (!response.isSuccessful()) {
+            toastMsg(response);
+            throw new IOException("Unexpected Code/响应失败" + response);
+        }
+        return response;
+    }
+
+
+    /**
+     * Post 提交字符串，使用默认Header设置
+     *
+     * @param url
+     * @param type
+     * @param content
+     * @return
+     * @throws Exception
+     */
+
+    public Response post_String(String url, String type, String content) throws Exception {
+        MediaType contentType = MediaType.parse(type);
+        Request request = createBuilder(url)
+                .post(RequestBody.create(contentType, content))
+                .build();
+        Response response = client.newCall(request).execute();
+        if (!response.isSuccessful()) {
+            toastMsg(response);
+            throw new IOException("Unexpected Code/响应失败" + response);
+        }
+        // response.code()+":"response.message()
+        return response;
+    }
+
+    /**
+     * Post 提交字符串，使用自定义Header设置
+     *
+     * @param url
+     * @param type
+     * @param content
+     * @param addHeaderParameters
+     * @param setHeaderParameters
+     * @return
+     * @throws Exception
+     */
+    public Response post_String(String url, String type, String content, Map<String, String> addHeaderParameters, Map<String, String> setHeaderParameters) throws Exception {
+        MediaType contentType = MediaType.parse(type);
+        Request request = createBuilder(url, addHeaderParameters, setHeaderParameters)
+                .post(RequestBody.create(contentType, content))
+                .build();
+        Response response = client.newCall(request).execute();
+        if (!response.isSuccessful()) {
+            toastMsg(response);
+            throw new IOException("Unexpected Code/响应失败" + response);
+        }
+        // response.code()+":"response.message()
+        return response;
+    }
+
+
+    /**
+     * Post 提交字表单，使用默认Header设置
+     *
+     * @param url
+     * @param formParameters
+     * @return
+     * @throws Exception
+     */
+    public Response post_Form(String url, Map formParameters) throws Exception {
+        Builder builder = new Builder();
+        Set<Entry> entrys = formParameters.entrySet();
+        for (Entry entry : entrys) {
+            builder.addEncoded(formatStringPost(entry.getKey() + ""), formatStringPost(entry.getValue() + ""));
+        }
+        RequestBody formBody = builder.build();
+        Request request = createBuilder(url)
+                .post(formBody)
+                .build();
+        Response response = client.newCall(request).execute();
+        if (!response.isSuccessful()) {
+            toastMsg(response);
+            throw new IOException("Unexpected Code/响应失败" + response);
+        }
+        return response;
+    }
+
+    /**
+     * Post 提交字表单，使用自定义Header设置
+     *
+     * @param url
+     * @param formParameters
+     * @param addHeaderParameters
+     * @param setHeaderParameters
+     * @return
+     * @throws Exception
+     */
+    public Response post_Form(String url, Map formParameters, Map<String, String> addHeaderParameters, Map<String, String> setHeaderParameters) throws Exception {
+        Builder builder = new Builder();
+        Set<Entry> entrys = formParameters.entrySet();
+        for (Entry entry : entrys) {
+            builder.addEncoded(formatStringPost(entry.getKey() + ""), formatStringPost(entry.getValue() + ""));
+            if ((entry.getValue() + "").length() > 1000) {
+            } else {
+            }
+        }
+        RequestBody formBody = builder.build();
+
+        Request request = createBuilder(url, addHeaderParameters, setHeaderParameters)
+                .post(formBody)
+                .build();
+        Response response = client.newCall(request).execute();
+        if (!response.isSuccessful()) {
+            toastMsg(response);
+            throw new IOException("Unexpected Code/响应失败" + response);
+        }
+        return response;
+    }
+
+
+    private String formatStringGet(String content) {
+        String fs = "";
         try {
-            SSLContext ctx = SSLContext.getInstance("TLS");
-            X509TrustManager tm = new X509TrustManager() {
-                public X509Certificate[] getAcceptedIssuers() {
-                    return null;
-                }
-                public void checkClientTrusted(X509Certificate[] xcs, String str) {
-
-                }
-                public void checkServerTrusted(X509Certificate[] xcs, String str) {
-
-                }
-            };
-            ctx.init(null, new TrustManager[] { tm }, null);
-            SSLSocketFactory ssf = new SSLSocketFactory(ctx);
-            ssf.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-            ClientConnectionManager ccm = httpClient.getConnectionManager();
-            SchemeRegistry registry = ccm.getSchemeRegistry();
-            registry.register(new Scheme("https", 443, ssf));
-        } catch (KeyManagementException ex) {
-            throw new RuntimeException(ex);
-        } catch (NoSuchAlgorithmException ex) {
-            throw new RuntimeException(ex);
+            fs = URLEncoder.encode(content, GET_ENCODE_TYPE);
+        } catch (Exception e) {
+            return content;
         }
+        return fs;
+    }
+
+
+    private String formatStringPost(String content) {
+        String fs = "";
+        try {
+            fs = URLEncoder.encode(content, POST_ENCODE_TYPE);
+        } catch (Exception e) {
+            return content;
+        }
+        return fs;
     }
 }
+
 
 
