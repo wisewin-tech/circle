@@ -40,6 +40,11 @@ public class UserController extends BaseCotroller {
      */
     @RequestMapping("/send")
     public void send(String phone, HttpServletResponse response) {
+        userService.updStatisticalRecords(UserConstants.registration.getValue(),null);
+        userService.updStatisticalRecords(UserConstants.pairing.getValue(),null);
+        userService.updStatisticalRecords(UserConstants.active.getValue(),1);
+        userService.updStatisticalRecords(UserConstants.active.getValue(),1);
+        userService.updStatisticalRecords(UserConstants.active.getValue(),2);
         //手机号非空+格式判断
         if (this.phoneFormt(phone, response)) {
             String time = RedissonHandler.getInstance().get(phone + UserConstants.VERIFY_LOSE.getValue());

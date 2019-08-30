@@ -20,9 +20,9 @@ public class RedissonHandler {
 
     private final String port = "6379";
 
-    private final String ip = "localhost";//"wisewin-tech.com";
+    private final String ip = "zccxywy.cn";//"wisewin-tech.com";
 
-    private final String password = null;//"sunshibo1!";
+    private final String password = "wangyang";//"sunshibo1!";
 
 
     /**

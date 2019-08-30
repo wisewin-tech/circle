@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 【用户】 -->
+<mapper namespace="com.wisewin.circle.dao.StatisticalRecordsDAO">
+
+    <insert id="addStatisticalRecords" parameterType="com.wisewin.circle.entity.bo.StatisticalRecords">
+        insert into statistical_records
+		(active_count,registration_count,pairing_count,create_time)
+		VALUES
+		(#{activeCount},#{registrationCount},#{pairingCount},now())
+    </insert>
+
+    <update id="updStatisticalRecords" parameterType="com.wisewin.circle.entity.bo.StatisticalRecords">
+        update statistical_records
+        <set>
+            <if test="activeCount!=null and activeCount!=''">
+                active_count=active_count+#{activeCount},
+            </if>
+            <if test="registrationCount!=null and registrationCount!=''">
+                registration_count=registration_count+#{registrationCount},
+            </if>
+            <if test="pairingCount!=null and pairingCount!=''">
+                pairing_count=pairing_count+#{pairingCount}
+            </if>
+        </set>
+        where to_char(create_time,'YYYY-MM-DD')=to_char(now(),'YYYY-MM-DD')
+    </update>
+
+    <select id="getStatisticalRecordsCount" resultType="java.lang.Integer">
+       select count(*) from statistical_records
+        where to_char(create_time,'YYYY-MM-DD')=to_char(now(),'YYYY-MM-DD')
+    </select>
+
+</mapper>

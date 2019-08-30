@@ -3,18 +3,24 @@ package com.wisewin.circle.service;
 
 import com.wisewin.circle.common.constants.PatternConstants;
 import com.wisewin.circle.common.constants.UserConstants;
+import com.wisewin.circle.dao.StatisticalRecordsDAO;
 import com.wisewin.circle.dao.UserDAO;
 import com.wisewin.circle.entity.bo.BackgroundBO;
 import com.wisewin.circle.entity.bo.PatternBO;
+import com.wisewin.circle.entity.bo.StatisticalRecords;
 import com.wisewin.circle.entity.bo.UserBO;
 import com.wisewin.circle.entity.dto.param.DatepatternParam;
+import com.wisewin.circle.util.DateUtils;
 import com.wisewin.circle.util.MD5Util;
 import com.wisewin.circle.util.RandomUtils;
 import com.wisewin.circle.util.StringUtils;
 import com.wisewin.circle.util.message.SendMessageUtil;
 import com.wisewin.circle.util.redisUtils.RedissonHandler;
+import com.wisewin.circle.web.controller.base.BaseCotroller;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import sun.misc.Cleaner;
+import sun.rmi.runtime.Log;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
@@ -24,9 +30,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@Transactional
 public class UserService {
     @Resource
     private UserDAO userDAO;
+
+    @Resource
+    StatisticalRecordsDAO statisticalRecordsDAO;
 
     /**
      * 发送验证码
@@ -141,9 +151,6 @@ public class UserService {
     }
 
     //通过ids 找出用户信息
-
-
-
     private  Date  birthDate(Integer age){
         if(age==null){
             return null;
@@ -159,4 +166,50 @@ public class UserService {
         return  instance.getTime();
     }
 
+    //在用户注册，配对，活跃的时候调用
+    //userId只有在活跃的时候传入
+    public void updStatisticalRecords(String type,Integer userId){
+        StatisticalRecords statisticalRecords=new StatisticalRecords();
+        if(UserConstants.registration.getValue().equals(type)){
+            statisticalRecords.setRegistrationCount(1);
+            Integer count=statisticalRecordsDAO.getStatisticalRecordsCount();
+            if(count>0){
+                statisticalRecordsDAO.updStatisticalRecords(statisticalRecords);
+            }else{
+                statisticalRecordsDAO.addStatisticalRecords(statisticalRecords);
+            }
+        }else if(UserConstants.pairing.getValue().equals(type)){
+            statisticalRecords.setPairingCount(1);
+            Integer count=statisticalRecordsDAO.getStatisticalRecordsCount();
+            if(count>0){
+                statisticalRecordsDAO.updStatisticalRecords(statisticalRecords);
+            }else{
+                statisticalRecordsDAO.addStatisticalRecords(statisticalRecords);
+            }
+        }else if(UserConstants.active.getValue().equals(type)){
+            if(this.updActiveByUserId(userId)){
+                statisticalRecords.setActiveCount(1);
+                Integer count=statisticalRecordsDAO.getStatisticalRecordsCount();
+                if(count>0){
+                    statisticalRecordsDAO.updStatisticalRecords(statisticalRecords);
+                }else{
+                    statisticalRecordsDAO.addStatisticalRecords(statisticalRecords);
+                }
+            }
+        }
+
+    }
+
+    //判断用户今天是否已经活跃了
+    //如果未活跃 返回true 并添加活跃
+    public boolean updActiveByUserId(Integer userId){
+        Object object=RedissonHandler.getInstance().get(UserConstants.active.getValue()+userId);
+        if(object!=null){
+            return false;
+        }
+        //获取现在到凌晨12点的毫秒数
+        Integer expire= DateUtils.getRemainSecondsOneDay(new Date());
+        RedissonHandler.getInstance().set(UserConstants.active.getValue()+userId,userId,new Long(expire));
+        return true;
+    }
 }

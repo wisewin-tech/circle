@@ -620,9 +620,17 @@ public class DateUtils {
 	}
 
 
-	/**
-	 * 获取当前日志时间字符串
-	 */
+	public static Integer getRemainSecondsOneDay(Date currentDate) {
+		Calendar midnight=Calendar.getInstance();
+		midnight.setTime(currentDate);
+		midnight.add(midnight.DAY_OF_MONTH,1);
+		midnight.set(midnight.HOUR_OF_DAY,0);
+		midnight.set(midnight.MINUTE,0);
+		midnight.set(midnight.SECOND,0);
+		midnight.set(midnight.MILLISECOND,0);
+		Integer seconds=(int)((midnight.getTime().getTime()-currentDate.getTime())/1000);
+		return seconds;
+	}
 
 
 

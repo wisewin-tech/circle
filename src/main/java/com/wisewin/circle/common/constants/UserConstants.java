@@ -11,7 +11,11 @@ public enum UserConstants {
         /*  Yes  */  Yes("yes"),
         /*  No  */  No("no"),
         /* 默认模式 */DATE("date"),
-        /*BFF模式 */ BFF("bff");
+        /*BFF模式 */ BFF("bff"),
+
+        /*注册*/ registration("registration"),
+        /*配对 */ pairing("pairing"),
+        /*活跃 */ active("active");
 
 
 

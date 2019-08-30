@@ -1,10 +1,12 @@
 package com.wisewin.circle.web.controller;
 
+import com.wisewin.circle.common.constants.UserConstants;
 import com.wisewin.circle.dao.TestDAO;
 import com.wisewin.circle.entity.bo.AdminBO;
 import com.wisewin.circle.entity.bo.UserBO;
 import com.wisewin.circle.entity.dto.ResultDTOBuilder;
 import com.wisewin.circle.service.TestService;
+import com.wisewin.circle.service.UserService;
 import com.wisewin.circle.util.JsonUtils;
 import com.wisewin.circle.web.controller.base.BaseCotroller;
 import org.slf4j.Logger;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -21,7 +24,7 @@ import java.util.Date;
 
 /**
  * @author Shibo Sun
- *         主机controller
+ * 主机controller
  */
 @Controller
 @RequestMapping("/test")
@@ -31,26 +34,30 @@ public class TestController extends BaseCotroller {
 
     @Resource
     private TestService testService;
+    @Resource
+    UserService userService;
 
     @RequestMapping("/test")
-    public void test(HttpServletResponse response) {
-        AdminBO test = testService.test();
-        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(test));
-        super.safeJsonPrint(response, json);
+    public void test(HttpServletResponse response, HttpServletRequest request) {
 
+        userService.updStatisticalRecords(UserConstants.registration.getValue(),null);
+//        userService.updStatisticalRecords(UserConstants.pairing.getValue(),null);
+//        userService.updStatisticalRecords(UserConstants.active.getValue(),1);
+//        userService.updStatisticalRecords(UserConstants.active.getValue(),1);
+//        userService.updStatisticalRecords(UserConstants.active.getValue(),2);
     }
 
     public static void main(String[] args) throws ParseException {
-       String startTime = "2018-11-06 11:00:00";
+        String startTime = "2018-11-06 11:00:00";
         String endTime = "2018-11-08 11:15:00";
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:ss:mm");
         Date d1 = df.parse(startTime);
         Date d2 = df.parse(endTime);
-        System.out.println(BigDecimal.valueOf(Math.ceil((((double) d2.getTime() - (double) d1.getTime()) / 3600000)% 24)));
+        System.out.println(BigDecimal.valueOf(Math.ceil((((double) d2.getTime() - (double) d1.getTime()) / 3600000) % 24)));
         System.out.println(BigDecimal.valueOf(Math.floor(((double) d2.getTime() - (double) d1.getTime()) / (3600000 * 24))));
 
-        System.out.println(BigDecimal.valueOf(Math.ceil((((double) d2.getTime() - (double) d1.getTime()-(double)900000) / 3600000)% 24)));
-        System.out.println(BigDecimal.valueOf(Math.floor(((double) d2.getTime() - (double) d1.getTime()-(double)900000) / (3600000 * 24))));
+        System.out.println(BigDecimal.valueOf(Math.ceil((((double) d2.getTime() - (double) d1.getTime() - (double) 900000) / 3600000) % 24)));
+        System.out.println(BigDecimal.valueOf(Math.floor(((double) d2.getTime() - (double) d1.getTime() - (double) 900000) / (3600000 * 24))));
        /* BigDecimal b=new BigDecimal(45.45);
         int a = b.intValue();
         System.out.print(a);*//*
