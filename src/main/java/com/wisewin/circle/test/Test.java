@@ -1,6 +1,8 @@
 package com.wisewin.circle.test;
 
 
+import com.wisewin.circle.util.DateUtils;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -84,9 +86,14 @@ public class Test {
         c.add(c.DATE,-i); //把日期往后增加i天,整数  往后推,负数往前移动
         return c.getTime();
     }
-    public static void main(String[] args){
-        double random=Math.random()*4;
-        System.err.println(random);
+    public static void main(String[] args) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        String nowStr = dateFormat.format(new Date());
+
+        String endStr = nowStr.substring(0,nowStr.indexOf(" ")) + " 23:59:59";
+
+        System.out.println("相差的秒数："+((dateFormat.parse(endStr).getTime() - dateFormat.parse(nowStr).getTime()) / 1000));
     }
 
 }
