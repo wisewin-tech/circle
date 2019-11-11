@@ -19,6 +19,9 @@
               #{beSuperLikeCount},#{superLikeCount},#{superLikeCountTime},
               #{beShieldingCount},#{updateTime},#{userId},#{name});
     </insert>
+    <select id="selectModel" resultType="com.wisewin.circle.entity.bo.Model">
+       select * from ci_model where model = #{model} and user_id = #{userId}
+    </select>
 
     <!--修改某个用户某个模式下的资料-->
     <update id="updateModel" parameterType="com.wisewin.circle.entity.bo.ModelBO">

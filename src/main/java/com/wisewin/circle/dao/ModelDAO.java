@@ -1,6 +1,8 @@
 package com.wisewin.circle.dao;
 
+import com.wisewin.circle.entity.bo.Model;
 import com.wisewin.circle.entity.bo.ModelBO;
+import org.apache.ibatis.annotations.Param;
 
 public interface ModelDAO {
 
@@ -11,8 +13,10 @@ public interface ModelDAO {
     void addDefault(ModelBO modelBO);
 
     /**
-     * 修改某个用户某个模式资料
-     * @param modelBO
+     * 查询用户主页信息
+     * @param model 模式类型
+     * @param userId 用户id
      */
-    void updateModel(ModelBO modelBO);
+    Model selectModel(@Param("model")String model, @Param("userId")Integer userId);
+
 }

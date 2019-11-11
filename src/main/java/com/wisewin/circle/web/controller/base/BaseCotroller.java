@@ -273,7 +273,8 @@ public class BaseCotroller {
      */
     public String getLoginID(HttpServletRequest request) {
 
-        return getCookie(request , SysConstants.CURRENT_LOGIN_ID) ;
+        //return getCookie(request , SysConstants.CURRENT_LOGIN_ID) ;
+        return "1";
     }
 
     public String getClientLoginID(HttpServletRequest request) {

@@ -4,24 +4,29 @@
 
 <mapper namespace="com.wisewin.circle.dao.InterestTypeDAO">
 
-    <!--添加兴趣分类-->
-    <insert id="addInterestType" parameterType="com.wisewin.circle.entity.bo.InterestTypeBO">
-        insert into
-        ce_interest_type
-        (type_name,create_time,create_user_id,update_time,update_user_id)
-        values
-        (#{typeName},now(),#{createUserId},now(),#{createUserId})
-    </insert>
 
-    <!--查询所有兴趣分类-->
-    <select id="getInterestsType" resultType="com.wisewin.circle.entity.bo.InterestTypeBO" parameterType="java.lang.Integer">
-        select * from ce_interest_type
-        order by update_time desc
+
+    <select id="selectciInterestType" resultType="com.wisewin.circle.entity.bo.InterestType">
+        select  ci_interest.type_id as typeId, ci_interest.interest_name as interestName,
+         ci_interest_type.type_name as  typeName
+         from ci_interest, ci_interest_type
+        where ci_interest.type_id = ci_interest_type.id
     </select>
 
-    <!--删除兴趣分类-->
-    <delete id="delInterestType">
-        delete from ce_interest_type where id=#{id}
-    </delete>
+    <select id="selectciUserInterestCustom" resultType="com.wisewin.circle.entity.bo.InterestType">
+     select ci_user_interest_custom.type_id as typeId,ci_user_interest_custom.custom_name as interestName,
+      ci_interest_type.type_name as  typeName
+     from ci_user_interest_custom, ci_interest_type
+      where ci_user_interest_custom.type_id = ci_interest_type.id and
+      ci_user_interest_custom.model_id = #{modelId}
+    </select>
+
+    <select id="selectciUserInterest" resultType="com.wisewin.circle.entity.bo.InterestType">
+        select ci_user_interest.type_id as typeId, ci_user_interest.interest_name as intersetName,
+        ci_interest_type.type_name as  typeName
+        from ci_user_interest, ci_interest_type
+        where ci_user_interest.type_id = ci_interest_type.id
+        and ci_user_interest.model_id = #{modelId}
+    </select>
 
 </mapper>
