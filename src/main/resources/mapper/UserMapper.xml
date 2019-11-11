@@ -9,12 +9,20 @@
     <select id="selectByPhone" resultType="com.wisewin.circle.entity.bo.UserBO">
         select  *  from  ci_user   where   phone=#{phoneNumber}
     </select>
-
+    <!--新增用户-->
     <insert id="addUser" parameterType="com.wisewin.circle.entity.bo.UserBO">
      INSERT INTO "ci_user"( "phone", "password", "create_time", "latitude", "longitude", "certification_status", "car_status", "user_status", "robot_status")
                     VALUES (#{phone},#{password}, now(),#{latitude},#{longitude},
                               #{certificationStatus},#{carStatus}, #{userStatus}, #{robotStatus});
     </insert>
+    <!--设置密码-->
+    <update id="setUserPassword" parameterType="java.lang.String">
+        update ci_user
+        <set>
+            <if test="password!=null and password!='' ">password=#{password}</if>
+        </set>
+        where phone = #{phone}
+    </update>
 
 
     <update id="updateUser" parameterType="com.wisewin.circle.entity.bo.UserBO">

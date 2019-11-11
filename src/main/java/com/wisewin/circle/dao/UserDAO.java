@@ -19,6 +19,14 @@ public interface UserDAO {
     void addUser(UserBO user);
 
     /**
+     * 设置密码
+     * @param phone
+     * @param password
+     */
+    void setUserPassword(String phone,String password);
+
+
+    /**
      * 通过phone查询用户信息
      * @param phoneNumber
      * @return

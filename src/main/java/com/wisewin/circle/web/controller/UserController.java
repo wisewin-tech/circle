@@ -112,7 +112,7 @@ public class UserController extends BaseCotroller {
      * @param code     验证码
      */
     @RequestMapping("/loginUser")
-    public void loginUser(HttpServletRequest request, HttpServletResponse response, String phone, String password,String userPassword, String type, String code) {
+    public void loginUser(HttpServletRequest request, HttpServletResponse response, String phone, String password, String type, String code) {
         if (phone == null || type == null) {
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
@@ -159,18 +159,8 @@ public class UserController extends BaseCotroller {
                 //查询用户是否设置过密码
                 //验证用户是否存在 不存在注册并设置密码
                 if (userBO == null) {
-                    if (StringUtils.isEmpty(userPassword)){
-                        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
-                        super.safeJsonPrint(response, json);
-                        return;
-                    }
-                    UserBO user = new UserBO();
-                    user.setPhone(phone);
-                    user.setPassword(MD5Util.digest(userPassword));
-                    userService.addUser(user);
-                    //将只带有手机号的user对象存入cookie中
-                    this.putUser(response, user);
-                    String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(user));
+
+                    String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000012"));
                     super.safeJsonPrint(response, json);
                     return;
                 }
@@ -187,6 +177,34 @@ public class UserController extends BaseCotroller {
 
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000005"));
         super.safeJsonPrint(response, json);
+    }
+
+    /**
+     * 设置密码
+     * @param phone
+     * @param password
+     * @param request
+     * @param response
+     */
+    @RequestMapping("/setPassword")
+    public void setUserPassword(String phone,String password,HttpServletRequest request,HttpServletResponse response){
+        if (StringUtils.isEmpty(phone)||StringUtils.isEmpty(password)){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
+        UserBO user = new UserBO();
+        user.setPhone(phone);
+        user.setPassword(MD5Util.digest(password));
+        userService.addUser(user);
+        //将只带有手机号的user对象存入cookie中
+        this.putUser(response, user);
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("设置成功！"));
+        super.safeJsonPrint(response, json);
+        return;
+
+
+
     }
 
 

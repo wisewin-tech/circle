@@ -94,6 +94,14 @@ public class UserService {
     public void addUser(UserBO userBO) {
         userDAO.addUser(userBO);
     }
+    /**
+     * 设置密码
+     * @param phone
+     * @param password
+     */
+    public void setUserPassword(String phone,String password){
+        userDAO.setUserPassword(phone, password);
+    }
 
     /**
      * 修改用户信息
