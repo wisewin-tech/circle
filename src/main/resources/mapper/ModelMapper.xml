@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 【用户】 -->
+<mapper namespace="com.wisewin.circle.dao.ModelDAO">
+
+    <!--初始化用户数据-->
+    <insert id="addDefault" parameterType="com.wisewin.circle.entity.bo.ModelBO">
+      INSERT INTO ci_model("model","describe","sex","sex_count","birthday","constellation",
+                  "height","weight","education","birthplace","search_distance","search_sex",
+	              "search_age","sex_status","car_certification_status","be_like_count",
+	              "be_super_like_count","super_like_count","super_like_count_time",
+	"be_shielding_count","update_time","user_id","name")
+      VALUES
+                      (#{model},#{describe},#{sex},#{sexCount},#{birthday},#{constellation},
+              #{height},#{weight},#{education},#{birthplace},#{searchDistance},#{searchSex},
+              #{searchAge},#{sexStatus},#{carCertificationStatus},#{beLikeCount},
+              #{beSuperLikeCount},#{superLikeCount},#{superLikeCountTime},
+              #{beShieldingCount},#{updateTime},#{userId},#{name});
+    </insert>
+
+</mapper>

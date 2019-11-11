@@ -6,6 +6,7 @@ import com.wisewin.circle.entity.bo.PatternBO;
 import com.wisewin.circle.entity.bo.UserBO;
 import com.wisewin.circle.entity.dto.ResultDTOBuilder;
 import com.wisewin.circle.entity.dto.param.DatepatternParam;
+import com.wisewin.circle.service.ModelService;
 import com.wisewin.circle.service.UserService;
 import com.wisewin.circle.util.AccountValidatorUtil;
 import com.wisewin.circle.util.JsonUtils;
@@ -31,6 +32,8 @@ public class UserController extends BaseCotroller {
 
     @Resource
     private UserService userService;
+    @Resource
+    private ModelService modelService;
 
 
     /**
@@ -196,7 +199,18 @@ public class UserController extends BaseCotroller {
         UserBO user = new UserBO();
         user.setPhone(phone);
         user.setPassword(MD5Util.digest(password));
+        //初始化用户
+        user.setLatitude("");//纬度
+        user.setLongitude("");//经度
+        user.setCertificationStatus("no");//认证状态（yes为已经认证|no为未认证|not未审核|audit审核中）
+        user.setCarStatus("no");//汽车认证状态（yes为已经认证|no为未认证|not未审核|audit审核中）
+        user.setUserStatus("no");//yes为被拉黑|no为未拉黑
+        user.setRobotStatus("no");//yes为被拉黑|no为未拉黑
         userService.addUser(user);
+        UserBO userBO = userService.selectByPhone(phone);
+        //三种模式下的初始化用户资料
+        modelService.addDefault(userBO.getId(),phone);
+
         //将只带有手机号的user对象存入cookie中
         this.putUser(response, user);
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("设置成功！"));
