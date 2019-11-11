@@ -43,7 +43,7 @@ public class UserService {
      *
      * @param phone
      */
-    public void send(String phone) {
+    public static void send(String phone) {
         //验证手机号格式
         String number = RandomUtils.getRandomNumber(6);
         //发送验证码
@@ -211,5 +211,9 @@ public class UserService {
         Integer expire= DateUtils.getRemainSecondsOneDay(new Date());
         RedissonHandler.getInstance().set(UserConstants.active.getValue()+userId,userId,new Long(expire));
         return true;
+    }
+
+    public static void main(String[] args) {
+    		send("18631323023");
     }
 }

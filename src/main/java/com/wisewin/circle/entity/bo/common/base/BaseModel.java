@@ -16,7 +16,7 @@ public class BaseModel implements Serializable {
 
 	/** 获取登录用户*/
    public UserBO getLoginUser (HttpServletRequest request ) {
-        UserBO userBO = new UserBO(1,"13872244760","123","测试");
+        UserBO userBO = new UserBO();
         return  userBO;
     }
 }

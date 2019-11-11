@@ -51,7 +51,7 @@ public class UserController extends BaseCotroller {
             String count = RedissonHandler.getInstance().get(phone + UserConstants.DEGREE.getValue());
             if (count != null) {
                 int coun = Integer.valueOf(count);
-                if (coun >= 20) {
+                if (coun > 20) {
                     String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000008"));
                     super.safeJsonPrint(response, json);
                     return;
@@ -86,7 +86,8 @@ public class UserController extends BaseCotroller {
         String verificationCode = this.getVerificationCode(phone);
         //如果和用户收到的验证码相同
         if (verify.equals(verificationCode)) {
-            UserBO user = new UserBO(phone);
+            UserBO user = new UserBO();
+            user.setPhone(phone);
             userService.addUser(user);
             //将只带有手机号的user对象存入cookie中
             this.putUser(response, user);
@@ -111,22 +112,22 @@ public class UserController extends BaseCotroller {
      * @param code     验证码
      */
     @RequestMapping("/loginUser")
-    public void loginUser(HttpServletRequest request, HttpServletResponse response, String phone, String password, String type, String code) {
+    public void loginUser(HttpServletRequest request, HttpServletResponse response, String phone, String password,String userPassword, String type, String code) {
         if (phone == null || type == null) {
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
         }
 
-        //验证用户是否存在
         UserBO userBO = userService.selectByPhone(phone);
-        if (userBO == null) {
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000004"));
-            super.safeJsonPrint(response, json);
-            return;
-        }
+
 
         if (UserConstants.PASSWORD.getValue().equals(type)) {
+            if (userBO==null){
+                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000004"));
+                super.safeJsonPrint(response, json);
+                return;
+            }
             //密码登录
             if (StringUtils.isEmpty(password)) {
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
@@ -141,6 +142,7 @@ public class UserController extends BaseCotroller {
             }
 
         } else {
+
             //验证码登录
             if (code == null) {
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
@@ -148,8 +150,31 @@ public class UserController extends BaseCotroller {
                 return;
             }
 
+            //获取Redis中的用户验证码
+            System.out.println(phone + UserConstants.VERIFY.getValue());
+
             String verificationCode = this.getVerificationCode(phone);
+            //如果和用户收到的验证码相同
             if (code.equals(verificationCode)) {
+                //查询用户是否设置过密码
+                //验证用户是否存在 不存在注册并设置密码
+                if (userBO == null) {
+                    if (StringUtils.isEmpty(userPassword)){
+                        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+                        super.safeJsonPrint(response, json);
+                        return;
+                    }
+                    UserBO user = new UserBO();
+                    user.setPhone(phone);
+                    user.setPassword(MD5Util.digest(userPassword));
+                    userService.addUser(user);
+                    //将只带有手机号的user对象存入cookie中
+                    this.putUser(response, user);
+                    String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(user));
+                    super.safeJsonPrint(response, json);
+                    return;
+                }
+                //没有设置过需要设置之后才可以登录
                 this.putUser(response, userBO);
                 String key = phone + UserConstants.VERIFY.getValue();
                 RedissonHandler.getInstance().delete(key);

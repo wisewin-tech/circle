@@ -7,20 +7,13 @@
 
     <!--通过phone查看库里有没有这个账号-->
     <select id="selectByPhone" resultType="com.wisewin.circle.entity.bo.UserBO">
-        select  *  from  ce_user   where   phone_number=#{phoneNumber}
+        select  *  from  ci_user   where   phone=#{phoneNumber}
     </select>
 
     <insert id="addUser" parameterType="com.wisewin.circle.entity.bo.UserBO">
-     INSERT INTO "ce_user"( "name", "password", "gender", "phone_number", "email",
-                            "stature", "birthday", "constellation", "birthplace",
-                             "create_time", "work", "school", "authentication_status",
-                             "schooling", "pattern", "update_count", "longitude", "latitude",
-                              "account_status", "inquire_age", "inquire_sex", "inquire_age_over")
-                    VALUES (#{name},#{password}, #{gender},#{phoneNumber},#{email},
-                              #{stature},to_timestamp(#{birthday},'yyyy-MM-dd hh24:mi:ss'),#{constellation},#{birthplace},
-                               NOW(),#{work}, #{school}, #{authenticationStatus},
-                               #{schooling},#{pattern},#{updateCount},#{longitude},#{latitude},
-                               #{accountStatus},#{inquireAge},#{inquireSex},#{inquireAgeOver});
+     INSERT INTO "ci_user"( "phone", "password", "create_time", "latitude", "longitude", "certification_status", "car_status", "user_status", "robot_status")
+                    VALUES (#{phone},#{password}, now(),#{latitude},#{longitude},
+                              #{certificationStatus},#{carStatus}, #{userStatus}, #{robotStatus});
     </insert>
 
 
