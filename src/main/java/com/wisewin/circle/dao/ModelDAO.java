@@ -9,4 +9,10 @@ public interface ModelDAO {
      * @param modelBO
      */
     void addDefault(ModelBO modelBO);
+
+    /**
+     * 修改某个用户某个模式资料
+     * @param modelBO
+     */
+    void updateModel(ModelBO modelBO);
 }

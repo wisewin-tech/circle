@@ -20,4 +20,33 @@
               #{beShieldingCount},#{updateTime},#{userId},#{name});
     </insert>
 
+    <!--修改某个用户某个模式下的资料-->
+    <update id="updateModel" parameterType="com.wisewin.circle.entity.bo.ModelBO">
+      UPDATE ci_model
+        <set>
+            <if test="name!=null and name!='' ">"name"=#{name},</if>
+            <if test="describe!=null and describe!='' ">"describe"=#{describe},</if>
+            <if test="sex!=null and sex!='' ">"sex"=#{sex},</if>
+            <if test="sexCount!=null and sexCount!='' ">"sex_count"=#{sexCount},</if>
+            <if test="birthday!=null and birthday!='' ">"birthday"=#{birthday},</if>
+            <if test="constellation!=null and constellation!='' ">"constellation"=#{constellation},</if>
+            <if test="height!=null and height!='' ">"height"=#{height},</if>
+            <if test="weight!=null and weight!='' ">"weight"=#{weight},</if>
+            <if test="education!=null and education!='' ">"education"=#{education},</if>
+            <if test="birthplace!=null and birthplace!='' ">"birthplace"=#{birthplace},</if>
+            <if test="searchDistance!=null and searchDistance!='' ">"search_distance"=#{searchDistance},</if>
+            <if test="searchSex!=null and searchSex!='' ">"search_sex"=#{searchSex},</if>
+            <if test="searchAge!=null and searchAge!='' ">"search_age"=#{searchAge},</if>
+            <if test="sexStatus!=null and sexStatus!='' ">"sex_status"=#{sexStatus},</if>
+            <if test="carCertificationStatus!=null and carCertificationStatus!='' ">"car_certification_status"=#{carCertificationStatus},</if>
+            <if test="beLikeCount!=null and beLikeCount!='' ">"be_like_count"=#{beLikeCount,</if>
+            <if test="beSuperLikeCount!=null and beSuperLikeCount!='' ">"be_super_like_count"=#{beSuperLikeCount},</if>
+            <if test="superLikeCount!=null and superLikeCount!='' ">"super_like_count"=#{superLikeCount},</if>
+            <if test="superLikeCountTime!=null and superLikeCountTime!='' ">"super_like_count_time"=#{superLikeCountTime},</if>
+            <if test="beShieldingCount!=null and beShieldingCount!='' ">"be_shielding_count"=#{beShieldingCount},</if>
+            "update_time" = NOW()
+        </set>
+        where "user_id" = #{userId} and model = #{model}
+    </update>
+
 </mapper>
