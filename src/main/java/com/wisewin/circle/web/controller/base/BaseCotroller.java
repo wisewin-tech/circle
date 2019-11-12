@@ -231,8 +231,7 @@ public class BaseCotroller {
     }*/
     /** 获取登录用户*/
     public UserBO getLoginUser (HttpServletRequest request ) {
-        UserBO userBO = new UserBO();
-        return  userBO;
+        return (UserBO) this.getSession(request, SysConstants.CURRENT_LOGIN_USER);
     }
     /** putLoginUser*/
     public void putLoginUser (String loginId , UserBO loginUser) {

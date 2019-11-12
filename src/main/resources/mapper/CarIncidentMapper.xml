@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 【用户】 -->
+<mapper namespace="com.wisewin.circle.dao.CarIncidentDAO">
+
+    <!--兜风模式添加事件-->
+    <insert id="addCarIncident" parameterType="com.wisewin.circle.entity.bo.CarIncidentBO">
+      INSERT INTO "ci_car_incident" ("user_id", "origin", "destination", "incident_time",
+                                      "incident","incident_status", "create_time")
+                                    VALUES(#{userId},#{origin},#{destination},#{incidentTime},
+                                    #{incident},#{incidentStatus},NOW());
+    </insert>
+    <!--一个人只能有一个事件-->
+    <select id="selectIncidentNumByUserId" parameterType="int" resultType="java.lang.Integer">
+        SELECT COUNT(id) FROM "ci_car_incident" WHERE user_id=#{userId} and "incident_status"='yes'
+    </select>
+    <!--取消兜风事件-->
+    <update id="cancelCarIncident">
+        UPDATE "ci_car_incident"
+        <set>
+            <if test="status!=null and status!=''">"incident_status"=#{status}</if>
+        </set>
+        where "user_id"=#{userId} and "incident_status"='yes'
+    </update>
+
+
+</mapper>

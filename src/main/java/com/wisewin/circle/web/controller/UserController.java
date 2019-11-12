@@ -218,9 +218,30 @@ public class UserController extends BaseCotroller {
         return;
 
 
-
     }
 
+    /**
+     * 查询用户汽车认证状态
+     * @param request
+     * @param response
+     * yes为已经认证|no为未认证|not未审核|audit审核中
+     */
+        @RequestMapping("/getUserCarStatus")
+        public void getUserCarStatus(HttpServletRequest request,HttpServletResponse response){
+            //获取当前用户
+            UserBO loginUser = super.getLoginUser(request);
+            //如果为空将结束
+            if (loginUser==null){
+                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000000"));
+                super.safeJsonPrint(response, json);
+                return;
+            }
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(loginUser.getCarStatus()));
+            super.safeJsonPrint(response, json);
+            return;
+
+
+        }
 
     /**
      * 忘记密码

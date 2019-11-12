@@ -40,11 +40,12 @@ public class ModelService {
         modelBO.setBeSuperLikeCount(0);//被超级喜欢次数
         modelBO.setSuperLikeCount(0);//超级喜欢次数
         modelBO.setBeShieldingCount(0);//被屏蔽次数
-        String[] models = new String[]{"car","date","friend"};
-        for (int i=0;i<models.length;i++) {
-            modelBO.setModel(models[i]);
-            modelDAO.addDefault(modelBO);
-        }
+        modelBO.setModel("date");//添加一个默认模式为异性模式
+        modelDAO.addDefault(modelBO);
+//        String[] models = new String[]{"car","date","friend"};
+//        for (int i=0;i<models.length;i++) {
+//
+//        }
 
     }
 

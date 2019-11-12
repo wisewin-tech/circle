@@ -59,16 +59,7 @@
     </update>
     <!--通过id查找用户信息-->
     <select id="selectAllById" resultType="com.wisewin.circle.entity.bo.UserBO">
-        select
-                id ,name ,nickname ,password ,email ,mobile,age_group ,
-        head_portrait_url,sex,birthday ,source ,career ,integral ,currency ,learning_goal ,studying_language_id ,
-        language_like_id ,invite_code ,by_invite ,job,qq_openid ,wx_openid ,continuous_sign ,cumulative_sign ,
-        last_sign ,continuous_learning ,cumulative_learning ,study_date datetime ,status ,
-        create_id,update_id ,create_time ,update_time
-        from
-        lt_user
-        where
-        id=#{id}
+        select * from ci_user  where id=#{id}
     </select>
 
     <!--后面的所有留待备用-->
