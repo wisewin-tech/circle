@@ -167,7 +167,6 @@ public class UserController extends BaseCotroller {
                 //查询用户是否设置过密码
                 //验证用户是否存在 不存在注册并设置密码
                 if (userBO == null) {
-
                     String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000012"));
                     super.safeJsonPrint(response, json);
                     return;

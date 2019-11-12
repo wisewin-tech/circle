@@ -49,13 +49,6 @@ public class ModelService {
 
     }
 
-    /**
-     * 修改某个用户某个模式资料
-     * @param modelBO
-     */
-    public void updateModel(ModelBO modelBO){
-        modelDAO.updateModel(modelBO);
-    }
 
 
 }
