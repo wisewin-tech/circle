@@ -55,14 +55,9 @@ public class CarIncidentController extends BaseCotroller {
             return;
         }
 
-        int incidentNum = carIncidentService.selectIncidentNumByUserId(loginUser.getId());
-        if (incidentNum>0){
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000013"));
-            super.safeJsonPrint(response, json);
-            return;
-        }
-        String datearr = new SimpleDateFormat("yyyy-MM-dd").format(new Date()).toString();
-        String incidentTimes = datearr+" "+incidentTime+":00";
+
+        String datestr = new SimpleDateFormat("yyyy-MM-dd").format(new Date()).toString();
+        String incidentTimes = datestr+" "+incidentTime+":00";
         carIncidentService.addCarIncident(loginUser.getId(),origin,destination,incident,incidentTimes,"yes");
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("兜风事件添加成功！"));
         super.safeJsonPrint(response, json);

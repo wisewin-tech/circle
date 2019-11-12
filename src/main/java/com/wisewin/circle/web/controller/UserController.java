@@ -6,6 +6,7 @@ import com.wisewin.circle.entity.bo.PatternBO;
 import com.wisewin.circle.entity.bo.UserBO;
 import com.wisewin.circle.entity.dto.ResultDTOBuilder;
 import com.wisewin.circle.entity.dto.param.DatepatternParam;
+import com.wisewin.circle.service.CarIncidentService;
 import com.wisewin.circle.service.ModelService;
 import com.wisewin.circle.service.UserService;
 import com.wisewin.circle.util.AccountValidatorUtil;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -34,6 +37,8 @@ public class UserController extends BaseCotroller {
     private UserService userService;
     @Resource
     private ModelService modelService;
+    @Resource
+    private CarIncidentService carIncidentService;
 
 
     /**
@@ -217,14 +222,13 @@ public class UserController extends BaseCotroller {
         super.safeJsonPrint(response, json);
         return;
 
-
     }
 
     /**
      * 查询用户汽车认证状态
      * @param request
      * @param response
-     * yes为已经认证|no为未认证|not未审核|audit审核中
+     * carCertificationStatus----yes为已经认证|no为未认证|not未审核|audit审核中
      */
         @RequestMapping("/getUserCarStatus")
         public void getUserCarStatus(HttpServletRequest request,HttpServletResponse response){
@@ -236,7 +240,18 @@ public class UserController extends BaseCotroller {
                 super.safeJsonPrint(response, json);
                 return;
             }
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(loginUser.getCarStatus()));
+            int incidentNum = carIncidentService.selectIncidentNumByUserId(loginUser.getId());
+            String carIncident;
+            //已经存在兜风事件
+            if (incidentNum>0){
+                carIncident="yes";//存在兜风事件
+            }else {
+                carIncident="no";//不存在兜风事件
+            }
+            Map map = new HashMap();
+            map.put("carIncident",carIncident);
+            map.put("carCertificationStatus",loginUser.getCarStatus());
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(map));
             super.safeJsonPrint(response, json);
             return;
 
