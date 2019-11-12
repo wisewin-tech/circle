@@ -4,6 +4,7 @@ package com.wisewin.circle.dao;
 
 import com.wisewin.circle.entity.bo.InterestType;
 import com.wisewin.circle.entity.bo.InterestTypeBO;
+import com.wisewin.circle.entity.dto.param.UserInterestParam;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -34,5 +35,19 @@ public interface InterestTypeDAO {
      * @return
      */
     List<InterestType> selectciUserInterest(@Param("modelId")Integer modelId);
+
+    /**
+     * 删除用户选中兴趣
+     * @param modelId
+     * @return
+     */
+    int deleteUserInterest(@Param("modelId")Integer modelId);
+
+    /**
+     * 插入用户新选中兴趣
+     * @param list
+     * @return
+     */
+    int insetUserInterest(List<UserInterestParam> list);
 
 }

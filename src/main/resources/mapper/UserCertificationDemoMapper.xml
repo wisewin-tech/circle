@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 【用户】 -->
+<mapper namespace="com.wisewin.circle.dao.UserCertificationDemoDAO">
+
+    <select id="selectUserCertificationDemo" resultType="com.wisewin.circle.entity.bo.UserCertificationDemo">
+      select id , demo_picture, create_time,  update_time
+      from  ci_user_certification_demo
+    </select>
+
+</mapper>

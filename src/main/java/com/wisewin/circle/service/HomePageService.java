@@ -1,16 +1,17 @@
 package com.wisewin.circle.service;
 
-import com.wisewin.circle.dao.InterestTypeDAO;
-import com.wisewin.circle.dao.ModelDAO;
-import com.wisewin.circle.dao.UserPictureDAO;
+import com.wisewin.circle.dao.*;
 import com.wisewin.circle.entity.bo.InterestType;
 import com.wisewin.circle.entity.bo.Model;
+import com.wisewin.circle.entity.bo.UserInterestCustom;
 import com.wisewin.circle.entity.bo.UserPicture;
 import com.wisewin.circle.entity.dto.ModelDTO;
 import com.wisewin.circle.entity.dto.ResultDTO;
 import com.wisewin.circle.entity.dto.ResultDTOBuilder;
+import com.wisewin.circle.entity.dto.param.ModelParam;
+import com.wisewin.circle.entity.dto.param.UserInterestParam;
+import com.wisewin.circle.entity.dto.param.UserPictureParam;
 import com.wisewin.circle.util.StringUtils;
-import com.wisewin.circle.web.controller.HomePageController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -18,9 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @Author: Wang bin
@@ -36,6 +36,8 @@ public class HomePageService {
     private ModelDAO modelDAO;
     @Resource
     private UserPictureDAO userPictureDAO;
+    @Resource
+    private UserInterestCustomDAO userInterestCustomDAO;
 
     private static final Logger log = LoggerFactory.getLogger(HomePageService.class);
 
@@ -57,9 +59,10 @@ public class HomePageService {
         }
         ModelDTO mdto = new ModelDTO();
         mdto.setId(models.getId());
+        mdto.setModel(models.getModel());
         mdto.setDescribe(models.getDescribe());
         mdto.setSex(models.getSex());
-        mdto.setBirthday(models.getBirthplace());
+        mdto.setBirthday(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(models.getBirthday()));
         mdto.setConstellation(models.getConstellation());
         mdto.setHeight(models.getHeight());
         mdto.setEducation(models.getEducation());
@@ -75,21 +78,116 @@ public class HomePageService {
         }
         //获取系统兴趣
         List<InterestType> interestTypes = interestTypeDAO.selectciInterestType();
+        System.err.println("系统兴趣"+interestTypes);
         //获取用户自定义兴趣
         List<InterestType> interestTypes2 = interestTypeDAO.selectciUserInterestCustom(models.getId());
+        System.err.println("用户自定义兴趣"+interestTypes2);
         if(!CollectionUtils.isEmpty(interestTypes2)){
             //合并
             interestTypes.addAll(interestTypes);
         }
+        System.err.println("兴趣合并"+interestTypes);
         map.put("interest", interestTypes);
         //获取用户选中的兴趣
         List<InterestType> interestTypes1 = interestTypeDAO.selectciUserInterest(models.getId());
+        System.err.println("用户选中的兴趣"+interestTypes1);
         if(!CollectionUtils.isEmpty(interestTypes1)){
             map.put("userInterest",interestTypes1) ;
         } else {
             map.put("userInterest","") ;
         }
-        return ResultDTOBuilder.success(map);
+        return ResultDTOBuilder.success(map,"1000000");
+    }
+
+
+    /**
+     * 修改模式个人信息
+     * @param modelParam
+     * @return
+     */
+    public ResultDTO updateModel(ModelParam modelParam){
+
+        if(org.springframework.util.StringUtils.isEmpty(modelParam)){
+            return ResultDTOBuilder.failure("0000001");
+        }
+        int i = modelDAO.updateModel(modelParam);
+        if(i > 0 ){
+            return ResultDTOBuilder.success("","1000000");
+        }
+        return ResultDTOBuilder.failure("1111111");
+    }
+
+    /**
+     * 修改背景图
+     * @param userPictureParam
+     * @return
+     */
+    public ResultDTO saveUserPircture(List<UserPictureParam> userPictureParam){
+        if(CollectionUtils.isEmpty(userPictureParam)){
+            return ResultDTOBuilder.failure("0000001");
+        }
+        //删除之前背景图
+        int i = userPictureDAO.deleteUserPicture(userPictureParam.get(0).getModelId());
+        //插入最新背景图
+        i = userPictureDAO.insertUserPicture(userPictureParam);
+        if(i > 0){
+            return ResultDTOBuilder.success("","1000000");
+        }
+        return ResultDTOBuilder.failure("1111111");
+    }
+
+    /**
+     * 修改兴趣
+     * @param userInterestParams
+     * @return
+     */
+    public ResultDTO saveUserInterest(List<UserInterestParam> userInterestParams){
+        if(CollectionUtils.isEmpty(userInterestParams)){
+            return ResultDTOBuilder.failure("0000001");
+        }
+        //删除之前选中兴趣
+        int i = interestTypeDAO.deleteUserInterest(userInterestParams.get(0).getModelId());
+        i = interestTypeDAO.insetUserInterest(userInterestParams);
+        if(i > 0){
+            return ResultDTOBuilder.success("","1000000");
+        }
+        return ResultDTOBuilder.failure("1111111");
+    }
+
+
+    /**
+     * 修改自定义兴趣
+     * @param list
+     * @return
+     */
+    public ResultDTO saveUserInterestCustom(List<UserInterestCustom> list){
+        if(CollectionUtils.isEmpty(list)){
+            return ResultDTOBuilder.failure("0000001");
+        }
+        int i = userInterestCustomDAO.deleteUserInterestCuston(list.get(0).getModelId());
+        i = userInterestCustomDAO.insertUserInterestCuston(list);
+        if(i > 0){
+            return ResultDTOBuilder.success("","1000000");
+        }
+        return ResultDTOBuilder.failure("1111111");
+    }
+
+    /**
+     * 添加自定义兴趣
+     * @param userInterestCustom
+     * @return
+     */
+    public ResultDTO insertUserInterestCustom(UserInterestCustom userInterestCustom){
+        if(org.springframework.util.StringUtils.isEmpty(userInterestCustom)){
+            return ResultDTOBuilder.failure("0000001");
+        }
+        List<UserInterestCustom> list = new ArrayList<UserInterestCustom>();
+        list.add(userInterestCustom);
+        int i = userInterestCustomDAO.insertUserInterestCuston(list);
+        if(i > 0){
+            return ResultDTOBuilder.success("","1000000");
+        }
+        return ResultDTOBuilder.failure("1111111");
     }
 
 }

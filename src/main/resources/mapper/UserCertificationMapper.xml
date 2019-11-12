@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 【用户】 -->
+<mapper namespace="com.wisewin.circle.dao.UserCertificationDAO">
+
+    <insert id="insertUserCertification" parameterType="com.wisewin.circle.entity.bo.UserCertification">
+      insert into ci_user_certification
+      (user_id, demo_id, user_picture, create_time,
+      remark, status, admin_id, demo-picture)
+      values
+      (
+      #{userId},
+      #{demoId},
+      #{userPicture},
+      now{},
+      #{remark},
+      #{status},
+      #{adminId},
+      #{demoPicture}
+      )
+    </insert>
+
+</mapper>

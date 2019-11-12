@@ -10,7 +10,7 @@ public class InterestType {
 
     private Integer typeId;
     private String typeName;
-    private String intersetName;
+    private String interestName;
 
     public Integer getTypeId() {
         return typeId;
@@ -28,13 +28,20 @@ public class InterestType {
         this.typeName = typeName;
     }
 
-    public String getIntersetName() {
-        return intersetName;
+    public String getInterestName() {
+        return interestName;
     }
 
-    public void setIntersetName(String intersetName) {
-        this.intersetName = intersetName;
+    public void setInterestName(String interestName) {
+        this.interestName = interestName;
     }
 
-
+    @Override
+    public String toString() {
+        return "InterestType{" +
+                "typeId=" + typeId +
+                ", typeName='" + typeName + '\'' +
+                ", interestName='" + interestName + '\'' +
+                '}';
+    }
 }

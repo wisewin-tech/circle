@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 【用户】 -->
+<mapper namespace="com.wisewin.circle.dao.UserInterestCustomDAO">
+
+    <delete id="deleteUserInterestCuston">
+        delete from ci_user_interest_custom where model_id = #{modelId}
+    </delete>
+
+    <insert id="insertUserInterestCuston" parameterType="java.util.List" useGeneratedKeys="false">
+      insert into ci_user_interest_custom (model_id, type_id, interest_name)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.modelId},
+            #{item.typeId},
+            #{item.interestName}
+            )
+        </foreach>
+    </insert>
+</mapper>

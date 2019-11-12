@@ -11,8 +11,14 @@ public class ResultDTOBuilder {
 
     public ResultDTOBuilder() {
     }
+    public static <T> ResultDTO<T> success(T data,String code) {
+        Env env = new Env();
+        ResultDTO<T> instance = getInstance(code, StringUtils.clearNull(env.getProperty(code)), true, data);
+        return instance;
+    }
 
     public static <T> ResultDTO<T> success(T data) {
+        Env env = new Env();
         ResultDTO<T> instance = getInstance("", "", true, data);
         return instance;
     }

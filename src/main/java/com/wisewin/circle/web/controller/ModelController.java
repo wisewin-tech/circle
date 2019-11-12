@@ -36,36 +36,7 @@ public class ModelController extends BaseCotroller {
     @Resource
     private ModelService modelService;
 
-    /**
-     *修改某个用户某个模式的筛选条件
-     * @param modelBO
-     * @param response
-     * @param request
-     */
-    @RequestMapping("/updateModel")
-    public void updateModel(ModelBO modelBO,HttpServletResponse response, HttpServletRequest request) {
-        //获取当前用户
-        UserBO loginUser = super.getLoginUser(request);
-        //如果为空将结束
-        if (loginUser==null){
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000000"));
-            super.safeJsonPrint(response, json);
-            return;
-        }
-        //参数验证
-        if (modelBO.getUserId()==null|| StringUtils.isEmpty(modelBO.getModel())){
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
-            super.safeJsonPrint(response, json);
-            return;
-        }
-        modelService.updateModel(modelBO);
-        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("筛选条件更新成功！"));
-        super.safeJsonPrint(response, json);
-        return;
 
-
-
-    }
 
 
 }
