@@ -3,6 +3,8 @@ package com.wisewin.circle.service;
 import com.wisewin.circle.dao.KeyValDAO;
 import com.wisewin.circle.dao.ModelDAO;
 import com.wisewin.circle.entity.bo.ModelBO;
+import com.wisewin.circle.entity.bo.ScreenParamBO;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,6 +51,36 @@ public class ModelService {
 
     }
 
+    /**
+     * 修改用户筛选条件
+     * @param userId 用户id
+     * @param model 模式名称
+     * @param searchDistance 搜索距离
+     * @param searchAge 搜索性别
+     * @param searchSex 搜索年龄
+     * @param sexStatus 真实性认证
+     * @param carCertificationStatus 车辆认证状态
+     */
+    public void updateScreen(Integer userId,String model,String searchDistance,String searchAge,String searchSex,String sexStatus,String carCertificationStatus){
+        ScreenParamBO screenParamBO = new ScreenParamBO();
+        screenParamBO.setUserId(userId);
+        screenParamBO.setModel(model);
+        screenParamBO.setSearchDistance(searchDistance);
+        screenParamBO.setSearchAge(searchAge);
+        screenParamBO.setSearchSex(searchSex);
+        screenParamBO.setSexStatus(sexStatus);
+        screenParamBO.setCarCertificationStatus(carCertificationStatus);
+        modelDAO.updateScreen(screenParamBO);
+    }
 
+    /**
+     * 查询筛选条件
+     * @param model
+     * @param userId
+     * @return
+     */
+    public ScreenParamBO selectScreen(String model, Integer userId){
+        return modelDAO.selectScreen(model,userId);
+    }
 
 }

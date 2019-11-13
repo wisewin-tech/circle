@@ -2,6 +2,7 @@ package com.wisewin.circle.dao;
 
 import com.wisewin.circle.entity.bo.Model;
 import com.wisewin.circle.entity.bo.ModelBO;
+import com.wisewin.circle.entity.bo.ScreenParamBO;
 import com.wisewin.circle.entity.dto.param.ModelParam;
 import org.apache.ibatis.annotations.Param;
 
@@ -20,11 +21,24 @@ public interface ModelDAO {
      */
     Model selectModel(@Param("model")String model, @Param("userId")Integer userId);
 
+    /**
+     * 修改用户筛选条件
+     */
+    void updateScreen(ScreenParamBO screenParamBO);
 
+    /**
+     * 查询筛选条件
+     * @param model
+     * @param userId
+     * @return
+     */
+    ScreenParamBO selectScreen(@Param("model")String model, @Param("userId")Integer userId);
     /**
      * 修改用户信息
      * @param modelParam
      * @return
      */
     int updateModel(ModelParam modelParam);
+
+
 }

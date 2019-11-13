@@ -3,6 +3,7 @@ package com.wisewin.circle.web.controller;
 import com.wisewin.circle.common.constants.SysConstants;
 import com.wisewin.circle.common.constants.UserConstants;
 import com.wisewin.circle.entity.bo.PatternBO;
+import com.wisewin.circle.entity.bo.ScreenParamBO;
 import com.wisewin.circle.entity.bo.UserBO;
 import com.wisewin.circle.entity.dto.ResultDTOBuilder;
 import com.wisewin.circle.entity.dto.param.DatepatternParam;
@@ -253,7 +254,71 @@ public class UserController extends BaseCotroller {
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(map));
             super.safeJsonPrint(response, json);
             return;
+        }
 
+    /**
+     * 查询用户筛选条件
+     * @param model 模式
+     * @param request
+     * @param response
+     */
+    @RequestMapping("/selectScreen")
+    public void selectScreen(String model,HttpServletRequest request,HttpServletResponse response){
+            //获取当前用户
+            UserBO loginUser = super.getLoginUser(request);
+            //如果为空将结束
+            if (loginUser==null){
+                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000000"));
+                super.safeJsonPrint(response, json);
+                return;
+            }
+            //参数验证
+            if (StringUtils.isEmpty(model)){
+                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+                super.safeJsonPrint(response, json);
+                return;
+            }
+            ScreenParamBO screenParamBO = modelService.selectScreen(model,loginUser.getId());
+            UserBO userBO = userService.selectById(loginUser.getId());
+            Map map = new HashMap();
+            map.put("screenBO",screenParamBO);
+            map.put("certificationStatus",userBO.getCertificationStatus());
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(map));
+            super.safeJsonPrint(response, json);
+            return;
+
+        }
+    /**
+     * 修改用户筛选条件
+     * @param model 模式名称
+     * @param searchDistance 搜索距离
+     * @param searchAge 搜索性别
+     * @param searchSex 搜索年龄
+     * @param sexStatus 真实性认证
+     * @param carCertificationStatus 车辆认证状态
+     * @param request
+     * @param response
+     */
+        @RequestMapping("/updateScreen")
+        public void updateScreen(String model,String searchDistance,String searchAge,String searchSex,String sexStatus,String carCertificationStatus,HttpServletRequest request,HttpServletResponse response){
+            //获取当前用户
+            UserBO loginUser = super.getLoginUser(request);
+            //如果为空将结束
+            if (loginUser==null){
+                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000000"));
+                super.safeJsonPrint(response, json);
+                return;
+            }
+            //参数验证
+            if (StringUtils.isEmpty(model)){
+                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+                super.safeJsonPrint(response, json);
+                return;
+            }
+            modelService.updateScreen(loginUser.getId(),model,searchDistance,searchAge,searchSex,sexStatus,carCertificationStatus);
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("筛选条件更新成功！"));
+            super.safeJsonPrint(response, json);
+            return;
 
         }
 

@@ -22,6 +22,36 @@
     <select id="selectModel" resultType="com.wisewin.circle.entity.bo.Model">
        select * from ci_model where model = #{model} and user_id = #{userId}
     </select>
+    <!--修改筛选条件-->
+    <update id="updateScreen">
+         update ci_model
+         <set>
+             <if test="searchDistance != null and searchDistance != ''">
+                 search_distance = #{searchDistance},
+             </if>
+             <if test="searchSex != null and searchSex != ''">
+                 search_sex = #{searchSex},
+             </if>
+             <if test="searchAge != null and searchAge != ''">
+                 search_age =  #{searchAge},
+             </if>
+             <if test="sexStatus != null and sexStatus != ''">
+                 sex_status =  #{sexStatus},
+             </if>
+             <if test="carCertificationStatus != null and carCertificationStatus != ''">
+                 car_certification_status = #{carCertificationStatus},
+             </if>
+             update_time = NOW()
+         </set>
+        where user_id=#{userId} and model=#{model}
+    </update>
+
+    <!--查询用户筛选条件-->
+    <select id="selectScreen" resultType="com.wisewin.circle.entity.bo.ScreenParamBO">
+        SELECT user_id,model,search_distance,search_sex,search_age,sex_status,car_certification_status
+        FROM "ci_model"
+        WHERE user_id=#{userId} AND model=#{model}
+    </select>
 
 
 
