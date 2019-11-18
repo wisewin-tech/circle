@@ -20,7 +20,7 @@ public class MateService {
 
     public List<UserMsgBO> matching(String type, Integer userId){
 
-        //查询用户筛选条件
+    /*    //查询用户筛选条件
         Map<String, Object> map = userService.queryCondition(type,userId);
         map.put("userId",userId);
         map.put("type",type);
@@ -52,9 +52,9 @@ public class MateService {
             return  new ArrayList<UserMsgBO>();
         }
         map.put("list",userIds);
-        List<UserMsgBO> userMsgBOS = mateDAO.selectUserMsgByUserIds(map);
+        List<UserMsgBO> userMsgBOS = mateDAO.selectUserMsgByUserIds(map);*/
 
-        return userMsgBOS;
+        return null;
     }
 
     /**

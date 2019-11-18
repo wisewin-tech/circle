@@ -2,7 +2,6 @@ package com.wisewin.circle.web.controller;
 
 import com.wisewin.circle.common.constants.SysConstants;
 import com.wisewin.circle.common.constants.UserConstants;
-import com.wisewin.circle.entity.bo.PatternBO;
 import com.wisewin.circle.entity.bo.ScreenParamBO;
 import com.wisewin.circle.entity.bo.UserBO;
 import com.wisewin.circle.entity.dto.ResultDTOBuilder;
@@ -430,48 +429,6 @@ public class UserController extends BaseCotroller {
         }
         //手机号格式通过,返回true
         return true;
-    }
-
-    /**
-     * 添加默认模式图片和基本资料
-     * Integer userId;//用户id
-     * String nameurl; //图片地址
-     * Double  rank; //排序
-     */
-    @RequestMapping("/addDatepattern")
-    public void addDatepattern(HttpServletRequest request, HttpServletResponse response, DatepatternParam param){
-
-        //获取当前用户
-        UserBO loginUser = super.getLoginUser(request);
-        Integer id = loginUser.getId();
-
-        //如果为空将结束
-        if (id==null || StringUtils.isEmpty(param.getNameurl()) || StringUtils.isEmpty(param.getName())
-                || StringUtils.isEmpty(param.getGender())){
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
-            super.safeJsonPrint(response, json);
-            return;
-        }
-        //查询是否有数据
-        int countPatternjoin=userService.countPattern(id);
-        if (countPatternjoin>0){
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000007"));
-            super.safeJsonPrint(response, json);
-            return;
-        }
-
-
-        boolean addDatepatternjoin=userService.addDatepattern(id,param);
-        if (addDatepatternjoin){
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(""));
-            super.safeJsonPrint(response, json);
-            return;
-        }
-        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
-        super.safeJsonPrint(response, json);
-        return;
-
-
     }
 
     /**

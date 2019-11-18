@@ -15,7 +15,7 @@ public class UserMsgBO {
     private String school;//学校
     private String describe;//个性签名
     private double distance;//距离
-    private List<InteriorInterestBO> interest; //兴趣
+   // private List<InteriorInterestBO> interest; //兴趣
     private List<String>  pictures;//照片
 
 
@@ -91,13 +91,6 @@ public class UserMsgBO {
         this.distance = distance;
     }
 
-    public List<InteriorInterestBO> getInterest() {
-        return interest;
-    }
-
-    public void setInterest(List<InteriorInterestBO> interest) {
-        this.interest = interest;
-    }
 
     public List<String> getPictures() {
         return pictures;

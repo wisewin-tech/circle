@@ -121,43 +121,6 @@
 
     </update>
 
-    <!--添加用户模式以用户的关系-->
-    <insert id="addPattern" parameterType="com.wisewin.circle.entity.bo.PatternBO" useGeneratedKeys="true"
-            keyProperty="id">
-       INSERT INTO "ce_user_pattern"( "user_id", "update_time", "type")
-            VALUES ( #{userId}, NOW(),#{type});
-    </insert>
 
-    <!--查询数据的总条数-->
-    <select id="countPattern" resultType="int">
-      SELECT
-        COUNT(id)
-      FROM
-         ce_user_pattern
-        WHERE
-          user_id=#{id}
-        AND
-          type='date'
-    </select>
-
-
-    <!--查询数据-->
-    <select id="queryPattern" resultType="com.wisewin.circle.entity.bo.PatternBO">
-        SELECT
-          id,user_id,
-          type
-        FROM
-          ce_user_pattern
-        WHERE
-          user_id=#{id}
-        AND
-          type='date'
-    </select>
-
-<!--查询用户筛选条件-->
-    <select id="queryCondition"   resultType="com.wisewin.circle.entity.bo.PatternBO" >
-        SELECT  *  FROM    ce_user_pattern  cup LEFT  JOIN  ce_user cu ON cu.id=cup.user_id
-         WHERE  cup.user_id=#{userId}   AND   cup.type=#{type}
-    </select>
 
 </mapper>

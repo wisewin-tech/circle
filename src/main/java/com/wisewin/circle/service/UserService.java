@@ -6,7 +6,6 @@ import com.wisewin.circle.common.constants.UserConstants;
 import com.wisewin.circle.dao.StatisticalRecordsDAO;
 import com.wisewin.circle.dao.UserDAO;
 import com.wisewin.circle.entity.bo.BackgroundBO;
-import com.wisewin.circle.entity.bo.PatternBO;
 import com.wisewin.circle.entity.bo.StatisticalRecords;
 import com.wisewin.circle.entity.bo.UserBO;
 import com.wisewin.circle.entity.dto.param.DatepatternParam;
@@ -113,46 +112,9 @@ public class UserService {
     }
 
 
-    //查询数据的总条数
-    public int countPattern(Integer id){
-        return  userDAO.countPattern(id);
-    }
-
-    //添加基本资料
-    public boolean   addDatepattern(Integer id, DatepatternParam param){
-        Map<String,Object> map=new HashMap<String, Object>();
-        map.put("id",id);
-        map.put("name",param.getName());
-        map.put("gender",param.getGender());
-        map.put("birthday",param.getBirthday());
-        //添加用户信息
-        userDAO.updateUserDate(map);
-
-        PatternBO patternBO=new PatternBO(id, PatternConstants.DATE);
-        //添加模式
-        userDAO.addPattern(patternBO);
-
-        //添加背景图PatternBO
-        BackgroundBO backgroundBO=new BackgroundBO(param.getNameurl(),param.getRank(),patternBO.getId());
-        return userDAO.addDatepattern(backgroundBO)>0;
-    }
 
 
-    /**
-     * 查询用户筛选条件
-     * @param type  模式 DATE/BFF
-     * @param userId 用户id
-     */
-    public Map<String,Object> queryCondition(String type,Integer userId){
-        PatternBO patternBO = userDAO.queryCondition(type, userId);
-        Map<String,Object>  queryMap=new HashMap<String, Object>();
-        queryMap.put("startAge",this.birthDate(patternBO.getInquireAge())); //开始年龄
-        queryMap.put("endAge",this.birthDate(patternBO.getInquireAgeOver())); //结束年龄
-        queryMap.put("gender",patternBO.getInquireSex());                   //查询性别
-        queryMap.put("distance",patternBO.getQueryLocation());              //查询距离
-        queryMap.put("location",patternBO.getGeom());                       //当前所在位置
-        return queryMap;
-    }
+
 
     //通过ids 找出用户信息
     private  Date  birthDate(Integer age){

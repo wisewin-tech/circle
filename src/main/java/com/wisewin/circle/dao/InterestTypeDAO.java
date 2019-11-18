@@ -3,7 +3,6 @@ package com.wisewin.circle.dao;
 
 
 import com.wisewin.circle.entity.bo.InterestType;
-import com.wisewin.circle.entity.bo.InterestTypeBO;
 import com.wisewin.circle.entity.dto.param.UserInterestParam;
 import org.apache.ibatis.annotations.Param;
 
