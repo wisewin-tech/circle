@@ -22,10 +22,8 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/theGarage")
 public class TheGarageController extends BaseCotroller {
 
-
     @Resource
     private TheGarageService theGarageService;
-
     /**
      * 添加车库认证
      * Integer userId; //用户id
@@ -63,7 +61,4 @@ public class TheGarageController extends BaseCotroller {
             return;
         }
     }
-
-
-
 }

@@ -1,10 +1,7 @@
 package com.wisewin.circle.service;
 
 import com.wisewin.circle.dao.PatternDAO;
-import com.wisewin.circle.dao.TestDAO;
-import com.wisewin.circle.entity.bo.AdminBO;
 import com.wisewin.circle.entity.bo.PatternBO;
-import com.wisewin.circle.util.JsonUtils;
 import org.json.JSONArray;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

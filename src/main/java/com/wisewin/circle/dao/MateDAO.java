@@ -28,4 +28,13 @@ public interface MateDAO {
      */
 
     List<UserMsgBO>  selectUserMsgByUserIds(Map<String,Object>  map);
+
+    /**
+     *  热度用户
+     * @param map
+     * @return
+     */
+    List<Integer> queryHeatUser(Map<String, Object> map);
+
+
 }

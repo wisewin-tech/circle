@@ -3,8 +3,7 @@ package com.wisewin.circle.service;
 import com.wisewin.circle.common.constants.FriendConstants;
 import com.wisewin.circle.dao.FriendDAO;
 import com.wisewin.circle.dao.RelationDAO;
-import com.wisewin.circle.dao.TestDAO;
-import com.wisewin.circle.entity.bo.AdminBO;
+
 import com.wisewin.circle.entity.bo.FriendBO;
 import com.wisewin.circle.entity.bo.RelationBO;
 import org.springframework.stereotype.Service;

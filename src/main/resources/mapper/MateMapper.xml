@@ -7,7 +7,6 @@
 
 
     <select id="queryLikeId" resultType="java.lang.Integer"  parameterType="map">
-
         SELECT  ation.id   FROM   ce_relation ation
                             LEFT JOIN    ce_relation cmain  ON ation.user_id_main=cmain.user_id
                             LEFT JOIN  ce_user  us  ON  us.id=ation.user_id_main
@@ -50,15 +49,9 @@
                 #{id}
             </foreach>
         </if>
-        ORDER  BY cup.like_sum  DESC
+        ORDER BY  cup.like_sum  DESC
         LIMIT  #{count}  OFFSET  0
     </select>
-
-
-
-
-
-
 
 
     <resultMap id="msgMapper" type="com.wisewin.circle.entity.bo.UserMsgBO">
@@ -96,7 +89,19 @@
         </foreach>
     </select>
 
-
-
+    <!--热度用户-->
+    <select id="queryHeatUser"  parameterType="map"  resultType="java.lang.Integer" >
+        SELECT (cu.id) FROM ce_user cu LEFT JOIN  ce_user_pattern  cup ON  cup.user_id=cu.id
+        WHERE
+        <if test="gender!=null">
+            cu.gender=#{gender} AND
+        </if>
+        <if test="startAge!=null and endAge!=null" >
+            cu.birthday  BETWEEN #{startAge}  AND  #{endAge}  AND
+        </if>
+        cu.account_status='yes'  AND  cup.type=#{type}
+        ORDER BY  cup.like_sum  DESC
+        LIMIT  #{count}  OFFSET  0
+    </select>
 
 </mapper>

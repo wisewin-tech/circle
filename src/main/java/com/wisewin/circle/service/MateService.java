@@ -24,8 +24,6 @@ public class MateService {
         Map<String, Object> map = userService.queryCondition(type,userId);
         map.put("userId",userId);
         map.put("type",type);
-
-
         List<Integer> like = this.like(map); //喜欢该用户的用户  默认两个
         //回流用户
         List<Integer> backflow=this.backflow(map);
@@ -97,7 +95,13 @@ public class MateService {
    }
 
 
-
+    /**
+     * 热度用户
+     */
+   public List<Integer>  queryHeatUser(Map<String,Object>  map){
+        List<Integer>  list=mateDAO.queryHeatUser(map);
+        return  list;
+   }
 
 
 }
