@@ -52,6 +52,7 @@ public class HomePageService {
         if(StringUtils.isEmpty(model)){
           return ResultDTOBuilder.failure("0000001");
         }
+        System.err.println("model"+model+"userId"+userId);
         //获取用户基本信息
         Model models = modelDAO.selectModel(model, userId);
         if(org.springframework.util.StringUtils.isEmpty(model)){

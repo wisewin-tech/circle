@@ -62,7 +62,6 @@ public class HomePageController extends BaseCotroller {
         return;
     }
 
-
     /**
      * 修改背景墙
      * @param request
@@ -118,7 +117,4 @@ public class HomePageController extends BaseCotroller {
         super.safeJsonPrint(response, jsonString4JavaPOJO);
         return;
     }
-
-
-
 }

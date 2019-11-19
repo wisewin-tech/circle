@@ -12,8 +12,8 @@ public class ModelParam {
     private String describe;
     private String birthday;
     private String constellation;
-    private Integer height;
-    private Integer weight;
+    private String height;
+    private String weight;
     private String education;
     private String birthplace;
     private Integer beLikeCount;
@@ -61,19 +61,19 @@ public class ModelParam {
         this.constellation = constellation;
     }
 
-    public Integer getHeight() {
+    public String getHeight() {
         return height;
     }
 
-    public void setHeight(Integer height) {
+    public void setHeight(String height) {
         this.height = height;
     }
 
-    public Integer getWeight() {
+    public String getWeight() {
         return weight;
     }
 
-    public void setWeight(Integer weight) {
+    public void setWeight(String weight) {
         this.weight = weight;
     }
 
@@ -119,14 +119,14 @@ public class ModelParam {
 
     @Override
     public String toString() {
-        return "ModelDTO{" +
+        return "ModelParam{" +
                 "id=" + id +
                 ", model='" + model + '\'' +
                 ", describe='" + describe + '\'' +
                 ", birthday='" + birthday + '\'' +
                 ", constellation='" + constellation + '\'' +
-                ", height=" + height +
-                ", weight=" + weight +
+                ", height='" + height + '\'' +
+                ", weight='" + weight + '\'' +
                 ", education='" + education + '\'' +
                 ", birthplace='" + birthplace + '\'' +
                 ", beLikeCount=" + beLikeCount +

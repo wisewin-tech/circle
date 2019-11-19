@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 【用户】 -->
+<mapper namespace="com.wisewin.circle.dao.MathchingDAO">
+
+    <insert id="insertMatchingCar" parameterType="com.wisewin.circle.entity.bo.Matching">
+    insert into ci_matching_car
+    (user_id,for_user,operation_status,create_time)
+    values
+    (#{userId, #{forUser}, #{operationStatus}, now()
+    </insert>
+
+    <insert id="insertMatchingDate" parameterType="com.wisewin.circle.entity.bo.Matching">
+    insert into ci_matching_date
+    (user_id,for_user,operation_status,create_time)
+    values
+    (#{userId, #{forUser}, #{operationStatus}, now()
+    </insert>
+
+    <insert id="insertMatchingFriend" parameterType="com.wisewin.circle.entity.bo.Matching">
+    insert into ci_matching_friend
+    (user_id,for_user,operation_status,create_time)
+    values
+    (#{userId, #{forUser}, #{operationStatus}, now()
+    </insert>
+
+    <select id="selectCountFriend" resultType="int">
+     select count(1) from  ci_matching_friend
+     where  user_id = #{userId}
+     and   for_user = #{forUser}
+    </select>
+
+    <select id="selectCountDate" resultType="int">
+        select count(1) from  ci_matching_date
+     where  user_id = #{userId}
+     and   for_user = #{forUser}
+    </select>
+
+    <select id="selectCountCar" resultType="int">
+       select count(1) from  ci_matching_car
+     where  user_id = #{userId}
+     and   for_user = #{forUser}
+    </select>
+</mapper>

@@ -170,8 +170,6 @@ public class BadWordUtil {
     /**
      * TODO 将我们的敏感词库构建成了一个类似与一颗一颗的树，这样我们判断一个词是否为敏感词时就大大减少了检索的匹配范围。
      * @param keyWordSet 敏感词库
-     * @author yqwang0907
-     * @date 2018年2月28日下午5:28:08
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     private static void addBadWordToHashMap(Set<String> keyWordSet) {

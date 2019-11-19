@@ -19,7 +19,7 @@ public interface ModelDAO {
      * @param model 模式类型
      * @param userId 用户id
      */
-    Model selectModel(@Param("model")String model, @Param("userId")Integer userId);
+    Model selectModel(@Param("model")String model, @Param("userId")int userId);
 
     /**
      * 修改用户筛选条件
@@ -41,4 +41,24 @@ public interface ModelDAO {
     int updateModel(ModelParam modelParam);
 
 
+    /**
+     * 被喜欢次数加一
+     * @param modelId
+     * @return
+     */
+    int updateLikeCount(@Param("modelId")String modelId);
+
+    /**
+     * 被超级喜欢次数加一
+     * @param modelId
+     * @return
+     */
+    int updateSuperLikeCount(@Param("modelId")String modelId);
+
+    /**
+     * 被屏蔽次数加一
+     * @param modelId
+     * @return
+     */
+    int updateshieldingCount(@Param("modelId")String modelId);
 }

@@ -58,7 +58,7 @@
 
     <update id="updateModel" parameterType="com.wisewin.circle.entity.dto.param.ModelParam">
         update ci_model
-        set
+        <set>
             <if test="beLikeCount != null and beLikeCount != ''">
                 be_like_count = #{beLikeCount},
             </if>
@@ -77,7 +77,7 @@
             <if test="weight != null and weight != ''">
                 weight =  #{weight},
             </if>
-            <if test="height != nul and height != ''">
+            <if test="height != null and height != ''">
                 height = #{height},
             </if>
             <if test="constellation != null and constellation != ''">
@@ -89,8 +89,25 @@
             <if test="describe != null and describe != ''">
                 describe =  #{describe},
             </if>
-        where id = #{id}
+        </set>
+          where id = #{id}
+    </update>
 
+    <update id="updateLikeCount">
+        update ci_model
+        set  be_like_count = be_like_count + 1
+        where id = #{modelId}
+    </update>
 
+    <update id="updateSuperLikeCount">
+        update ci_model
+        set  be_super_like_count = be_super_like_count + 1
+        where id = #{modelId}
+    </update>
+
+    <update id="updateshieldingCount">
+        update ci_model
+        set  be_shielding_count = be_shielding_count + 1
+        where id = #{modelId}
     </update>
 </mapper>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 【用户】 -->
+<mapper namespace="com.wisewin.circle.dao.MatchingFriendedDAO">
+
+    <insert id="inserMatchingFriended" parameterType="com.wisewin.circle.entity.bo.MatchingFriended">
+        insert into ci_matching_friended
+        (user_id,friends_id,model,friends_status,create_time
+         ,close_time,remark)
+         values (
+         #{userId},#{friendsId},#{model},'yes',now(),'',#{remark}
+         )
+    </insert>
+
+
+</mapper>
