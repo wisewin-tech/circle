@@ -131,4 +131,11 @@
        UPDATE ci_model  SET  first = 'no' WHERE id = #{userId} and model=#{model};
     </update>
 
+    <update id="updateLongitudeAndLatitude"  parameterType="java.util.Map" >
+        UPDATE ci_user SET longitude=#{longitude} , latitude=#{latitude}  where id = #{userId}
+    </update>
+
+    <update id="updateLocation"  parameterType="java.util.Map" >
+        UPDATE ci_user SET  where_is = ST_POINT(latitude, longitude)  where id = #{userId}
+    </update>
 </mapper>

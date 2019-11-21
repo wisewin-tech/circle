@@ -1,5 +1,6 @@
 package com.wisewin.circle.service;
 
+import com.wisewin.circle.common.constants.UserConstants;
 import com.wisewin.circle.dao.MateDAO;
 import com.wisewin.circle.entity.bo.IncidentMsgBO;
 import com.wisewin.circle.entity.bo.UserBO;
@@ -23,9 +24,6 @@ public class MateService {
 
     @Resource
     private MateDAO mateDAO;
-    @Resource
-    private UserService userService;
-
 
     public  List<UserMsgBO>  matching(String model, UserBO user,boolean flag,Map<String,Object> search) {
         //查询用户筛选项
@@ -50,7 +48,7 @@ public class MateService {
         search.put("num",10-resultSet.size());
         //查询用户
         if(resultSet.size()<10){
-            if(model.equals("car")){
+            if(model.equals(UserConstants.CAR.getValue())){
                 List<Long> carIds = mateDAO.queryCarUser(search);
                 resultSet.addAll(carIds);
             }else{
@@ -217,7 +215,7 @@ public class MateService {
                 next.setInterest(userMSgInterests);
 
                 //事件 是car模式并且是司机
-                if("yes".equals(driver) && "car".equals(model)){
+                if(UserConstants.Yes.getValue().equals(driver) && UserConstants.CAR.getValue().equals(model)){
                     IncidentMsgBO incidentMsgBO = mateDAO.queryIncident(next.getId());
                     next.setIncident(incidentMsgBO);
                 }

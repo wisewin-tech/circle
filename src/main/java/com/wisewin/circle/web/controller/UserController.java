@@ -468,4 +468,32 @@ public class UserController extends BaseCotroller {
         String json = JsonUtils.getJsonString4JavaPOJO(userBO);
         super.safeJsonPrint(response, json);
     }
+
+
+    /**
+     *
+     * @param request
+     * @param response
+     * @param latitude  纬度
+     * @param longitude 经度
+     */
+    @RequestMapping("/updateLocation")
+    public void updateLocation(HttpServletRequest request, HttpServletResponse response,Double latitude,Double longitude) {
+        //获取当前用户
+        UserBO loginUser = super.getLoginUser(request);
+        //如果为空将结束
+        if (loginUser==null){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000000"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
+        if (latitude==null || longitude==null){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
+        userService.updateLocation(loginUser.getId(),latitude,longitude);
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(""));
+        super.safeJsonPrint(response, json);
+    }
 }

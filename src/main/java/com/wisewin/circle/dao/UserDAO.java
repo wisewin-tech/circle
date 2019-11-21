@@ -3,7 +3,7 @@ package com.wisewin.circle.dao;
 
 import com.wisewin.circle.entity.bo.BackgroundBO;
 import com.wisewin.circle.entity.bo.UserBO;
-import org.apache.ibatis.annotations.MapKey;
+
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Map;
@@ -99,4 +99,8 @@ public interface UserDAO {
 
     //改为非第一次匹配
     void updateFirst(@Param("userId") Long userId,@Param("model") String model);
+
+    void updateLongitudeAndLatitude(Map<String,Object> map);
+
+    void updateLocation(Map<String,Object> map);
 }

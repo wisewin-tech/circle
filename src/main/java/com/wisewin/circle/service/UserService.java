@@ -1,14 +1,14 @@
 package com.wisewin.circle.service;
 
 
-import com.wisewin.circle.common.constants.PatternConstants;
+
 import com.wisewin.circle.common.constants.UserConstants;
 import com.wisewin.circle.dao.StatisticalRecordsDAO;
 import com.wisewin.circle.dao.UserDAO;
-import com.wisewin.circle.entity.bo.BackgroundBO;
+
 import com.wisewin.circle.entity.bo.StatisticalRecords;
 import com.wisewin.circle.entity.bo.UserBO;
-import com.wisewin.circle.entity.dto.param.DatepatternParam;
+
 import com.wisewin.circle.util.DateUtils;
 import com.wisewin.circle.util.MD5Util;
 import com.wisewin.circle.util.RandomUtils;
@@ -197,7 +197,18 @@ public class UserService {
         return true;
     }
 
-    public static void main(String[] args) {
-    		send("18631323023");
+
+    /**
+     *  实时更新位置
+     * @param latitude  纬度
+     * @param longitude 经度
+     */
+    public void updateLocation(Long userId,Double latitude, Double longitude) {
+        Map<String,Object>  paramMap=new HashMap<String, Object>();
+        paramMap.put("latitude",latitude);
+        paramMap.put("longitude",longitude);
+        paramMap.put("userId",userId);
+        userDAO.updateLongitudeAndLatitude(paramMap);
+        userDAO.updateLocation(paramMap);
     }
 }

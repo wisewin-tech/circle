@@ -1,5 +1,6 @@
 package com.wisewin.circle.web.controller;
 
+import com.wisewin.circle.common.constants.UserConstants;
 import com.wisewin.circle.entity.bo.UserBO;
 import com.wisewin.circle.entity.bo.UserMsgBO;
 import com.wisewin.circle.entity.dto.ResultDTOBuilder;
@@ -49,7 +50,7 @@ public class MateController extends BaseCotroller {
         //验证首次匹配
         String status = loginUser.getFrist().get(model);
         boolean flag=false;
-        if(!"yes".equals(status)){
+        if(!UserConstants.Yes.getValue().equals(status)){
             //修改数据库改为 非第一次匹配
             userService.updateFirst(loginUser.getId(),model);
             //更新缓存
