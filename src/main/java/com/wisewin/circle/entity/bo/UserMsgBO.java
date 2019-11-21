@@ -1,78 +1,64 @@
 package com.wisewin.circle.entity.bo;
 
-import java.math.BigDecimal;
-import java.util.Date;
+
+import com.wisewin.circle.common.base.BaseModel;
+
 import java.util.List;
 
-public class UserMsgBO {
+public class UserMsgBO extends BaseModel {
 
-    private Integer id;
-    private String name; //姓名
-    private Integer age; //年龄
+    private Long id;
+    private Long modelId;
+    private String certificationStatus;//用户认证状态
+    private String carStatus;//汽车认证状态
+    private String describe;//我的签名
+    private String sex;//性别
+    private String birthday;//生日
     private String constellation;//星座
-    private Date birthday;//生日
-    private String work;//工作
-    private String school;//学校
-    private String describe;//个性签名
-    private double distance;//距离
-   // private List<InteriorInterestBO> interest; //兴趣
-    private List<String>  pictures;//照片
+    private String education;//教育
+    private String birthplace;//出生地
+    private String latitude;//北纬
+    private String longitude;//东经
+    private String distance;//距离(米)
+    private String name;//昵称
+    //图片
+    private List<String> picture;
+    //兴趣
+    private List<UserMSgInterest> interest;
+    //事件
+    private IncidentMsgBO  incident;//
 
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public Long getModelId() {
+        return modelId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setModelId(Long modelId) {
+        this.modelId = modelId;
     }
 
-    public Integer getAge() {
-        return age;
+    public String getCertificationStatus() {
+        return certificationStatus;
     }
 
-    public void setAge(Integer age) {
-        this.age = age;
+    public void setCertificationStatus(String certificationStatus) {
+        this.certificationStatus = certificationStatus;
     }
 
-    public String getConstellation() {
-        return constellation;
+    public String getCarStatus() {
+        return carStatus;
     }
 
-    public void setConstellation(String constellation) {
-        this.constellation = constellation;
-    }
-
-    public Date getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
-
-    public String getWork() {
-        return work;
-    }
-
-    public void setWork(String work) {
-        this.work = work;
-    }
-
-    public String getSchool() {
-        return school;
-    }
-
-    public void setSchool(String school) {
-        this.school = school;
+    public void setCarStatus(String carStatus) {
+        this.carStatus = carStatus;
     }
 
     public String getDescribe() {
@@ -83,20 +69,100 @@ public class UserMsgBO {
         this.describe = describe;
     }
 
-    public double getDistance() {
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getConstellation() {
+        return constellation;
+    }
+
+    public void setConstellation(String constellation) {
+        this.constellation = constellation;
+    }
+
+    public String getEducation() {
+        return education;
+    }
+
+    public void setEducation(String education) {
+        this.education = education;
+    }
+
+    public String getBirthplace() {
+        return birthplace;
+    }
+
+    public void setBirthplace(String birthplace) {
+        this.birthplace = birthplace;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getDistance() {
         return distance;
     }
 
-    public void setDistance(double distance) {
+    public void setDistance(String distance) {
         this.distance = distance;
     }
 
-
-    public List<String> getPictures() {
-        return pictures;
+    public String getName() {
+        return name;
     }
 
-    public void setPictures(List<String> pictures) {
-        this.pictures = pictures;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<String> getPicture() {
+        return picture;
+    }
+
+    public void setPicture(List<String> picture) {
+        this.picture = picture;
+    }
+
+
+    public List<UserMSgInterest> getInterest() {
+        return interest;
+    }
+
+    public void setInterest(List<UserMSgInterest> interest) {
+        this.interest = interest;
+    }
+
+    public IncidentMsgBO getIncident() {
+        return incident;
+    }
+
+    public void setIncident(IncidentMsgBO incident) {
+        this.incident = incident;
     }
 }

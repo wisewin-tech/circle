@@ -1,6 +1,8 @@
 package com.wisewin.circle.util;
 
+import java.util.LinkedHashSet;
 import java.util.Random;
+import java.util.Set;
 
 public class RandomUtil {
 	public static final String ALLCHAR = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -118,6 +120,25 @@ public class RandomUtil {
 		}
 		return result;
 	}
+
+
+	/**
+	 * 生成指定个体数 范围不重复整数
+	 * @param max 最大值
+	 * @param num 数量
+	 * @return
+	 */
+	public static Set<Integer> generateRandomArray(int num,int max){
+		Set<Integer> set = new LinkedHashSet<Integer>(); //集合是没有重复的值,LinkedHashSet是有顺序不重复集合,HashSet则为无顺序不重复集合
+		Integer range = max;
+		Random ran = new Random();
+		while(set.size() < num){
+			Integer tmp = ran.nextInt(range); //0-51之间随机选一个数
+			set.add(tmp);//直接加入，当有重复值时，不会往里加入，直到set的长度为52才结束
+		}
+		return set ;
+	}
+
 
 //	public static void main(String[] args) {
 //		System.out.println("返回一个定长的随机字符串(只包含大小写字母、数字):" + generateString(10));

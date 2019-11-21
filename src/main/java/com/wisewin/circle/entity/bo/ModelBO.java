@@ -5,8 +5,8 @@ import com.wisewin.circle.common.base.BaseModel;
 import java.util.Date;
 
 public class ModelBO extends BaseModel {
-    private Integer id;//模式
-    private Integer userId;//
+    private Long id;//模式
+    private Long userId;//
     private String model;//模式car汽车模式，date异性模式，friend同性模式
     private String name;//昵称
     private String describe;//说点什么
@@ -30,19 +30,19 @@ public class ModelBO extends BaseModel {
     private Integer beShieldingCount;//被屏蔽次数
     private Date updateTime;//修改时间
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

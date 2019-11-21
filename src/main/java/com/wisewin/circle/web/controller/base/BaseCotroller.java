@@ -219,62 +219,27 @@ public class BaseCotroller {
     /** 移除session*/
     public void removeSession (HttpServletRequest request , String key) {
         String loginID = this.getLoginID(request);
-
         RedissonHandler.getInstance().delete(createKey(this.getLoginID(request), key));
 //        RedisUtil.del(createKey(this.getLoginID(request), key)) ;
     }
 
 
     /** 获取登录用户*/
- /*   public UserBO getLoginUser (HttpServletRequest request ) {
-        return (UserBO)this.getSession(request, SysConstants.CURRENT_LOGIN_USER) ;
-    }*/
-    /** 获取登录用户*/
     public UserBO getLoginUser (HttpServletRequest request ) {
         return (UserBO) this.getSession(request, SysConstants.CURRENT_LOGIN_USER);
     }
     /** putLoginUser*/
     public void putLoginUser (String loginId , UserBO loginUser) {
-        this.putSession(createKey(loginId, SysConstants.CURRENT_LOGIN_USER), loginUser,null) ;
+        this.putSession(createKey(loginId, SysConstants.CURRENT_LOGIN_USER), loginUser,(long)60*60*24*30) ;
     }
 
-    /**
-     * 存放登录用户信息
-     */
-    public void putUser(String  loginId,UserBO userBO){
-        this.putSession(createKey(loginId, SysConstants.CURRENT_LOGIN_CLIENT), userBO,null) ;
-    }
-
-    /**
-     * 获取用户
-     */
-    public UserBO getUser (HttpServletRequest request) {
-        return (UserBO)this.getSession(request, SysConstants.CURRENT_LOGIN_CLIENT) ;
-    }
-
-//    /** 获取登录用户*/
-//    public ClientInfo getLoginClientInfo (HttpServletRequest request ) {
-//        return (ClientInfo)this.getClientSession(request, SysConstants.CURRENT_LOGIN_CLIENT) ;
-//    }
-//
-//    /** putLoginUser*/
-//    public void putLoginClientInfo (String loginId , ClientInfo clientInfo) {
-//        this.putSession(createKey(loginId, SysConstants.CURRENT_LOGIN_CLIENT), clientInfo) ;
-//    }
-
-    /** putSession */
-    public void putSession (HttpServletRequest request, String key , String value ) {
-        this.putSession(createKey(this.getLoginID(request), key), value,null) ;
-    }
     /**
      * 获取登录ID (从cookie中获取)
      * @param request
      * @return
      */
     public String getLoginID(HttpServletRequest request) {
-
-        //return getCookie(request , SysConstants.CURRENT_LOGIN_ID) ;
-        return "1";
+        return getCookie(request , SysConstants.CURRENT_LOGIN_CLIENT_ID) ;
     }
 
     public String getClientLoginID(HttpServletRequest request) {
@@ -300,8 +265,6 @@ public class BaseCotroller {
      */
     private void putSession (String key , Object value, Long expire) {
         RedissonHandler.getInstance().set(key , value , expire);
-        // FIXME xiaowen 过期时间不可以未null
-//        RedisUtil.set(value , key) ;
     }
 
     /**

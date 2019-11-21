@@ -5,103 +5,212 @@
 <!-- 查询用户 -->
 <mapper namespace="com.wisewin.circle.dao.MateDAO">
 
-<!--
-    <select id="queryLikeId" resultType="java.lang.Integer"  parameterType="map">
-        SELECT  ation.id   FROM   ce_relation ation
-                            LEFT JOIN    ce_relation cmain  ON ation.user_id_main=cmain.user_id
-                            LEFT JOIN  ce_user  us  ON  us.id=ation.user_id_main
-        <where>
-          ation.user_id=#{userId}  and ation.status ='yes'  AND  cmain.id IS NULL   AND ation.type=#{type}
-
-         <if test="gender!=null">
-             AND   us.gender=#{gender}
-         </if>
-         <if test="startAge!=null and endAge!=null" >
-             AND  us.birthday  BETWEEN #{startAge}  AND  #{endAge}
-         </if>
-
-         <if test="distance!=null"  >
-             AND     cast(st_distance_sphere(us.geom ,'${location}')/1000   AS decimal(10,2))   &lt;=  #{distance}
-         </if>
-            LIMIT  #{count}  OFFSET  0
-        </where>
-
+    <!--查询优质用户-->
+    <select id="queryRobot" resultType="java.lang.Long">
+        SELECT id FROM ci_user  WHERE  robot_status='yes'
     </select>
 
+    <!--查询用户搜索条件-->
+    <select id="userCondition" resultType="com.wisewin.circle.entity.dto.ConditionDTO">
+      SELECT u.where_is, m.model,m.search_distance,m.search_sex,m.search_age,m.sex_status,
+        m.car_certification_status ,m.sex ,u.driver
+        FROM ci_user u LEFT JOIN ci_model m ON m.user_id=u.id WHERE u.id=#{userId} AND m.model=#{model}
+    </select>
 
-    &lt;!&ndash;按条件查询&ndash;&gt;
-    <select id="queryUserIdCondition"   resultType="java.lang.Integer"   parameterType="map"  >
-        SELECT (cu.id) FROM ce_user cu LEFT JOIN  ce_user_pattern  cup ON  cup.user_id=cu.id
+    <!--用户匹配-->
+    <select id="queryOtherUser"  parameterType="java.util.Map"  resultType="java.lang.Long">
+        SELECT u.id FROM ci_user u LEFT JOIN ci_model m ON u.id = m.user_id
         WHERE
-        <if test="gender!=null">
-            cu.gender=#{gender} AND
+        m.model=#{model} AND m.sex=#{searchSex} AND (m.birthday >#{ageStart} AND m.birthday &lt;= #{ageEnd})
+        AND  ST_DWithin(where_is ,'${place}',#{dist})
+        <if test="auth=='yes' " >
+            AND  u.certification_status=#{auth}
         </if>
-        <if test="startAge!=null and endAge!=null" >
-            cu.birthday  BETWEEN #{startAge}  AND  #{endAge}  AND
+        <if test="carAuth=='yes' " >
+            AND  u.car_status=#{carAuth}
         </if>
-        <if test="distance!=null" >
-            cast(st_distance_sphere(cu.geom,'${location}') /1000   AS decimal(10,2))
-            &lt;=  #{distance}    AND
-        </if>
-        cu.account_status='yes'  AND  cup.type=#{type}
-        <if test="list!=null" >
-            <foreach collection="list" item="id" separator="," open="and  cu.id  NOT IN (" close=")"  >
-                #{id}
-            </foreach>
-        </if>
-        ORDER BY  cup.like_sum  DESC
-        LIMIT  #{count}  OFFSET  0
+        AND u.robot_status='no'
+        AND u.user_status='no'
+        AND u.id!=#{userId}
+        AND (m.record[${index}]!=#{userId} OR  record is null)
+        ORDER BY  be_like_count DESC  limit #{num} offset   0
     </select>
 
+    
+    <select id="queryCarUser"  parameterType="java.util.Map"  resultType="java.lang.Long" >
+       SELECT u.id   FROM  ci_user u LEFT JOIN ci_car_incident c  ON c.user_id = u.id
+                         LEFT JOIN ci_model m  ON m.user_id=u.id
+        WHERE
+        m.model=#{model} AND m.sex=#{searchSex} AND (m.birthday >#{ageStart} AND m.birthday &lt;= #{ageEnd})
+        AND  ST_DWithin(where_is ,'${place}',#{dist})
+        <if test="auth=='yes' " >
+            AND  u.certification_status=#{auth}
+        </if>
+        <if test="carAuth=='yes' " >
+            AND  u.car_status=#{carAuth}
+        </if>
+        <if test="driver=='yes'" >
+            AND c.incident_status='yes'
+            AND u.dirver='no'
+        </if>
+        AND u.robot_status='no'
+        AND u.user_status='no'
+        AND u.id!=#{userId}
+        AND (m.record[${index}]!=#{userId} OR  record is null)
+        ORDER BY  be_like_count DESC  limit #{num}  offset 0
+    </select>
 
-    <resultMap id="msgMapper" type="com.wisewin.circle.entity.bo.UserMsgBO">
-        <id column="id" property="id" />
-        <result column="name"  property="name" />
-        <result column="birthday"  property="birthday" />
-        <result column="work"  property="work" />
-        <result column="school"  property="school" />
-        <result column="describe"  property="describe" />
-        <result column="distance"  property="distance" />
+    <!--修改匹配过的人-->
+    <update id="updateArise" parameterType="java.util.Map">
+        UPDATE ci_model set record[${index}] = #{userId}  WHERE  user_id=#{id}  AND  model=#{model}
+    </update>
 
-        <collection property="pictures" ofType="java.lang.String" >
-            <result column="img_url"/>
-        </collection>
+    <!--用户基础信息-->
+    <select id="getUserMsg"  parameterType="java.util.Map" resultType="com.wisewin.circle.entity.bo.UserMsgBO">
+	SELECT  u.id,m.id AS modelId ,
+					u.certification_status,u.car_status ,m.describe ,m.sex ,m.name ,
+					m.birthday,m.constellation,m.education,m.birthplace,u.latitude,u.longitude ,
+					ST_DISTANCE(where_is, '${location}') as  distance
+                        FROM  ci_user u LEFT JOIN ci_car_incident c  ON c.user_id = u.id
+                         LEFT JOIN ci_model m  ON m.user_id=u.id
+			 WHERE m.model=#{model}  AND
+			 <foreach collection="ids" item="id" open="u.id IN (" separator="," close=")" >
+                 #{id}
+             </foreach>
+    </select>
 
-        <collection  property="interest"  ofType="com.wisewin.circle.entity.bo.InteriorInterestBO" >
-            <result column="type_name"  property="type" />
-            <result column="interest_string"  property="countent" />
+    <!--查询背景图-->
+    <select id="queyrPicture"  parameterType="java.lang.Long" resultType="java.lang.String" >
+        SELECT picture_url FROM ci_user_picture  WHERE  model_id = #{modelId}  AND  picture_status!='no'  ORDER BY sort ASC
+    </select>
+
+    <!--兴趣-->
+    <select id="queryInterest"  parameterType="java.lang.Long"  resultMap="interestMap">
+        SELECT t.id,t.type_name,u.interest_name FROM ci_interest_type t  LEFT JOIN  ci_user_interest u  ON u.type_id=t.id
+         WHERE u.model_id=#{modelId}
+    </select>
+    <resultMap id="interestMap" type="com.wisewin.circle.entity.bo.UserMSgInterest" >
+        <id property="id" column="id" ></id>
+        <result property="name" column="type_name" ></result>
+        <collection property="tag" ofType="java.lang.String" >
+            <constructor><arg column="interest_name"/></constructor>
         </collection>
     </resultMap>
 
-
-    &lt;!&ndash;查10个用户信息&ndash;&gt;
-    <select id="selectUserMsgByUserIds" parameterType="map" resultMap="msgMapper">
-        SELECT  cu.id,cu.name,cu.birthday ,cu.work,cu.school,cup.describe ,
-        back.img_url ,ctype.type_name,cist.interest_string ,
-        cast(st_distance_sphere(geom,'${location}') /1000   AS decimal(10,2))  AS distance
-        FROM  ce_user cu LEFT JOIN ce_user_pattern  cup ON  cup.user_id=cu.id  LEFT JOIN  ce_user_background back
-        ON back.pattern=cup.id   LEFT JOIN  ce_user_interest cist ON  cist.pattern_id = cup.id  LEFT JOIN
-        ce_interest_type ctype  ON ctype.id=cist.interest_type_id
-        WHERE  cup.type=#{type}
-
-        <foreach collection="list" item="id" separator="," open="and cu.id in(" close=")">
-            #{id}
-        </foreach>
+    <!--查询事件-->
+    <select id="queryIncident" parameterType="java.lang.Long" resultType="com.wisewin.circle.entity.bo.IncidentMsgBO">
+        SELECT  origin,destination,incident_time,incident  FROM ci_car_incident  WHERE user_id=#{userId} AND incident_status='yes'
     </select>
 
-    &lt;!&ndash;热度用户&ndash;&gt;
-    <select id="queryHeatUser"  parameterType="map"  resultType="java.lang.Integer" >
-        SELECT (cu.id) FROM ce_user cu LEFT JOIN  ce_user_pattern  cup ON  cup.user_id=cu.id
-        WHERE
-        <if test="gender!=null">
-            cu.gender=#{gender} AND
-        </if>
-        <if test="startAge!=null and endAge!=null" >
-            cu.birthday  BETWEEN #{startAge}  AND  #{endAge}  AND
-        </if>
-        cu.account_status='yes'  AND  cup.type=#{type}
-        ORDER BY  cup.like_sum  DESC
-        LIMIT  #{count}  OFFSET  0
-    </select>-->
+    <!--
+    滑动次数
+    超级喜欢次数
+
+`alter table ci_user add where_is GEOGRAPHY;
+UPDATE ci_user SET where_is = ST_POINT(latitude, longitude) where id = '84';
+ select ST_DISTANCE(where_is, '0101000020E6100000350EFB990FF04340647F992252C54F40')
+ from ci_user where id = '82';
+CREATE INDEX where_is_gix ON ci_user USING gist(where_is);
+WHERE ST_DWithin(
+where_is ,'0101000020E61000005A63D009A1245D409BAE27BA2EE64340',13000
+);`
+
+        <select id="queryLikeId" resultType="java.lang.Integer"  parameterType="map">
+            SELECT  ation.id   FROM   ce_relation ation
+                                LEFT JOIN    ce_relation cmain  ON ation.user_id_main=cmain.user_id
+                                LEFT JOIN  ce_user  us  ON  us.id=ation.user_id_main
+            <where>
+              ation.user_id=#{userId}  and ation.status ='yes'  AND  cmain.id IS NULL   AND ation.type=#{type}
+
+             <if test="gender!=null">
+                 AND   us.gender=#{gender}
+             </if>
+             <if test="startAge!=null and endAge!=null" >
+                 AND  us.birthday  BETWEEN #{startAge}  AND  #{endAge}
+             </if>
+
+             <if test="distance!=null"  >
+                 AND     cast(st_distance_sphere(us.geom ,'${location}')/1000   AS decimal(10,2))   &lt;=  #{distance}
+             </if>
+                LIMIT  #{count}  OFFSET  0
+            </where>
+
+        </select>
+
+
+        &lt;!&ndash;按条件查询&ndash;&gt;
+        <select id="queryUserIdCondition"   resultType="java.lang.Integer"   parameterType="map"  >
+            SELECT (cu.id) FROM ce_user cu LEFT JOIN  ce_user_pattern  cup ON  cup.user_id=cu.id
+            WHERE
+            <if test="gender!=null">
+                cu.gender=#{gender} AND
+            </if>
+            <if test="startAge!=null and endAge!=null" >
+                cu.birthday  BETWEEN #{startAge}  AND  #{endAge}  AND
+            </if>
+            <if test="distance!=null" >
+                cast(st_distance_sphere(cu.geom,'${location}') /1000   AS decimal(10,2))
+                &lt;=  #{distance}    AND
+            </if>
+            cu.account_status='yes'  AND  cup.type=#{type}
+            <if test="list!=null" >
+                <foreach collection="list" item="id" separator="," open="and  cu.id  NOT IN (" close=")"  >
+                    #{id}
+                </foreach>
+            </if>
+            ORDER BY  cup.like_sum  DESC
+            LIMIT  #{count}  OFFSET  0
+        </select>
+
+
+        <resultMap id="msgMapper" type="com.wisewin.circle.entity.bo.UserMsgBO">
+            <id column="id" property="id" />
+            <result column="name"  property="name" />
+            <result column="birthday"  property="birthday" />
+            <result column="work"  property="work" />
+            <result column="school"  property="school" />
+            <result column="describe"  property="describe" />
+            <result column="distance"  property="distance" />
+
+            <collection property="pictures" ofType="java.lang.String" >
+                <result column="img_url"/>
+            </collection>
+
+            <collection  property="interest"  ofType="com.wisewin.circle.entity.bo.InteriorInterestBO" >
+                <result column="type_name"  property="type" />
+                <result column="interest_string"  property="countent" />
+            </collection>
+        </resultMap>
+
+
+        &lt;!&ndash;查10个用户信息&ndash;&gt;
+        <select id="selectUserMsgByUserIds" parameterType="map" resultMap="msgMapper">
+            SELECT  cu.id,cu.name,cu.birthday ,cu.work,cu.school,cup.describe ,
+            back.img_url ,ctype.type_name,cist.interest_string ,
+            cast(st_distance_sphere(geom,'${location}') /1000   AS decimal(10,2))  AS distance
+            FROM  ce_user cu LEFT JOIN ce_user_pattern  cup ON  cup.user_id=cu.id  LEFT JOIN  ce_user_background back
+            ON back.pattern=cup.id   LEFT JOIN  ce_user_interest cist ON  cist.pattern_id = cup.id  LEFT JOIN
+            ce_interest_type ctype  ON ctype.id=cist.interest_type_id
+            WHERE  cup.type=#{type}
+
+            <foreach collection="list" item="id" separator="," open="and cu.id in(" close=")">
+                #{id}
+            </foreach>
+        </select>
+
+        &lt;!&ndash;热度用户&ndash;&gt;
+        <select id="queryHeatUser"  parameterType="map"  resultType="java.lang.Integer" >
+            SELECT (cu.id) FROM ce_user cu LEFT JOIN  ce_user_pattern  cup ON  cup.user_id=cu.id
+            WHERE
+            <if test="gender!=null">
+                cu.gender=#{gender} AND
+            </if>
+            <if test="startAge!=null and endAge!=null" >
+                cu.birthday  BETWEEN #{startAge}  AND  #{endAge}  AND
+            </if>
+            cu.account_status='yes'  AND  cup.type=#{type}
+            ORDER BY  cup.like_sum  DESC
+            LIMIT  #{count}  OFFSET  0
+        </select>-->
 
 </mapper>

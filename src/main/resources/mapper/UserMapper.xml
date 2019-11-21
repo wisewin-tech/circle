@@ -7,8 +7,14 @@
 
     <!--通过phone查看库里有没有这个账号-->
     <select id="selectByPhone" resultType="com.wisewin.circle.entity.bo.UserBO">
-        select  *  from  ci_user   where   phone=#{phoneNumber}
+        select  *  from  ci_user  WHERE phone=#{phoneNumber}
     </select>
+
+    <select id="selectModelStatus"   resultType="java.lang.String">
+       select first from ci_model where  model=#{model}  and  user_id=#{userId}
+    </select>
+
+
     <!--新增用户-->
     <insert id="addUser" parameterType="com.wisewin.circle.entity.bo.UserBO">
      INSERT INTO "ci_user"( "phone", "password", "create_time", "latitude", "longitude", "certification_status", "car_status", "user_status", "robot_status")
@@ -121,6 +127,8 @@
 
     </update>
 
-
+    <update id="updateFirst"  >
+       UPDATE ci_model  SET  first = 'no' WHERE id = #{userId} and model=#{model};
+    </update>
 
 </mapper>

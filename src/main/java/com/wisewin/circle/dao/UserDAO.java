@@ -3,6 +3,7 @@ package com.wisewin.circle.dao;
 
 import com.wisewin.circle.entity.bo.BackgroundBO;
 import com.wisewin.circle.entity.bo.UserBO;
+import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Map;
@@ -32,6 +33,13 @@ public interface UserDAO {
      */
     UserBO selectByPhone(String phoneNumber);
 
+
+    /**
+     * 查询用户模式信息
+     */
+
+    String selectModelStatus(@Param("model")String model,@Param("userId")Long userId);
+
     /**
      *修改用户信息
      * @param userBO
@@ -44,7 +52,7 @@ public interface UserDAO {
      * @param id
      * @return
      */
-    UserBO selectAllById(Integer id);
+    UserBO selectAllById(Long id);
 
     /**
      * 查询用户修改性别的次数
@@ -89,4 +97,6 @@ public interface UserDAO {
     Integer updateUserDate(Map<String,Object> map);
 
 
+    //改为非第一次匹配
+    void updateFirst(@Param("userId") Long userId,@Param("model") String model);
 }

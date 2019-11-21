@@ -26,7 +26,7 @@ public class CarIncidentService {
      * @param incidentTime 事件时间
      * @param status 状态
      */
-    public void addCarIncident(Integer userId, String origin, String destination, String incident, String incidentTime,String status){
+    public void addCarIncident(Long userId, String origin, String destination, String incident, String incidentTime,String status){
         CarIncidentBO carIncidentBO = new CarIncidentBO();
         carIncidentBO.setUserId(userId);
         carIncidentBO.setOrigin(origin);
@@ -42,7 +42,7 @@ public class CarIncidentService {
      * @param userId
      * @return
      */
-    public int selectIncidentNumByUserId(int userId){
+    public int selectIncidentNumByUserId(Long userId){
         return carIncidentDAO.selectIncidentNumByUserId(userId);
     }
 
@@ -51,7 +51,7 @@ public class CarIncidentService {
      * @param userId
      * @param status
      */
-    public void cancelCarIncident(Integer userId,String status){
+    public void cancelCarIncident(Long userId,String status){
         carIncidentDAO.cancelCarIncident(userId, status);
     }
 

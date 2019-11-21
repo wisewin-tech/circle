@@ -32,7 +32,7 @@ public interface ModelDAO {
      * @param userId
      * @return
      */
-    ScreenParamBO selectScreen(@Param("model")String model, @Param("userId")Integer userId);
+    ScreenParamBO selectScreen(@Param("model")String model, @Param("userId")Long userId);
     /**
      * 修改用户信息
      * @param modelParam

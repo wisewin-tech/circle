@@ -40,6 +40,11 @@ public class TestController extends BaseCotroller {
     @RequestMapping("/test")
     public void test(HttpServletResponse response, HttpServletRequest request) {
 
+
+
+
+
+
         userService.updStatisticalRecords(UserConstants.registration.getValue(),null);
 //        userService.updStatisticalRecords(UserConstants.pairing.getValue(),null);
 //        userService.updStatisticalRecords(UserConstants.active.getValue(),1);

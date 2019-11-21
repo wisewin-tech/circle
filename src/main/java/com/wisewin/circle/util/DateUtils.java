@@ -633,5 +633,18 @@ public class DateUtils {
 	}
 
 
+	public static Date getStartDate(int age){
+		Calendar midnight=Calendar.getInstance();
+		midnight.setTime(new Date());
+		midnight.add(Calendar.YEAR,-age);
+		midnight.set(midnight.MONTH,0);
+		midnight.set(midnight.DATE,0);
+		midnight.set(midnight.HOUR_OF_DAY,0);
+		midnight.set(midnight.MINUTE,0);
+		midnight.set(midnight.SECOND,0);
+		midnight.set(midnight.MILLISECOND,0);
+		return midnight.getTime();
+	}
+
 
 }

@@ -17,13 +17,13 @@ public interface CarIncidentDAO {
      * @param userId
      * @return
      */
-    int selectIncidentNumByUserId(int userId);
+    int selectIncidentNumByUserId(Long userId);
 
     /**
      * 取消兜风事件
      * @param userId
      * @param status
      */
-    void cancelCarIncident(@Param("userId")Integer userId,@Param("status")String status);
+    void cancelCarIncident(@Param("userId")Long userId,@Param("status")String status);
 
 }

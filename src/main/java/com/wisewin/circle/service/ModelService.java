@@ -20,7 +20,7 @@ public class ModelService {
     /**
      * 初始化用户三个模式资料
      */
-    public void addDefault(int userId,String phone){
+    public void addDefault(Long userId,String phone){
         ModelBO modelBO = new ModelBO();
         modelBO.setUserId(userId);
         modelBO.setName(phone+"_用户");//默认用户名
@@ -61,7 +61,7 @@ public class ModelService {
      * @param sexStatus 真实性认证
      * @param carCertificationStatus 车辆认证状态
      */
-    public void updateScreen(Integer userId,String model,String searchDistance,String searchAge,String searchSex,String sexStatus,String carCertificationStatus){
+    public void updateScreen(Long userId,String model,String searchDistance,String searchAge,String searchSex,String sexStatus,String carCertificationStatus){
         ScreenParamBO screenParamBO = new ScreenParamBO();
         screenParamBO.setUserId(userId);
         screenParamBO.setModel(model);
@@ -79,7 +79,7 @@ public class ModelService {
      * @param userId
      * @return
      */
-    public ScreenParamBO selectScreen(String model, Integer userId){
+    public ScreenParamBO selectScreen(String model, Long userId){
         return modelDAO.selectScreen(model,userId);
     }
 

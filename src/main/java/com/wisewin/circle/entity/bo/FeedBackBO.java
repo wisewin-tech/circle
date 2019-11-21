@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class FeedBackBO {
     private Integer id;//意见反馈
-    private Integer userId;//用户id
+    private Long userId;//用户id
     private String content;//反馈内容
     private String image;//图片
     private String contactWay;//联系方式
@@ -23,11 +23,11 @@ public class FeedBackBO {
         this.id = id;
     }
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

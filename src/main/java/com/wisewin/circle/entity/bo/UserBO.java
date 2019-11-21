@@ -3,9 +3,10 @@ package com.wisewin.circle.entity.bo;
 import com.wisewin.circle.entity.bo.common.base.BaseModel;
 
 import java.util.Date;
+import java.util.Map;
 
 public class UserBO extends BaseModel {
-    private Integer id; //用户
+    private Long id; //用户
     private String phone; //手机
     private String password;
     private Date createTime;//注册时间
@@ -15,12 +16,12 @@ public class UserBO extends BaseModel {
     private String carStatus;//汽车认证状态（yes为已经认证|no为未认证|not未审核|audit审核中）
     private String userStatus;//yes为被拉黑|no为未拉黑
     private String robotStatus;//yes为机器人，no为用户
-
-    public Integer getId() {
+    private Map<String,String> frist;
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -94,5 +95,13 @@ public class UserBO extends BaseModel {
 
     public void setRobotStatus(String robotStatus) {
         this.robotStatus = robotStatus;
+    }
+
+    public Map<String, String> getFrist() {
+        return frist;
+    }
+
+    public void setFrist(Map<String, String> frist) {
+        this.frist = frist;
     }
 }

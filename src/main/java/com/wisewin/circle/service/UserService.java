@@ -74,9 +74,27 @@ public class UserService {
     }
 
     /**
+     * 登录判断用户是否第一次登录
+     * @param userId
+     * @return
+     */
+    public Map<String,String > selectModelStatus(Long userId){
+        Map<String,String>  resultMap=new HashMap<String, String>();
+        resultMap.put("date",userDAO.selectModelStatus("date",userId));
+        resultMap.put("friend",userDAO.selectModelStatus("friend",userId));
+        resultMap.put("car",userDAO.selectModelStatus("car",userId));
+        return  resultMap;
+    }
+
+    //改为非第一次登录
+    public void updateFirst(Long userId,String model){
+        userDAO.updateFirst(userId,model);
+    }
+
+    /**
      * 通过id查询用户信息
      */
-    public UserBO selectById(Integer id) {
+    public UserBO selectById(Long id) {
         return userDAO.selectAllById(id);
 
     }

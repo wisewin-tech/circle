@@ -35,6 +35,6 @@ public class MD5Util {
     }
 
     public static void main(String[] args) {
-        System.out.println(digest("15214440324"));
+        System.out.println(digest("666666"));
    }
 }

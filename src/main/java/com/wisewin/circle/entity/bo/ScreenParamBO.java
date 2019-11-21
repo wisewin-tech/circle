@@ -3,7 +3,7 @@ package com.wisewin.circle.entity.bo;
 import com.wisewin.circle.common.base.BaseModel;
 
 public class ScreenParamBO extends BaseModel {
-    private Integer userId;
+    private Long userId;
     private String model;
     private String searchDistance;//搜索距离
     private String searchSex;//搜索性别
@@ -11,11 +11,11 @@ public class ScreenParamBO extends BaseModel {
     private String sexStatus;//真实性别开关
     private String carCertificationStatus;//汽车认证开关
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

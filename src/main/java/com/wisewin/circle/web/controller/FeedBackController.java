@@ -32,7 +32,7 @@ public class FeedBackController extends BaseCotroller{
         //获取当前登录用户
         UserBO userBO = super.getLoginUser(request);
         //获取当前登录用户id
-        Integer userId = userBO.getId();
+        Long userId = userBO.getId();
         feedBackBO.setUserId(userId);
         Integer i = feedbackService.addFeedBack(feedBackBO);
         if (i>0){

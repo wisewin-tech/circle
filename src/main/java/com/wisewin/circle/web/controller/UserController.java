@@ -121,14 +121,14 @@ public class UserController extends BaseCotroller {
      */
     @RequestMapping("/loginUser")
     public void loginUser(HttpServletRequest request, HttpServletResponse response, String phone, String password, String type, String code) {
-        if (phone == null || type == null) {
+      if (phone == null || type == null) {
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
             return;
         }
-
         UserBO userBO = userService.selectByPhone(phone);
-
+        Map<String, String> fristMap = userService.selectModelStatus(userBO.getId());
+        userBO.setFrist(fristMap);
 
         if (UserConstants.PASSWORD.getValue().equals(type)) {
             if (userBO==null){
@@ -381,16 +381,7 @@ public class UserController extends BaseCotroller {
     private void putUser(HttpServletResponse response, UserBO userBO) {
         String uuid = UUID.randomUUID().toString();
         super.putLoginUser(uuid, userBO);
-        super.setCookie(response, SysConstants.CURRENT_LOGIN_CLIENT_ID, uuid, 24 * 60 * 60 * 30);
-        //TODO  小汶 未完成
-      /*  Object oldKey = RedissonHandler.getInstance().get(userBO.getId() + SysConstants.LOGIN_IDENTIFICATION);
-        if (oldKey != null) {
-            RedissonHandler.getInstance().delete((String) oldKey);
-        }
-        RedissonHandler.getInstance().set(userBO.getId() + SysConstants.LOGIN_IDENTIFICATION,
-                super.createKey(uuid, com.wisewin.circle.common.constants.SysConstants.CURRENT_LOGIN_USER), (long) 24 * 60 * 60 * 30);
-*/
-
+        super.setCookie(response, SysConstants.CURRENT_LOGIN_CLIENT_ID, uuid, 60*60*24*30);
     }
 
 
@@ -431,6 +422,7 @@ public class UserController extends BaseCotroller {
         return true;
     }
 
+
     /**
      * 修改用户信息
      */
@@ -449,7 +441,7 @@ public class UserController extends BaseCotroller {
             super.safeJsonPrint(response, json);
             return;
         }
-        Integer id = loginUser.getId();
+        Long id = loginUser.getId();
         userBO.setId(id);
         userService.updateUser(userBO);
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("修改成功"));
@@ -471,7 +463,7 @@ public class UserController extends BaseCotroller {
             super.safeJsonPrint(response, json);
             return;
         }
-        Integer id = loginUser.getId();
+        Long id = loginUser.getId();
         UserBO userBO=userService.selectById(id);
         String json = JsonUtils.getJsonString4JavaPOJO(userBO);
         super.safeJsonPrint(response, json);
