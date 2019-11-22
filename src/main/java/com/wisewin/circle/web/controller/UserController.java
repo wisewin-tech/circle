@@ -247,9 +247,13 @@ public class UserController extends BaseCotroller {
             }else {
                 carIncident="no";//不存在兜风事件
             }
+            UserBO userBO = userService.selectById(loginUser.getId());
             Map map = new HashMap();
             map.put("carIncident",carIncident);
-            map.put("carCertificationStatus",loginUser.getCarStatus());
+            map.put("carCertificationStatus",userBO.getCarStatus());
+            map.put("userCertificationStatus",userBO.getCertificationStatus());
+            map.put("driver",userBO.getDriver());
+            map.put("userId",userBO.getId());
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(map));
             super.safeJsonPrint(response, json);
             return;

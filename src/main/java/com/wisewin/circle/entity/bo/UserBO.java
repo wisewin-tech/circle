@@ -17,6 +17,7 @@ public class UserBO extends BaseModel {
     private String userStatus;//yes为被拉黑|no为未拉黑
     private String robotStatus;//yes为机器人，no为用户
     private Map<String,String> frist;
+    private String driver;//yes/no 是否是司机
     public Long getId() {
         return id;
     }
@@ -103,5 +104,13 @@ public class UserBO extends BaseModel {
 
     public void setFrist(Map<String, String> frist) {
         this.frist = frist;
+    }
+
+    public String getDriver() {
+        return driver;
+    }
+
+    public void setDriver(String driver) {
+        this.driver = driver;
     }
 }
