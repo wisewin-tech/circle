@@ -33,6 +33,8 @@ public class Model {
     private Date updateTime;
     private Integer userId;
     private String name;
+    private Date slideTime;
+    private Long slideCount;
 
 
     public Integer getId() {
@@ -227,6 +229,21 @@ public class Model {
         this.sex = sex;
     }
 
+    public Date getSlideTime() {
+        return slideTime;
+    }
+
+    public void setSlideTime(Date slideTime) {
+        this.slideTime = slideTime;
+    }
+
+    public Long getSlideCount() {
+        return slideCount;
+    }
+
+    public void setSlideCount(Long slideCount) {
+        this.slideCount = slideCount;
+    }
 
     @Override
     public String toString() {
@@ -255,6 +272,8 @@ public class Model {
                 ", updateTime=" + updateTime +
                 ", userId=" + userId +
                 ", name='" + name + '\'' +
+                ", slideTime=" + slideTime +
+                ", slideCount=" + slideCount +
                 '}';
     }
 }

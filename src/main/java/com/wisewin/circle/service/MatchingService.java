@@ -12,6 +12,7 @@ import com.wisewin.circle.entity.dto.ResultDTO;
 import com.wisewin.circle.entity.dto.ResultDTOBuilder;
 import com.wisewin.circle.util.DateUtils;
 import org.springframework.stereotype.Service;
+import reactor.rx.action.error.FallbackAction;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
@@ -47,16 +48,38 @@ public class MatchingService {
      */
     public ResultDTO carMatching(Matching matching){
 
+        boolean flag = false;
+
+        //获取每次超级喜欢次数上限
         String likeCount = keyValDAO.selectKey("like");
+
+        //获取每日滑动次数上限
+        String slide = keyValDAO.selectKey("slide");
 
 
         Model car = modelDAO.selectModel("car", matching.getUserId().intValue());
+
+        //获取最后一次滑动更新时间
+        //是今天 判断此时是否小于等于上限
+
+        if(isToday(car.getSlideTime())){
+            //是今天
+            //判断今天次数是否大于上限
+            if(car.getSlideCount() > Long.parseLong(slide)){
+                return ResultDTOBuilder.failure("1111111","今日滑动次数超过上限");
+            }
+            //没有超过上限今日滑动次数+1
+            modelDAO.updateslidecount("car",matching.getUserId());
+        } else {
+            modelDAO.updateslidecount1("car",matching.getUserId());
+        }
 
         //like:喜欢；noLike:不喜欢；superLike:超级喜欢；shielding:屏蔽；
         if("like".equals(matching.getOperationStatus()) || "superLike".equals(matching.getOperationStatus())){
             //判断foruser是否喜欢过用户
             int i = mathchingDAO.selectCountCar(matching.getForUser(), matching.getUserId());
             if(i > 0){
+                flag = true;
                 //喜欢过
                 MatchingFriended matchingFriended = new MatchingFriended();
                 matchingFriended.setUserId(matching.getUserId());
@@ -104,6 +127,9 @@ public class MatchingService {
             modelDAO.updateshieldingCount(matching.getForUser()+"");
             return ResultDTOBuilder.success("","1000000");
         }
+        if(flag){
+            return ResultDTOBuilder.success("","1000010");
+        }
         return ResultDTOBuilder.failure("1111111");
     }
 
@@ -113,9 +139,27 @@ public class MatchingService {
      */
     public ResultDTO friendMatching(Matching matching){
 
+        boolean flag = false;
 
         String likeCount = keyValDAO.selectKey("like");
+
+        //获取每日滑动次数上限
+        String slide = keyValDAO.selectKey("slide");
+
+
         Model friend = modelDAO.selectModel("friend", matching.getUserId().intValue());
+
+        if(isToday(friend.getSlideTime())){
+            //是今天
+            //判断今天次数是否大于上限
+            if(friend.getSlideCount() > Long.parseLong(slide)){
+                return ResultDTOBuilder.failure("1111111","今日滑动次数超过上限");
+            }
+            //没有超过上限今日滑动次数+1
+            modelDAO.updateslidecount("friend",matching.getUserId());
+        } else {
+            modelDAO.updateslidecount1("friend",matching.getUserId());
+        }
 
 
         //like:喜欢；noLike:不喜欢；superLike:超级喜欢；shielding:屏蔽；
@@ -123,6 +167,7 @@ public class MatchingService {
             //判断foruser是否喜欢过用户
             int i = mathchingDAO.selectCountFriend(matching.getForUser(), matching.getUserId());
             if(i > 0){
+                flag = true;
                 //喜欢过
                 MatchingFriended matchingFriended = new MatchingFriended();
                 matchingFriended.setUserId(matching.getUserId());
@@ -153,6 +198,10 @@ public class MatchingService {
                 //被超级喜欢次数加一
                 modelDAO.updateSuperLikeCount(matching.getForUser()+"");
             }
+
+            if(flag){
+                return ResultDTOBuilder.success("","1000010");
+            }
             return ResultDTOBuilder.success("","1000000");
 
         }
@@ -179,9 +228,26 @@ public class MatchingService {
      */
     public ResultDTO dateMatching(Matching matching){
 
+        boolean flag = false;
+
         String likeCount = keyValDAO.selectKey("like");
 
+        //获取每日滑动次数上限
+        String slide = keyValDAO.selectKey("slide");
+
         Model date = modelDAO.selectModel("date", matching.getUserId().intValue());
+
+        if(isToday(date.getSlideTime())){
+            //是今天
+            //判断今天次数是否大于上限
+            if(date.getSlideCount() > Long.parseLong(slide)){
+                return ResultDTOBuilder.failure("1111111","今日滑动次数超过上限");
+            }
+            //没有超过上限今日滑动次数+1
+            modelDAO.updateslidecount("date",matching.getUserId());
+        } else {
+            modelDAO.updateslidecount1("date",matching.getUserId());
+        }
 
 
         //like:喜欢；noLike:不喜欢；superLike:超级喜欢；shielding:屏蔽；
@@ -189,6 +255,7 @@ public class MatchingService {
             //判断foruser是否喜欢过用户
             int i = mathchingDAO.selectCountDate(matching.getForUser(), matching.getUserId());
             if(i > 0){
+                flag = true;
                 //喜欢过
                 MatchingFriended matchingFriended = new MatchingFriended();
                 matchingFriended.setUserId(matching.getUserId());
@@ -220,7 +287,6 @@ public class MatchingService {
                 modelDAO.updateSuperLikeCount(matching.getForUser()+"");
             }
             return ResultDTOBuilder.success("","1000000");
-
         }
 
         if("noLike".equals(matching.getOperationStatus())){
@@ -236,6 +302,11 @@ public class MatchingService {
             modelDAO.updateshieldingCount(matching.getForUser()+"");
             return ResultDTOBuilder.success("","1000000");
         }
+
+        if(flag){
+            return ResultDTOBuilder.success("","1000010");
+        }
+
         return ResultDTOBuilder.failure("1111111");
     }
 

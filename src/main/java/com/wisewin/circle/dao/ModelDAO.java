@@ -78,12 +78,19 @@ public interface ModelDAO {
      */
     int updateSuperLikeCount1(@Param("model")String model, @Param("userId")Long userId);
 
-    /**
+  /*  *//**
      * 今天超级喜欢次数清空
      * @param model
      * @param userId
      * @return
-     */
-    int removeSuperLike(@Param("model")String model, @Param("userId")Long userId);
+     *//*
+    int removeSuperLike(@Param("model")String model, @Param("userId")Long userId);*/
+
+
+
+    int updateslidecount(@Param("model")String model, @Param("userId")Long userId);
+
+
+    int updateslidecount1(@Param("model")String model, @Param("userId")Long userId);
 
 }

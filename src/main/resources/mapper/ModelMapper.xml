@@ -127,10 +127,26 @@
       and user_id = #{userId}
     </update>
 
-    <update id="removeSuperLike">
+  <!--  <update id="removeSuperLike">
       update ci_model
       set super_like_count = 0,
       super_like_count_time = now()
+      where model = #{model}
+      and user_id = #{userId}
+    </update>-->
+
+    <update id="updateslidecount">
+         update ci_model
+      set slide_count = slide_count + 1 ,
+      slide_time = now()
+      where model = #{model}
+      and user_id = #{userId}
+    </update>
+
+    <update id="updateslidecount1">
+         update ci_model
+      set slide_count = 1 ,
+      slide_time = now()
       where model = #{model}
       and user_id = #{userId}
     </update>
