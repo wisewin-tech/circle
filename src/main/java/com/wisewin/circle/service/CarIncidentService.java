@@ -55,4 +55,16 @@ public class CarIncidentService {
         carIncidentDAO.cancelCarIncident(userId, status);
     }
 
+    /**
+     * 验证是否 未审核或审核被拒
+     * @param id
+     * @return
+     */
+    public boolean queryCarStatus(Long id) {
+        return carIncidentDAO.queryCarStatus(id)>0;
+    }
+
+    public void updateDriver(Long id, String driver) {
+        carIncidentDAO.updateDriver(id,driver);
+    }
 }

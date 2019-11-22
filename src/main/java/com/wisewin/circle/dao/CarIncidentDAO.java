@@ -3,7 +3,8 @@ package com.wisewin.circle.dao;
 import com.wisewin.circle.entity.bo.CarIncidentBO;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.Map;
+import java.util.HashMap;
+
 
 public interface CarIncidentDAO {
     /**
@@ -26,4 +27,12 @@ public interface CarIncidentDAO {
      */
     void cancelCarIncident(@Param("userId")Long userId,@Param("status")String status);
 
+    /**
+     *
+     * @param userId
+     * @return
+     */
+    int queryCarStatus(Long userId);
+
+    void updateDriver(@Param("userId") Long userId,@Param("driver") String driver);
 }

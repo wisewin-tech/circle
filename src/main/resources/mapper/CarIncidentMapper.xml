@@ -25,5 +25,15 @@
         where "user_id"=#{userId} and "incident_status"='yes'
     </update>
 
+    <!--查询用户是否提交过或审核通过-->
+    <select id="queryCarStatus"  parameterType="java.lang.Long"  resultType="int" >
+            SELECT count(id)  FROM "ci_user"  WHERE
+             ( car_status='yes' OR   car_status='not' OR  car_status='audit'  ) AND id=#{userId}
+    </select>
 
+    <!--修改司机-->
+    <update id="updateDriver"  >
+        UPDATE ci_user SET  driver = #{driver} WHERE id = #{userId}
+
+    </update>
 </mapper>

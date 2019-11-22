@@ -3,7 +3,6 @@ package com.wisewin.circle.web.controller;
 import com.wisewin.circle.entity.bo.UserBO;
 import com.wisewin.circle.entity.dto.ResultDTOBuilder;
 import com.wisewin.circle.service.CarIncidentService;
-import com.wisewin.circle.util.DateUtils;
 import com.wisewin.circle.util.JsonUtils;
 import com.wisewin.circle.util.StringUtils;
 import com.wisewin.circle.web.controller.base.BaseCotroller;
@@ -86,9 +85,44 @@ public class CarIncidentController extends BaseCotroller {
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("兜风事件取消成功！"));
         super.safeJsonPrint(response, json);
         return;
-
-
     }
 
 
+    /**
+     * 选择司机还是乘客
+     * @param response
+     * @param request
+     */
+    @RequestMapping("/startCar")
+    public void startCar(HttpServletResponse response, HttpServletRequest request,String driver) {
+        //获取当前用户
+        UserBO loginUser = super.getLoginUser(request);
+        //如果为空将结束
+        if (loginUser==null){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000000"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
+
+        if(StringUtils.isEmpty(driver)){
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
+            super.safeJsonPrint(response, json);
+            return;
+        }
+
+        // 是司机 验证是否通过审核或已经提交审核
+        if("yes".equals(driver)){
+            boolean flag=carIncidentService.queryCarStatus(loginUser.getId());
+            if(!flag){
+                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000015"));
+                super.safeJsonPrint(response, json);
+                return;
+            }
+        }
+        //修改司机状态
+        carIncidentService.updateDriver(loginUser.getId(),driver);
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(""));
+        super.safeJsonPrint(response, json);
+        return;
+    }
 }
