@@ -138,4 +138,18 @@
     <update id="updateLocation"  parameterType="java.util.Map" >
         UPDATE ci_user SET  where_is = ST_POINT(latitude, longitude)  where id = #{userId}
     </update>
+
+
+    <select id="getChinaRegionBOList" resultType="com.wisewin.circle.entity.bo.ChinaRegionBO" parameterType="java.lang.Long">
+         SELECT * FROM china WHERE china.Pid=#{pid}
+    </select>
+
+    <insert id="addCarCertificationBO" parameterType="com.wisewin.circle.entity.bo.CarCertificationBO">
+          insert into ci_car_certification
+          (user_id,car_number,car_models,car_models_number,car_picture,license_type,
+          license_picture,driving_picture,create_time,update_time,car_number_picture,car_type)
+          values
+          (#{userId},#{carNumber},#{carModels},#{carModelsNumber},#{carPicture},#{licenseType},
+          #{licensePicture},#{drivingPicture},now(),now(),#{carNumberPicture},#{carType})
+    </insert>
 </mapper>

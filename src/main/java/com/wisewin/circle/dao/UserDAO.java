@@ -2,10 +2,13 @@ package com.wisewin.circle.dao;
 
 
 import com.wisewin.circle.entity.bo.BackgroundBO;
+import com.wisewin.circle.entity.bo.CarCertificationBO;
+import com.wisewin.circle.entity.bo.ChinaRegionBO;
 import com.wisewin.circle.entity.bo.UserBO;
 
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
 import java.util.Map;
 
 public interface UserDAO {
@@ -103,4 +106,10 @@ public interface UserDAO {
     void updateLongitudeAndLatitude(Map<String,Object> map);
 
     void updateLocation(Map<String,Object> map);
+
+    //根据pid查询地方
+    List<ChinaRegionBO> getChinaRegionBOList(Long pid);
+
+    //添加车辆认证
+    Integer addCarCertificationBO(CarCertificationBO carCertificationBO);
 }

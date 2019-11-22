@@ -6,6 +6,8 @@ import com.wisewin.circle.common.constants.UserConstants;
 import com.wisewin.circle.dao.StatisticalRecordsDAO;
 import com.wisewin.circle.dao.UserDAO;
 
+import com.wisewin.circle.entity.bo.CarCertificationBO;
+import com.wisewin.circle.entity.bo.ChinaRegionBO;
 import com.wisewin.circle.entity.bo.StatisticalRecords;
 import com.wisewin.circle.entity.bo.UserBO;
 
@@ -19,16 +21,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Transactional
 public class UserService {
     @Resource
     private UserDAO userDAO;
+
 
     @Resource
     StatisticalRecordsDAO statisticalRecordsDAO;
@@ -210,5 +210,19 @@ public class UserService {
         paramMap.put("userId",userId);
         userDAO.updateLongitudeAndLatitude(paramMap);
         userDAO.updateLocation(paramMap);
+    }
+
+    //查询所有地方
+    public List<ChinaRegionBO> getChinaRegionBOList() {
+        List<ChinaRegionBO> chinaRegionBOS = userDAO.getChinaRegionBOList(0L);
+        for (ChinaRegionBO region : chinaRegionBOS) {
+            region.setChinaRegionBOList(userDAO.getChinaRegionBOList(region.getId()));
+        }
+        return chinaRegionBOS;
+    }
+
+    //添加车辆认证
+    public Integer addCarCertificationBO(CarCertificationBO carCertificationBO){
+        return userDAO.addCarCertificationBO(carCertificationBO);
     }
 }

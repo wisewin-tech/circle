@@ -2,6 +2,8 @@ package com.wisewin.circle.web.controller;
 
 import com.wisewin.circle.common.constants.SysConstants;
 import com.wisewin.circle.common.constants.UserConstants;
+import com.wisewin.circle.entity.bo.CarCertificationBO;
+import com.wisewin.circle.entity.bo.ChinaRegionBO;
 import com.wisewin.circle.entity.bo.ScreenParamBO;
 import com.wisewin.circle.entity.bo.UserBO;
 import com.wisewin.circle.entity.dto.ResultDTOBuilder;
@@ -22,6 +24,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -497,6 +500,26 @@ public class UserController extends BaseCotroller {
             return;
         }
         userService.updateLocation(loginUser.getId(),latitude,longitude);
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(""));
+        super.safeJsonPrint(response, json);
+    }
+
+
+    //查询地区列表
+    @RequestMapping("/getChinaRegionBOList")
+    public void getChinaRegionBOList(HttpServletResponse response, HttpServletRequest request) throws InterruptedException {
+        List<ChinaRegionBO> list= userService.getChinaRegionBOList();
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(list));
+        super.safeJsonPrint(response, json);
+    }
+
+    //添加车辆认证
+    @RequestMapping("/addCarCertificationBO")
+    public void addCarCertificationBO(CarCertificationBO carCertificationBO, HttpServletResponse response, HttpServletRequest request) throws InterruptedException {
+        UserBO userBO=super.getLoginUser(request);
+        carCertificationBO.setUserId(userBO.getId());
+        carCertificationBO.setPhone(userBO.getPhone());
+        userService.addCarCertificationBO(carCertificationBO);
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(""));
         super.safeJsonPrint(response, json);
     }

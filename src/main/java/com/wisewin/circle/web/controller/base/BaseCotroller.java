@@ -226,7 +226,11 @@ public class BaseCotroller {
 
     /** 获取登录用户*/
     public UserBO getLoginUser (HttpServletRequest request ) {
-        return (UserBO) this.getSession(request, SysConstants.CURRENT_LOGIN_USER);
+        //return (UserBO) this.getSession(request, SysConstants.CURRENT_LOGIN_USER);
+        UserBO userBO=new UserBO();
+        userBO.setId(92L);
+        userBO.setPhone("18731612878");
+        return userBO;
     }
     /** putLoginUser*/
     public void putLoginUser (String loginId , UserBO loginUser) {
