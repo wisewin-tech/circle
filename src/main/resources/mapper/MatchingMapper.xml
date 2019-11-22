@@ -9,21 +9,21 @@
     insert into ci_matching_car
     (user_id,for_user,operation_status,create_time)
     values
-    (#{userId, #{forUser}, #{operationStatus}, now()
+    (#{userId}, #{forUser}, #{operationStatus}, NOW())
     </insert>
 
     <insert id="insertMatchingDate" parameterType="com.wisewin.circle.entity.bo.Matching">
     insert into ci_matching_date
     (user_id,for_user,operation_status,create_time)
     values
-    (#{userId, #{forUser}, #{operationStatus}, now()
+    (#{userId}, #{forUser}, #{operationStatus}, NOW())
     </insert>
 
     <insert id="insertMatchingFriend" parameterType="com.wisewin.circle.entity.bo.Matching">
     insert into ci_matching_friend
     (user_id,for_user,operation_status,create_time)
     values
-    (#{userId, #{forUser}, #{operationStatus}, now()
+    (#{userId}, #{forUser}, #{operationStatus}, NOW())
     </insert>
 
     <select id="selectCountFriend" resultType="int">

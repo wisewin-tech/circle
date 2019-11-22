@@ -38,6 +38,8 @@ public class HomePageService {
     private UserPictureDAO userPictureDAO;
     @Resource
     private UserInterestCustomDAO userInterestCustomDAO;
+    @Resource
+    private KeyValDAO keyValDAO;
 
     private static final Logger log = LoggerFactory.getLogger(HomePageService.class);
 
@@ -108,8 +110,16 @@ public class HomePageService {
      */
     public ResultDTO updateModel(ModelParam modelParam){
 
+        Model model = modelDAO.selectModel(modelParam.getModel(), modelParam.getUserId());
         if(org.springframework.util.StringUtils.isEmpty(modelParam)){
             return ResultDTOBuilder.failure("0000001");
+        }
+
+        String sexCount = keyValDAO.selectKey("sexCount");
+        if(!StringUtils.isNotBlank(modelParam.getSex())){
+            if(model.getSexCount() >= Integer.parseInt(sexCount)){
+                return ResultDTOBuilder.failure("1111111","不可修改性别");
+            }
         }
         int i = modelDAO.updateModel(modelParam);
         if(i > 0 ){
@@ -117,6 +127,8 @@ public class HomePageService {
         }
         return ResultDTOBuilder.failure("1111111");
     }
+
+
 
     /**
      * 修改背景图

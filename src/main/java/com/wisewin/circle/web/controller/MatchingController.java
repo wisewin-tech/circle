@@ -19,8 +19,8 @@ import javax.servlet.http.HttpServletResponse;
  * @Author: Wang bin
  * @date: Created in 13:26 2019/11/19
  */
-@RequestMapping("/matching")
 @Controller
+@RequestMapping("/matching")
 public class MatchingController extends BaseCotroller {
 
     @Resource

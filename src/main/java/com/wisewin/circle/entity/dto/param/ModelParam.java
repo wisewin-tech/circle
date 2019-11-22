@@ -19,6 +19,7 @@ public class ModelParam {
     private Integer beLikeCount;
     private Integer beSuperLikeCount;
     private String sex;
+    private Integer userId;
 
 
     public Integer getId() {
@@ -117,6 +118,14 @@ public class ModelParam {
         this.sex = sex;
     }
 
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
     @Override
     public String toString() {
         return "ModelParam{" +
@@ -132,6 +141,7 @@ public class ModelParam {
                 ", beLikeCount=" + beLikeCount +
                 ", beSuperLikeCount=" + beSuperLikeCount +
                 ", sex='" + sex + '\'' +
+                ", userId=" + userId +
                 '}';
     }
 }

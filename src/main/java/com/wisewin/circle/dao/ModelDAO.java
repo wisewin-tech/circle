@@ -61,4 +61,29 @@ public interface ModelDAO {
      * @return
      */
     int updateshieldingCount(@Param("modelId")String modelId);
+
+
+    /**
+     * 超级喜欢次数+1
+     * @return
+     */
+    int updateSuperLikeCount0(@Param("model")String model, @Param("userId")Long userId);
+
+
+    /**
+     * 将今天喜欢次数置为1
+     * @param model
+     * @param userId
+     * @return
+     */
+    int updateSuperLikeCount1(@Param("model")String model, @Param("userId")Long userId);
+
+    /**
+     * 今天超级喜欢次数清空
+     * @param model
+     * @param userId
+     * @return
+     */
+    int removeSuperLike(@Param("model")String model, @Param("userId")Long userId);
+
 }
