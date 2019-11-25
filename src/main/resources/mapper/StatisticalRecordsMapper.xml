@@ -5,31 +5,20 @@
 <!-- 【用户】 -->
 <mapper namespace="com.wisewin.circle.dao.StatisticalRecordsDAO">
 
-    <insert id="addStatisticalRecords" parameterType="com.wisewin.circle.entity.bo.StatisticalRecords">
-        insert into statistical_records
-		(active_count,registration_count,pairing_count,create_time)
+    <insert id="addStatisticalRecords" parameterType="java.lang.Integer">
+        insert into ci_user_active
+		(count,create_time)
 		VALUES
-		(#{activeCount},#{registrationCount},#{pairingCount},now())
+		(#{count},now())
     </insert>
 
-    <update id="updStatisticalRecords" parameterType="com.wisewin.circle.entity.bo.StatisticalRecords">
-        update statistical_records
-        <set>
-            <if test="activeCount!=null and activeCount!=''">
-                active_count=active_count+#{activeCount},
-            </if>
-            <if test="registrationCount!=null and registrationCount!=''">
-                registration_count=registration_count+#{registrationCount},
-            </if>
-            <if test="pairingCount!=null and pairingCount!=''">
-                pairing_count=pairing_count+#{pairingCount}
-            </if>
-        </set>
+    <update id="updStatisticalRecords" parameterType="java.lang.Integer">
+        update ci_user_active set count=#{count}
         where to_char(create_time,'YYYY-MM-DD')=to_char(now(),'YYYY-MM-DD')
     </update>
 
     <select id="getStatisticalRecordsCount" resultType="java.lang.Integer">
-       select count(*) from statistical_records
+       select count(*) from ci_user_active
         where to_char(create_time,'YYYY-MM-DD')=to_char(now(),'YYYY-MM-DD')
     </select>
 

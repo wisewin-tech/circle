@@ -2,6 +2,10 @@ package com.wisewin.circle.web.support.interceptor;
 
 import com.wisewin.circle.common.constants.SysConstants;
 import com.google.common.collect.Sets;
+import com.wisewin.circle.entity.bo.UserBO;
+import com.wisewin.circle.service.UserService;
+import com.wisewin.circle.web.controller.base.BaseCotroller;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -21,6 +25,10 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 
 //    @Autowired
 //    private SystemService systemService ;
+
+    @Autowired
+    private UserService userService ;
+    BaseCotroller baseCotroller=new BaseCotroller();
 
     // 不需要过滤的URL
     public static final Set<String> unCheckList = Sets.newHashSet("/client/login" , "/client/toLogin" , "/order/add" , "/apiCourse/toJoin") ;
@@ -63,7 +71,8 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 //                setLastRequestUrl(response, requestUri);
 //            }
 //        }
-
+        UserBO userBO=baseCotroller.getLoginUser(request);
+        userService.updStatisticalRecords(userBO.getId());
         return true;
     }
 

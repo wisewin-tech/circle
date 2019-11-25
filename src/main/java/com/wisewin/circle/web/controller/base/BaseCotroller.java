@@ -228,7 +228,7 @@ public class BaseCotroller {
     public UserBO getLoginUser (HttpServletRequest request ) {
         //return (UserBO) this.getSession(request, SysConstants.CURRENT_LOGIN_USER);
         UserBO userBO=new UserBO();
-        userBO.setId(92L);
+        userBO.setId(94L);
         userBO.setPhone("18731612878");
         return userBO;
     }
