@@ -7,7 +7,6 @@ import com.wisewin.circle.dao.UserDAO;
 
 import com.wisewin.circle.entity.bo.CarCertificationBO;
 import com.wisewin.circle.entity.bo.ChinaRegionBO;
-import com.wisewin.circle.entity.bo.StatisticalRecords;
 import com.wisewin.circle.entity.bo.UserBO;
 
 import com.wisewin.circle.util.DateUtils;

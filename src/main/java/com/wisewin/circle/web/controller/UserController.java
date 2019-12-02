@@ -130,8 +130,6 @@ public class UserController extends BaseCotroller {
             return;
         }
         UserBO userBO = userService.selectByPhone(phone);
-       // Map<String, String> fristMap = userService.selectModelStatus(userBO.getId());
-    //    userBO.setFrist(fristMap);
 
         if (UserConstants.PASSWORD.getValue().equals(type)) {
             if (userBO==null){

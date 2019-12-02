@@ -132,7 +132,7 @@
     </update>
 
     <update id="updateLongitudeAndLatitude"  parameterType="java.util.Map" >
-        UPDATE ci_user SET longitude=#{longitude} , latitude=#{latitude}  where id = #{userId}
+        UPDATE ci_user SET longitude=#{longitude} , latitude=#{latitude} , localhost_time=NOW()  where id = #{userId}
     </update>
 
     <update id="updateLocation"  parameterType="java.util.Map" >
