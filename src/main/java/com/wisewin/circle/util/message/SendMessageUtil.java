@@ -17,12 +17,14 @@ import com.aliyuncs.profile.DefaultProfile;
  */
 public class SendMessageUtil {
 
+
+
     static String accessKeyId="LTAIrYEzjhGJigUM";
     static String accessSecret="KG9W4CwP3kAjnNEx9eiU40XtboouNZ";
 
  /*   private static final int APPID = 1400077931;
     private static final String APPKEY = "f0f83079a2c7fd091a039a04bc260741";*/
-
+    //xin
     //腾讯短信通道
    /* public static void sendSignInCodeMessage(String mobile, String content){
         try {
