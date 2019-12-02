@@ -25,11 +25,11 @@ public class MateService {
     @Resource
     private MateDAO mateDAO;
 
-    public  List<UserMsgBO>  matching(String model, UserBO user,boolean flag,Map<String,Object> search) {
+    public  List<UserMsgBO>  matching(String model, UserBO user,Map<String,Object> search) {
         //查询用户筛选项
         //用户是第一次登陆该模式,
         Set<Long> resultSet = new HashSet<Long>();
-        if (flag) {
+      /*  if (flag) {
             //查询所有优质用户
             List<Long> robots = mateDAO.queryRobot();
             if (robots != null && robots.size() < 0) {
@@ -43,7 +43,7 @@ public class MateService {
                     }
                 }
             }
-        }
+        }*/
 
         search.put("num",10-resultSet.size());
         //查询用户

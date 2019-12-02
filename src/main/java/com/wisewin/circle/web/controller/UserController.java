@@ -130,8 +130,8 @@ public class UserController extends BaseCotroller {
             return;
         }
         UserBO userBO = userService.selectByPhone(phone);
-        Map<String, String> fristMap = userService.selectModelStatus(userBO.getId());
-        userBO.setFrist(fristMap);
+       // Map<String, String> fristMap = userService.selectModelStatus(userBO.getId());
+    //    userBO.setFrist(fristMap);
 
         if (UserConstants.PASSWORD.getValue().equals(type)) {
             if (userBO==null){
@@ -174,6 +174,7 @@ public class UserController extends BaseCotroller {
                     super.safeJsonPrint(response, json);
                     return;
                 }
+
                 //没有设置过需要设置之后才可以登录
                 this.putUser(response, userBO);
                 String key = phone + UserConstants.VERIFY.getValue();

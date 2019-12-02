@@ -47,19 +47,7 @@ public class MateController extends BaseCotroller {
             return;
         }
 
-        //验证首次匹配
-        String status = loginUser.getFrist().get(model);
-        boolean flag=false;
-        if(!UserConstants.Yes.getValue().equals(status)){
-            //修改数据库改为 非第一次匹配
-            userService.updateFirst(loginUser.getId(),model);
-            //更新缓存
-            loginUser.getFrist().put(model,"yes");
-            String loginID = super.getLoginID(request);
-            RedissonHandler.getInstance().set(loginID , loginUser , (long)60*60*24*30);
-            flag=true;
-        }
-        List<UserMsgBO> matching = mateService.matching(model, loginUser, flag,search);
+        List<UserMsgBO> matching = mateService.matching(model, loginUser,search);
         String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(matching)) ;
         super.safeJsonPrint(response, result);
         return;
