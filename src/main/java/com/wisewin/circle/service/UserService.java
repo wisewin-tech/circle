@@ -2,6 +2,7 @@ package com.wisewin.circle.service;
 
 
 import com.wisewin.circle.common.constants.UserConstants;
+import com.wisewin.circle.dao.CarPictureDAO;
 import com.wisewin.circle.dao.StatisticalRecordsDAO;
 import com.wisewin.circle.dao.UserDAO;
 
@@ -27,6 +28,8 @@ public class UserService {
     @Resource
     private UserDAO userDAO;
 
+    @Resource
+    CarPictureDAO carPictureDAO;
 
     @Resource
     StatisticalRecordsDAO statisticalRecordsDAO;
@@ -192,6 +195,8 @@ public class UserService {
 
     //添加车辆认证
     public Integer addCarCertificationBO(CarCertificationBO carCertificationBO) {
+        carPictureDAO.addCarPicture(carCertificationBO.getGaragePicture(),carCertificationBO.getUserId());
         return userDAO.addCarCertificationBO(carCertificationBO);
     }
+
 }

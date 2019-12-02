@@ -20,6 +20,15 @@ public class CarCertificationBO extends BaseModel {
     private Date createTime;
     private Date updateTime;
     private String carType;
+    private String garagePicture;//车库的车照片
+
+    public String getGaragePicture() {
+        return garagePicture;
+    }
+
+    public void setGaragePicture(String garagePicture) {
+        this.garagePicture = garagePicture;
+    }
 
     public String getCarType() {
         return carType;
