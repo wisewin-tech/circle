@@ -93,4 +93,9 @@ public interface ModelDAO {
 
     int updateslidecount1(@Param("model")String model, @Param("userId")Long userId);
 
+    ModelBO selectModelCount(@Param("userId")Integer userId, @Param("model")String model);
+
+    int updateModelFirst(@Param("modelId")Integer modelId, @Param("status")String status);
+
+
 }

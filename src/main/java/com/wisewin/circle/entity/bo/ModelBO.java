@@ -29,6 +29,9 @@ public class ModelBO extends BaseModel {
     private Date superLikeCountTime;//超级喜欢时间
     private Integer beShieldingCount;//被屏蔽次数
     private Date updateTime;//修改时间
+    private String first;
+    private Date slideTime;
+    private Long slideCount;
 
     public Long getId() {
         return id;
@@ -220,5 +223,29 @@ public class ModelBO extends BaseModel {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getFirst() {
+        return first;
+    }
+
+    public void setFirst(String first) {
+        this.first = first;
+    }
+
+    public Date getSlideTime() {
+        return slideTime;
+    }
+
+    public void setSlideTime(Date slideTime) {
+        this.slideTime = slideTime;
+    }
+
+    public Long getSlideCount() {
+        return slideCount;
+    }
+
+    public void setSlideCount(Long slideCount) {
+        this.slideCount = slideCount;
     }
 }

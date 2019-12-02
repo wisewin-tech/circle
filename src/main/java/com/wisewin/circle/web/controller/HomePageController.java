@@ -6,6 +6,7 @@ import com.wisewin.circle.entity.dto.param.ModelParam;
 import com.wisewin.circle.entity.dto.param.UserInterestParam;
 import com.wisewin.circle.entity.dto.param.UserPictureParam;
 import com.wisewin.circle.service.HomePageService;
+import com.wisewin.circle.service.ModelService;
 import com.wisewin.circle.util.JsonUtils;
 import com.wisewin.circle.web.controller.base.BaseCotroller;
 import org.slf4j.Logger;
@@ -32,6 +33,9 @@ public class HomePageController extends BaseCotroller {
 
     @Resource
     private HomePageService homePageService;
+
+    @Resource
+    private ModelService modelService;
 
     /**
      * 个人主页
@@ -115,6 +119,20 @@ public class HomePageController extends BaseCotroller {
         ResultDTO resultDTO = homePageService.insertUserInterestCustom(userInterestCustom);
         String jsonString4JavaPOJO = JsonUtils.getJsonString4JavaPOJO(resultDTO);
         super.safeJsonPrint(response, jsonString4JavaPOJO);
+        return;
+    }
+
+    /**
+     * 模式切换
+     * @param request
+     * @param response
+     */
+    @RequestMapping("/handoverModel")
+    public void handoverModel(HttpServletRequest request, HttpServletResponse response, Integer userId, String model){
+        //查看是否第一次进入该模式
+        ResultDTO resultDTO = homePageService.handoverModel(userId, model);
+        String result = JsonUtils.getJsonString4JavaPOJO(resultDTO) ;
+        super.safeJsonPrint(response, result);
         return;
     }
 }

@@ -3,6 +3,7 @@ package com.wisewin.circle.web.controller;
 import com.wisewin.circle.common.constants.UserConstants;
 import com.wisewin.circle.entity.bo.ModelBO;
 import com.wisewin.circle.entity.bo.UserBO;
+import com.wisewin.circle.entity.dto.ResultDTO;
 import com.wisewin.circle.entity.dto.ResultDTOBuilder;
 import com.wisewin.circle.service.ModelService;
 import com.wisewin.circle.service.TestService;
@@ -35,8 +36,6 @@ public class ModelController extends BaseCotroller {
 
     @Resource
     private ModelService modelService;
-
-
 
 
 }

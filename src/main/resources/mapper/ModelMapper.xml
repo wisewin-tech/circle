@@ -151,5 +151,19 @@
       and user_id = #{userId}
     </update>
 
+    <select id="selectModelCount"  resultType="com.wisewin.circle.entity.bo.ModelBO">
+        select * from ci_model
+        where model = #{model}
+        and user_id = #{userId}
+    </select>
+
+    <update id="updateModelFirst" >
+         update ci_model
+         set `first` = #{status}
+         where id = #{modelId}
+    </update>
+
+
+
 
 </mapper>

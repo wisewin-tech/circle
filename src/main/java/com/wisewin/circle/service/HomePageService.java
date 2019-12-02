@@ -1,10 +1,7 @@
 package com.wisewin.circle.service;
 
 import com.wisewin.circle.dao.*;
-import com.wisewin.circle.entity.bo.InterestType;
-import com.wisewin.circle.entity.bo.Model;
-import com.wisewin.circle.entity.bo.UserInterestCustom;
-import com.wisewin.circle.entity.bo.UserPicture;
+import com.wisewin.circle.entity.bo.*;
 import com.wisewin.circle.entity.dto.ModelDTO;
 import com.wisewin.circle.entity.dto.ResultDTO;
 import com.wisewin.circle.entity.dto.ResultDTOBuilder;
@@ -202,5 +199,32 @@ public class HomePageService {
         }
         return ResultDTOBuilder.failure("1111111");
     }
+
+    /**
+     * 切换模式
+     * @param userId
+     * @param model
+     * @return
+     */
+    public ResultDTO handoverModel(Integer userId, String model){
+        if(userId == null){
+            return ResultDTOBuilder.failure("0000001");
+        }
+        if(StringUtils.isNotBlank(model)){
+            return ResultDTOBuilder.failure("0000001");
+        }
+        //判断是否第一次进入这个模式
+        ModelBO i = modelDAO.selectModelCount(userId, model);
+        if(i != null){
+            //模式开关
+            modelDAO.updateModelFirst(i.getId().intValue(), "yes");
+        }
+        //是第一次进入这个模式将data模式数据插入
+        i.setModel(model);
+        i.setFirst("no");
+        modelDAO.addDefault(i);
+        return ResultDTOBuilder.success("","1000000");
+    }
+
 
 }
