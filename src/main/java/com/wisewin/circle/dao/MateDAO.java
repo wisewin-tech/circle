@@ -16,7 +16,7 @@ public interface MateDAO {
     /**
      * 查询所有优质用户
      */
-    List<Long> queryRobot();
+    List<Long> queryRobot(Map<String,Object> search);
 
     /**
      * 用户搜索条件

@@ -6,8 +6,22 @@
 <mapper namespace="com.wisewin.circle.dao.MateDAO">
 
     <!--查询优质用户-->
-    <select id="queryRobot" resultType="java.lang.Long">
-        SELECT id FROM ci_user  WHERE  robot_status='yes'
+    <select id="queryRobot" resultType="java.lang.Long" parameterType="java.util.Map">
+        SELECT u.id FROM ci_user u LEFT JOIN ci_model m ON u.id = m.user_id
+        WHERE
+        m.model=#{model} AND m.sex=#{searchSex} AND (m.birthday >#{ageStart} AND m.birthday &lt;= #{ageEnd})
+        AND  ST_DWithin(where_is ,'${place}',#{dist})
+        <if test="auth=='yes' " >
+            AND  u.certification_status=#{auth}
+        </if>
+        <if test="carAuth=='yes' " >
+            AND  u.car_status=#{carAuth}
+        </if>
+        AND u.robot_status='yes'
+        AND u.user_status='no'
+        AND u.id!=#{userId}
+        AND (m.record[${index}]!=#{userId} OR  record is null)
+        ORDER BY  be_like_count DESC  limit #{num} offset   0
     </select>
 
     <!--查询用户搜索条件-->
@@ -19,7 +33,10 @@
 
     <!--用户匹配-->
     <select id="queryOtherUser"  parameterType="java.util.Map"  resultType="java.lang.Long">
-        SELECT u.id FROM ci_user u LEFT JOIN ci_model m ON u.id = m.user_id
+        SELECT  u.id  FROM  ci_user u LEFT JOIN ci_model m  ON m.user_id=u.id
+        <if test="model=='car'" >
+            LEFT JOIN ci_car_incident c  ON c.user_id = u.id
+        </if>
         WHERE
         m.model=#{model} AND m.sex=#{searchSex} AND (m.birthday >#{ageStart} AND m.birthday &lt;= #{ageEnd})
         AND  ST_DWithin(where_is ,'${place}',#{dist})
@@ -29,36 +46,23 @@
         <if test="carAuth=='yes' " >
             AND  u.car_status=#{carAuth}
         </if>
-        AND u.robot_status='no'
-        AND u.user_status='no'
-        AND u.id!=#{userId}
-        AND (m.record[${index}]!=#{userId} OR  record is null)
-        ORDER BY  be_like_count DESC  limit #{num} offset   0
-    </select>
-
-    
-    <select id="queryCarUser"  parameterType="java.util.Map"  resultType="java.lang.Long" >
-       SELECT u.id   FROM  ci_user u LEFT JOIN ci_car_incident c  ON c.user_id = u.id
-                         LEFT JOIN ci_model m  ON m.user_id=u.id
-        WHERE
-        m.model=#{model} AND m.sex=#{searchSex} AND (m.birthday >#{ageStart} AND m.birthday &lt;= #{ageEnd})
-        AND  ST_DWithin(where_is ,'${place}',#{dist})
-        <if test="auth=='yes' " >
-            AND  u.certification_status=#{auth}
-        </if>
-        <if test="carAuth=='yes' " >
-            AND  u.car_status=#{carAuth}
-        </if>
-        <if test="driver=='yes'" >
-            AND c.incident_status='yes'
-            AND u.dirver='no'
+        <if test="model=='car'" >
+            <if test="driver=='yes'" >
+                AND c.incident_status='yes'
+                AND u.dirver='no'
+            </if>
+            <if test="driver=='no'" >
+                AND u.dirver='yes'
+            </if>
         </if>
         AND u.robot_status='no'
         AND u.user_status='no'
         AND u.id!=#{userId}
+        AND m.first='yes'
         AND (m.record[${index}]!=#{userId} OR  record is null)
         ORDER BY  be_like_count DESC  limit #{num}  offset 0
     </select>
+
 
     <!--修改匹配过的人-->
     <update id="updateArise" parameterType="java.util.Map">

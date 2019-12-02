@@ -7,6 +7,7 @@ import com.wisewin.circle.entity.bo.UserBO;
 import com.wisewin.circle.entity.bo.UserMSgInterest;
 import com.wisewin.circle.entity.bo.UserMsgBO;
 import com.wisewin.circle.entity.dto.ConditionDTO;
+import com.wisewin.circle.pop.Constant;
 import com.wisewin.circle.pop.SystemConfig;
 import com.wisewin.circle.util.DateUtils;
 import com.wisewin.circle.util.RandomUtil;
@@ -27,23 +28,7 @@ public class MateService {
 
     public  List<UserMsgBO>  matching(String model, UserBO user,Map<String,Object> search) {
         //查询用户筛选项
-        //用户是第一次登陆该模式,
         Set<Long> resultSet = new HashSet<Long>();
-      /*  if (flag) {
-            //查询所有优质用户
-            List<Long> robots = mateDAO.queryRobot();
-            if (robots != null && robots.size() < 0) {
-                //优质用户不足10全部取出
-                if (resultSet.size() <= 10) {
-                    resultSet.addAll(robots);
-                } else {
-                    Set<Integer> ranSet = RandomUtil.generateRandomArray(10, robots.size() - 1);
-                    for (int index:ranSet){
-                        resultSet.add(robots.get(index));
-                    }
-                }
-            }
-        }*/
 
         search.put("num",10-resultSet.size());
         //查询用户
@@ -68,6 +53,18 @@ public class MateService {
         return userMsg;
     }
 
+
+    /**
+     *  查询3个用户
+     */
+     public List<Long>  getRobot(Map<String,Object> search){
+         search.put("num",3);
+         return  mateDAO.queryRobot(search);
+     }
+
+
+
+
     /**
      * 喜欢的用户
      *
@@ -80,40 +77,6 @@ public class MateService {
         return null;//mateDAO.queryLikeId(queryMap);
     }
 
-
-    /**
-     * 回流的用户
-     *
-     * @param map
-     * @return
-     */
-    public List<Integer> backflow(Map<String, Object> map) {
-        return new ArrayList<Integer>();   //TODO 小汶 规则待确定
-    }
-
-
-    /**
-     * 按条件匹配用户
-     */
-   // public List<Integer> queryUserIdCondition(Map<String, Object> map) {
-   //     return mateDAO.queryUserIdCondition(map);
-  //  }
-
-
-    private void deWeight(List<Integer> list) {
-        Set<Integer> set = new HashSet(list);
-        list.clear();
-        list.addAll(set);
-    }
-
-
-    /**
-     * 热度用户
-     */
-    public List<Integer> queryHeatUser(Map<String, Object> map) {
-    //    List<Integer> list = mateDAO.queryHeatUser(map);
-        return null;
-    }
 
 
 
@@ -132,7 +95,7 @@ public class MateService {
      *         sex 自己的性别
      *         model 模式
      *         driver 司机AND乘客
-     *         join  匹配过的用户
+     *         join  匹配过的用户`
      *         *
      */
     public Map<String,Object> userCondition(Long userId, String model){
@@ -143,7 +106,7 @@ public class MateService {
         map.put("ageEnd", DateUtils.getStartDate(Integer.parseInt(age[0])));
         map.put("ageStart",DateUtils.getStartDate(Integer.parseInt(age[1])));
         //性别
-        if("friend".equals(model)){
+        if("friend".equals(model) &&  conditionDTO.getSex().equals("女")){
             map.put("searchSex",conditionDTO.getSex());
         }else{
             map.put("searchSex",conditionDTO.getSearchSex());

@@ -71,8 +71,8 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 //                setLastRequestUrl(response, requestUri);
 //            }
 //        }
-        UserBO userBO=baseCotroller.getLoginUser(request);
-        userService.updStatisticalRecords(userBO.getId());
+ /*       UserBO userBO=baseCotroller.getLoginUser(request);
+     userService.updStatisticalRecords(userBO.getId());  */
         return true;
     }
 

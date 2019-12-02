@@ -1,10 +1,8 @@
 package com.wisewin.circle.service;
 
-import com.wisewin.circle.dao.KeyValDAO;
 import com.wisewin.circle.dao.ModelDAO;
 import com.wisewin.circle.entity.bo.ModelBO;
 import com.wisewin.circle.entity.bo.ScreenParamBO;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
