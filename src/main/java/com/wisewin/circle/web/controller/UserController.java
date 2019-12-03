@@ -212,11 +212,13 @@ public class UserController extends BaseCotroller {
         user.setCarStatus("no");//汽车认证状态（yes为已经认证|no为未认证|not未审核|audit审核中）
         user.setUserStatus("no");//yes为被拉黑|no为未拉黑
         user.setRobotStatus("no");//yes为被拉黑|no为未拉黑
-        userService.addUser(user);
         UserBO userBO = userService.selectByPhone(phone);
-        //三种模式下的初始化用户资料
-        modelService.addDefault(userBO.getId(),phone);
+        if (userBO==null) {
+            userService.addUser(user);
 
+            //三种模式下的初始化用户资料
+            modelService.addDefault(userBO.getId(), phone);
+        }
         //将只带有手机号的user对象存入cookie中
         this.putUser(response, user);
         String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("设置成功！"));
