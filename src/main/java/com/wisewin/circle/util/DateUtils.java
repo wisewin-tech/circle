@@ -566,33 +566,7 @@ public class DateUtils {
 		return cal.get(Calendar.DAY_OF_MONTH);
     }
     
-	public static void main(String[] args) {
 
-		Date date1 = DateUtils.parseDate("2016-05-18", DATE_PATTERN) ;
-		Date date2 = DateUtils.parseDate("2016-12-31", DATE_PATTERN) ;
-
-		System.out.println(DateUtils.getQuot(date1, date2));
-//		System.out.println(DateUtils.getAppointDate(DateUtils.parseDate("2015-01-04", DATE_PATTERN), 100));
-
-		/***
-		 * Calendar cal = Calendar.getInstance(); String birthday = "20030808";
-		 * Date b = parseDate(birthday, DATE_PATTERN_PLAIN); cal.setTime(b);
-		 *
-		 * Integer age = getAgeByBirthday(cal.getTime());
-		 * System.out.println(age);
-		 ****/
-
-//		Date aa = DateUtils.parseDate("2013-02-03", "yyyy-MM-dd");
-//		System.out.println(DateUtils.getSeasonInt(aa));
-//
-//		Date s = DateUtils.getBeforeDay(new Date(), 1);
-//		System.out.println(s);
-//		Calendar cal = Calendar.getInstance();
-//		System.out.println(cal.get(Calendar.DAY_OF_MONTH));
-//		System.out.println("...." +
-//				DateUtils.formatDate(DateUtils.CNLONG_DATE_PATTERN , DateUtils.getBeforeDay(new Date(), -1)));
-
-	}
 
 	//获取当日日期的未来N天
 	public static String getSpecifiedDayBefore(int dayNumber){
@@ -623,11 +597,11 @@ public class DateUtils {
 	public static Integer getRemainSecondsOneDay(Date currentDate) {
 		Calendar midnight=Calendar.getInstance();
 		midnight.setTime(currentDate);
-		midnight.add(midnight.DAY_OF_MONTH,1);
-		midnight.set(midnight.HOUR_OF_DAY,0);
-		midnight.set(midnight.MINUTE,0);
-		midnight.set(midnight.SECOND,0);
-		midnight.set(midnight.MILLISECOND,0);
+		midnight.add(Calendar.DAY_OF_MONTH,1);
+		midnight.set(Calendar.HOUR_OF_DAY,0);
+		midnight.set(Calendar.MINUTE,0);
+		midnight.set(Calendar.SECOND,0);
+		midnight.set(Calendar.MILLISECOND,0);
 		Integer seconds=(int)((midnight.getTime().getTime()-currentDate.getTime())/1000);
 		return seconds;
 	}
@@ -637,12 +611,25 @@ public class DateUtils {
 		Calendar midnight=Calendar.getInstance();
 		midnight.setTime(new Date());
 		midnight.add(Calendar.YEAR,-age);
-		midnight.set(midnight.MONTH,0);
-		midnight.set(midnight.DATE,0);
-		midnight.set(midnight.HOUR_OF_DAY,0);
-		midnight.set(midnight.MINUTE,0);
-		midnight.set(midnight.SECOND,0);
-		midnight.set(midnight.MILLISECOND,0);
+		midnight.set(Calendar.MONTH,0);
+		midnight.set(Calendar.DATE,0);
+		midnight.set(Calendar.HOUR_OF_DAY,0);
+		midnight.set(Calendar.MINUTE,0);
+		midnight.set(Calendar.SECOND,0);
+		midnight.set(Calendar.MILLISECOND,0);
+		return midnight.getTime();
+	}
+
+
+	//获取3日前的时间
+	public static Date lsatTime(){
+		Calendar midnight=Calendar.getInstance();
+		midnight.setTime(new Date());
+		midnight.add(Calendar.DAY_OF_MONTH,-3);
+		midnight.set(Calendar.HOUR_OF_DAY,0);
+		midnight.set(Calendar.MINUTE,0);
+		midnight.set(Calendar.SECOND,0);
+		midnight.set(Calendar.MILLISECOND,0);
 		return midnight.getTime();
 	}
 

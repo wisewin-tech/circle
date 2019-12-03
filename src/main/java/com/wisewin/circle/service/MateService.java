@@ -7,16 +7,11 @@ import com.wisewin.circle.entity.bo.UserBO;
 import com.wisewin.circle.entity.bo.UserMSgInterest;
 import com.wisewin.circle.entity.bo.UserMsgBO;
 import com.wisewin.circle.entity.dto.ConditionDTO;
-import com.wisewin.circle.pop.Constant;
-import com.wisewin.circle.pop.SystemConfig;
 import com.wisewin.circle.util.DateUtils;
-import com.wisewin.circle.util.RandomUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service("MateService")
@@ -28,28 +23,25 @@ public class MateService {
 
     public  List<UserMsgBO>  matching(String model, UserBO user,Map<String,Object> search) {
         //查询用户筛选项
-        Set<Long> resultSet = new HashSet<Long>();
+        List<Long> resultList = new ArrayList<Long>();
+        //喜欢的用户
+        List<Long> like = this.like(search);
+        resultList.addAll(like);
+        //热度用户
+        List<Long> heat = this.heat(search, resultList);
+        resultList.addAll(heat);
+        List<Long> distance = this.distance(search, resultList, 30 - this.nullCount(resultList));
+        resultList.addAll(distance);
 
-        search.put("num",10-resultSet.size());
-        //查询用户
-        if(resultSet.size()<10){
-            if(model.equals(UserConstants.CAR.getValue())){
-                List<Long> carIds = mateDAO.queryCarUser(search);
-                resultSet.addAll(carIds);
-            }else{
-                List<Long> otherIds = mateDAO.queryOtherUser(search);
-                resultSet.addAll(otherIds);
-            }
-        }
         //更新匹配记录
-        updateArise(resultSet,model,user.getId());
+        updateArise(distance,model,user.getId());
         //转化为用户信息
-        if(resultSet.size()<1){
+        if(resultList.size()<1){
             //没有满足条件的用户了
             return new ArrayList<UserMsgBO>();
         }
 
-        List<UserMsgBO> userMsg = getUserMsg(resultSet, model, (String) search.get("place"), (String) search.get("driver"));
+        List<UserMsgBO> userMsg = getUserMsg(resultList, model, (String) search.get("place"), (String) search.get("driver"));
         return userMsg;
     }
 
@@ -59,26 +51,8 @@ public class MateService {
      */
      public List<Long>  getRobot(Map<String,Object> search){
          search.put("num",3);
-         return  mateDAO.queryRobot(search);
+         return mateDAO.queryRobot(search);
      }
-
-
-
-
-    /**
-     * 喜欢的用户
-     *
-     * @param queryMap
-     * @return
-     */
-    public List<Integer> like(Map<String, Object> queryMap) {
-        String like_sum = SystemConfig.getString("like_sum");
-        queryMap.put("count", new Integer(like_sum));
-        return null;//mateDAO.queryLikeId(queryMap);
-    }
-
-
-
 
 
     /**
@@ -126,10 +100,62 @@ public class MateService {
         //用户id
         map.put("userId",userId);
         map.put("index",userId.hashCode());
-
         return map;
     }
 
+
+    /**
+     * 喜欢的用户
+     * @param search
+     * @return
+     */
+    public List<Long> like(Map<String, Object> search) {
+        search.put("num",9);
+        return mateDAO.queryLike(search);
+    }
+
+
+    /**
+     * 热度用户
+     */
+     public List<Long> heat(Map<String,Object> search,List<Long> ids){
+         search.put("num",9);
+         search.put("ids",this.nullList(ids));
+         search.put("activeTime",DateUtils.lsatTime());
+         return mateDAO.heat(search);
+     }
+
+    /**
+     * 距离近的用户
+     */
+    public List<Long> distance(Map<String,Object> search,List<Long> ids,int num){
+        search.put("num",num);
+        search.put("ids",this.nullList(ids));
+        search.put("activeTime",DateUtils.lsatTime());
+        return mateDAO.heat(search);
+    }
+
+    /**
+     * 空list返回null 方便map文件
+     * @param list
+     * @return
+     */
+    public List<Long> nullList(List<Long> list){
+         if(list==null || list.size()<1){
+             return null;
+         }
+         return list;
+    }
+
+    /**
+     * 空list返回 0 长度
+     */
+    public  int nullCount(List<Long> list){
+        if(list==null || list.size()<1){
+            return 0;
+        }
+        return list.size();
+    }
 
     /**
      * 修改用户的匹配记录
@@ -143,7 +169,8 @@ public class MateService {
         mateDAO.updateArise(paramMap);
     }
 
-    public  void updateArise(Set<Long> ids, String model, Long userId) {
+
+    public  void updateArise(List<Long> ids, String model, Long userId) {
         if(ids!=null && ids.size()>0) {
             for (Long id : ids) {
                 updateArise(id,model,userId,userId.hashCode());
@@ -155,7 +182,7 @@ public class MateService {
     /**
      * 用户信息
      */
-     public List<UserMsgBO> getUserMsg(Set<Long> ids,String model,String location,String driver){
+     public List<UserMsgBO> getUserMsg(List<Long> ids,String model,String location,String driver){
          Map<String,Object> paramMap=new HashMap<String, Object>();
          paramMap.put("ids",ids);
          paramMap.put("model",model);

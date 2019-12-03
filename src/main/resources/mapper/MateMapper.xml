@@ -31,8 +31,18 @@
         FROM ci_user u LEFT JOIN ci_model m ON m.user_id=u.id WHERE u.id=#{userId} AND m.model=#{model}
     </select>
 
-    <!--用户匹配-->
-    <select id="queryOtherUser"  parameterType="java.util.Map"  resultType="java.lang.Long">
+    <!--查询喜欢的用户 -->
+    <select id="queryLike"  resultType="java.lang.Long"  parameterType="java.util.Map">
+      SELECT u.id FROM  ci_user u LEFT JOIN ci_model m  ON m.user_id=u.id  left join  ci_matching_date t  on
+       t.user_id=u.id where
+       t.for_user=#{userId} and m.model=#{model}  AND (m.record[${index}]!=#{userId} OR  record is null)
+        and m.sex= #{searchSex}    limit #{num}  offset 0
+    </select>
+
+
+
+    <!--热度用户   /* AND u.localhost_time > #{activeTime}*/ -->
+    <select id="heat"  parameterType="java.util.Map"  resultType="java.lang.Long">
         SELECT  u.id  FROM  ci_user u LEFT JOIN ci_model m  ON m.user_id=u.id
         <if test="model=='car'" >
             LEFT JOIN ci_car_incident c  ON c.user_id = u.id
@@ -59,9 +69,56 @@
         AND u.user_status='no'
         AND u.id!=#{userId}
         AND m.first='yes'
+
         AND (m.record[${index}]!=#{userId} OR  record is null)
-        ORDER BY  be_like_count DESC  limit #{num}  offset 0
+        <if test="ids!=null" >
+            <foreach collection="ids" item="id" open="AND u.id NOT  IN (" separator="," close=")" >
+                #{id}
+            </foreach>
+        </if>
+        ORDER BY  be_like_count  DESC  limit #{num}  offset 0
     </select>
+
+    <!--距离近的用户  /* AND u.localhost_time > #{activeTime}*/ -->
+    <select id="distance"  parameterType="java.util.Map"  resultType="java.lang.Long">
+        SELECT  u.id  FROM  ci_user u LEFT JOIN ci_model m  ON m.user_id=u.id
+        <if test="model=='car'" >
+            LEFT JOIN ci_car_incident c  ON c.user_id = u.id
+        </if>
+        WHERE
+        m.model=#{model} AND m.sex=#{searchSex} AND (m.birthday >#{ageStart} AND m.birthday &lt;= #{ageEnd})
+        AND  ST_DWithin(where_is ,'${place}',#{dist})
+        <if test="auth=='yes' " >
+            AND  u.certification_status=#{auth}
+        </if>
+        <if test="carAuth=='yes' " >
+            AND  u.car_status=#{carAuth}
+        </if>
+        <if test="model=='car'" >
+            <if test="driver=='yes'" >
+                AND c.incident_status='yes'
+                AND u.dirver='no'
+            </if>
+            <if test="driver=='no'" >
+                AND u.dirver='yes'
+            </if>
+        </if>
+        AND u.robot_status='no'
+        AND u.user_status='no'
+        AND u.id!=#{userId}
+        AND m.first='yes'
+
+        AND (m.record[${index}]!=#{userId} OR  record is null)
+        <if test="ids!=null" >
+            <foreach collection="ids" item="id" open="AND u.id NOT  IN (" separator="," close=")" >
+                #{id}
+            </foreach>
+        </if>
+        ORDER BY  ST_DISTANCE(where_is, '${location}')   asc  limit #{num}  offset 0
+    </select>
+
+
+
 
 
     <!--修改匹配过的人-->

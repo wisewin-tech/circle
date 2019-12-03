@@ -19,8 +19,8 @@ public class SendMessageUtil {
 
 
 
-    static String accessKeyId="LTAIrYEzjhGJigUM";
-    static String accessSecret="KG9W4CwP3kAjnNEx9eiU40XtboouNZ";
+    static String accessKeyId="LTAI4FiejWGnEEjQ5k42XhJG";
+    static String accessSecret="8rf9OrKkaqYuqI3mf929TAuUShkimp";
 
  /*   private static final int APPID = 1400077931;
     private static final String APPKEY = "f0f83079a2c7fd091a039a04bc260741";*/
@@ -48,8 +48,8 @@ public class SendMessageUtil {
         request.setVersion("2017-05-25");
         request.setAction("SendSms");
         request.putQueryParameter("PhoneNumbers", mobile);
-        request.putQueryParameter("SignName", "多语咖");
-        request.putQueryParameter("TemplateCode", "SMS_165412502");
+        request.putQueryParameter("SignName", "oOps");
+        request.putQueryParameter("TemplateCode", "SMS_176555605");
         request.putQueryParameter("TemplateParam", "{\"code\":\""+content+"\"}");
         try {
             CommonResponse response = client.getCommonResponse(request);
@@ -60,4 +60,8 @@ public class SendMessageUtil {
         }
     }
 
+
+    public static void main(String[] args){
+        sendSignInCodeMessage("15214440324","666666");
+    }
 }

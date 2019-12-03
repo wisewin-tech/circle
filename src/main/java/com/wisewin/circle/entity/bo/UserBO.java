@@ -10,8 +10,8 @@ public class UserBO extends BaseModel {
     private String phone; //手机
     private String password;
     private Date createTime;//注册时间
-    private String latitude; //纬度
-    private String longitude; //经度
+    private Double latitude; //纬度
+    private Double longitude; //经度
     private String certificationStatus; //认证状态（yes为已经认证|no为未认证|not未审核|audit审核中）
     private String carStatus;//汽车认证状态（yes为已经认证|no为未认证|not未审核|audit审核中）
     private String userStatus;//yes为被拉黑|no为未拉黑
@@ -50,19 +50,19 @@ public class UserBO extends BaseModel {
         this.createTime = createTime;
     }
 
-    public String getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(String latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    public String getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(String longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 

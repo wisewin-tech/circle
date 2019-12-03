@@ -9,7 +9,6 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public interface MateDAO {
 
@@ -26,22 +25,27 @@ public interface MateDAO {
      */
     ConditionDTO userCondition(@Param("userId") Long userId, @Param("model") String model);
 
+
+    /**
+     * 查询喜欢用户
+     * @param search
+     * @return
+     */
+    List<Long> queryLike(Map<String,Object> search);
+
+    /**
+     * 热度用户
+     * @param search
+     * @return
+     */
+    List<Long> heat(Map<String, Object> search);
+
     /**
      * 查询符合条件的用户 ID DATE+Fired模式
      * @param search
      * @return
      */
-    List<Long> queryOtherUser(Map<String, Object> search);
-
-
-    /**
-     * 查询符合条件的用户 ID Car模式
-     * @param search
-     * @return
-     */
-    List<Long> queryCarUser(Map<String, Object> search);
-
-
+    List<Long> distance(Map<String, Object> search);
 
     /**
      * 修改用户的匹配记录
@@ -74,32 +78,5 @@ public interface MateDAO {
      * 查询事件
      */
     IncidentMsgBO queryIncident(Long userId);
-
-
-    /*  *//**
-     * 查询喜欢该用户的Id
-     * @param map 查询人id
-     * @return
-     *//*
-    List<Integer> queryLikeId(Map<String,Object> map);
-
-    *//**
-     * 按条件匹配用户Id
-     *//*
-    List<Integer> queryUserIdCondition(Map<String,Object>  map);
-
-    *//**
-     * 取出用户信息
-     *//*
-
-    List<UserMsgBO>  selectUserMsgByUserIds(Map<String,Object>  map);
-
-    *//**
-     *  热度用户
-     * @param map
-     * @return
-     *//*
-    List<Integer> queryHeatUser(Map<String, Object> map);*/
-
 
 }
