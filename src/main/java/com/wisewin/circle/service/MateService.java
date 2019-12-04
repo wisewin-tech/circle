@@ -34,12 +34,15 @@ public class MateService {
         resultList.addAll(distance);
 
         //更新匹配记录
-        updateArise(distance,model,user.getId());
+        updateArise(resultList,model,user.getId());
         //转化为用户信息
         if(resultList.size()<1){
             //没有满足条件的用户了
             return new ArrayList<UserMsgBO>();
         }
+
+        //打乱顺序
+        Collections.shuffle(resultList);
 
         List<UserMsgBO> userMsg = getUserMsg(resultList, model, (String) search.get("place"), (String) search.get("driver"));
         return userMsg;
@@ -132,7 +135,7 @@ public class MateService {
         search.put("num",num);
         search.put("ids",this.nullList(ids));
         search.put("activeTime",DateUtils.lsatTime());
-        return mateDAO.heat(search);
+        return mateDAO.distance(search);
     }
 
     /**
@@ -160,11 +163,11 @@ public class MateService {
     /**
      * 修改用户的匹配记录
      */
-    public  void updateArise(Long id,String model,Long userId,Integer index){
+    public  void updateArise(List<Long> ids,String model,Long userId,Integer index){
         Map<String,Object>  paramMap=new HashMap<String, Object>();
         paramMap.put("userId",userId);
         paramMap.put("model",model);
-        paramMap.put("id",id);
+        paramMap.put("ids",ids);
         paramMap.put("index",index);
         mateDAO.updateArise(paramMap);
     }
@@ -172,9 +175,7 @@ public class MateService {
 
     public  void updateArise(List<Long> ids, String model, Long userId) {
         if(ids!=null && ids.size()>0) {
-            for (Long id : ids) {
-                updateArise(id,model,userId,userId.hashCode());
-            }
+                updateArise(ids,model,userId,userId.hashCode());
         }
 
     }
@@ -187,8 +188,12 @@ public class MateService {
          paramMap.put("ids",ids);
          paramMap.put("model",model);
          paramMap.put("location",location);
-         List<UserMsgBO> userMsgBOS=mateDAO.getUserMsg(paramMap);
-        if(userMsgBOS!=null && userMsgBOS.size()>1){
+         paramMap.put("driver",driver);
+         //2.0
+         List<UserMsgBO> userMsgBOS=mateDAO.getUserMsg2(paramMap);
+
+      //   List<UserMsgBO> userMsgBOS=mateDAO.getUserMsg(paramMap);
+       /* if(userMsgBOS!=null && userMsgBOS.size()>1){
             Iterator<UserMsgBO> iterator = userMsgBOS.iterator();
             while (iterator.hasNext()){
                 UserMsgBO next = iterator.next();
@@ -210,7 +215,7 @@ public class MateService {
                     next.setIncident(incidentMsgBO);
                 }
             }
-        }
+        }*/
          return userMsgBOS;
      }
 

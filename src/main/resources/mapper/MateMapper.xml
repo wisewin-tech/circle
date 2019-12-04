@@ -69,7 +69,6 @@
         AND u.user_status='no'
         AND u.id!=#{userId}
         AND m.first='yes'
-
         AND (m.record[${index}]!=#{userId} OR  record is null)
         <if test="ids!=null" >
             <foreach collection="ids" item="id" open="AND u.id NOT  IN (" separator="," close=")" >
@@ -114,7 +113,7 @@
                 #{id}
             </foreach>
         </if>
-        ORDER BY  ST_DISTANCE(where_is, '${location}')   asc  limit #{num}  offset 0
+        ORDER BY  ST_DISTANCE(where_is, '${place}')   asc  limit #{num}  offset 0
     </select>
 
 
@@ -123,8 +122,66 @@
 
     <!--修改匹配过的人-->
     <update id="updateArise" parameterType="java.util.Map">
-        UPDATE ci_model set record[${index}] = #{userId}  WHERE  user_id=#{id}  AND  model=#{model}
+        UPDATE ci_model set record[${index}] = #{userId}  WHERE     model=#{model}
+        <foreach collection="ids" item="id" open="AND user_id IN (" separator="," close=")" >
+             #{id}
+        </foreach>
     </update>
+
+    <!--用户基础信息2.0-->
+
+    <select id="getUserMsg2"  parameterType="java.util.Map" resultMap="getUserMsg2Map">
+        SELECT  u.id,m.id AS modelId ,
+        u.certification_status,u.car_status ,m.describe ,m.sex ,m.name ,
+        m.birthday,m.constellation,m.education,m.birthplace,u.latitude,u.longitude ,
+        ST_DISTANCE(where_is, '${location}') as  distance  ,i.origin,i.destination,i.incident_time,i.incident ,
+        t.id,t.id AS tid,t.type_name,e.interest_name , p.picture_url
+        FROM  ci_user u LEFT JOIN ci_car_incident c  ON c.user_id = u.id
+        LEFT JOIN ci_model m  ON m.user_id=u.id  LEFT JOIN
+        ci_user_interest e ON e.model_id =u.id  LEFT JOIN ci_interest_type t   ON e.type_id=t.id  LEFT JOIN
+        ci_user_picture  p ON p.model_id =u.id  LEFT JOIN ci_car_incident i ON i.user_id=u.id
+        WHERE m.model=#{model}  AND
+        <foreach collection="ids" item="id" open="u.id IN (" separator="," close=")" >
+            #{id}
+        </foreach>
+        <if test="driver=='yes' and model=='car' ">
+            AND i.incident_status='yes'
+        </if>
+
+    </select>
+    <resultMap id="getUserMsg2Map" type="com.wisewin.circle.entity.bo.UserMsgBO" >
+        <id     column="id" property="id" ></id>
+        <result column="modelId" property="modelId" ></result>
+        <result column="certification_status" property="certificationStatus" ></result>
+        <result column="car_status" property="carStatus" ></result>
+        <result column="describe" property="describe" ></result>
+        <result column="sex" property="sex" ></result>
+        <result column="birthday" property="birthday" ></result>
+        <result column="constellation" property="constellation" ></result>
+        <result column="education" property="education" ></result>
+        <result column="birthplace" property="birthplace" ></result>
+        <result column="latitude" property="latitude" ></result>
+        <result column="longitude" property="longitude" ></result>
+        <result column="distance" property="distance" ></result>
+        <result column="name" property="name" ></result>
+        <association property="incident" javaType="com.wisewin.circle.entity.bo.IncidentMsgBO" >
+            <result column="origin" property="origin" ></result>
+            <result column="destination" property="destination" ></result>
+            <result column="incident" property="incident" ></result>
+            <result column="incident_time" property="incidentTime" ></result>
+        </association>
+        <collection property="picture" ofType="java.lang.String" >
+            <constructor><arg column="picture_url"/></constructor>
+        </collection>
+        <collection property="interest" ofType="com.wisewin.circle.entity.bo.UserMSgInterest" >
+            <id column="tid"  property="id" ></id>
+            <result column="type_name"  property="name" ></result>
+            <collection property="tag" ofType="java.lang.String" >
+                <constructor><arg column="interest_name"/></constructor>
+            </collection>
+        </collection>
+
+    </resultMap>
 
     <!--用户基础信息-->
     <select id="getUserMsg"  parameterType="java.util.Map" resultType="com.wisewin.circle.entity.bo.UserMsgBO">
@@ -176,102 +233,6 @@ WHERE ST_DWithin(
 where_is ,'0101000020E61000005A63D009A1245D409BAE27BA2EE64340',13000
 );`
 
-        <select id="queryLikeId" resultType="java.lang.Integer"  parameterType="map">
-            SELECT  ation.id   FROM   ce_relation ation
-                                LEFT JOIN    ce_relation cmain  ON ation.user_id_main=cmain.user_id
-                                LEFT JOIN  ce_user  us  ON  us.id=ation.user_id_main
-            <where>
-              ation.user_id=#{userId}  and ation.status ='yes'  AND  cmain.id IS NULL   AND ation.type=#{type}
-
-             <if test="gender!=null">
-                 AND   us.gender=#{gender}
-             </if>
-             <if test="startAge!=null and endAge!=null" >
-                 AND  us.birthday  BETWEEN #{startAge}  AND  #{endAge}
-             </if>
-
-             <if test="distance!=null"  >
-                 AND     cast(st_distance_sphere(us.geom ,'${location}')/1000   AS decimal(10,2))   &lt;=  #{distance}
-             </if>
-                LIMIT  #{count}  OFFSET  0
-            </where>
-
-        </select>
-
-
-        &lt;!&ndash;按条件查询&ndash;&gt;
-        <select id="queryUserIdCondition"   resultType="java.lang.Integer"   parameterType="map"  >
-            SELECT (cu.id) FROM ce_user cu LEFT JOIN  ce_user_pattern  cup ON  cup.user_id=cu.id
-            WHERE
-            <if test="gender!=null">
-                cu.gender=#{gender} AND
-            </if>
-            <if test="startAge!=null and endAge!=null" >
-                cu.birthday  BETWEEN #{startAge}  AND  #{endAge}  AND
-            </if>
-            <if test="distance!=null" >
-                cast(st_distance_sphere(cu.geom,'${location}') /1000   AS decimal(10,2))
-                &lt;=  #{distance}    AND
-            </if>
-            cu.account_status='yes'  AND  cup.type=#{type}
-            <if test="list!=null" >
-                <foreach collection="list" item="id" separator="," open="and  cu.id  NOT IN (" close=")"  >
-                    #{id}
-                </foreach>
-            </if>
-            ORDER BY  cup.like_sum  DESC
-            LIMIT  #{count}  OFFSET  0
-        </select>
-
-
-        <resultMap id="msgMapper" type="com.wisewin.circle.entity.bo.UserMsgBO">
-            <id column="id" property="id" />
-            <result column="name"  property="name" />
-            <result column="birthday"  property="birthday" />
-            <result column="work"  property="work" />
-            <result column="school"  property="school" />
-            <result column="describe"  property="describe" />
-            <result column="distance"  property="distance" />
-
-            <collection property="pictures" ofType="java.lang.String" >
-                <result column="img_url"/>
-            </collection>
-
-            <collection  property="interest"  ofType="com.wisewin.circle.entity.bo.InteriorInterestBO" >
-                <result column="type_name"  property="type" />
-                <result column="interest_string"  property="countent" />
-            </collection>
-        </resultMap>
-
-
-        &lt;!&ndash;查10个用户信息&ndash;&gt;
-        <select id="selectUserMsgByUserIds" parameterType="map" resultMap="msgMapper">
-            SELECT  cu.id,cu.name,cu.birthday ,cu.work,cu.school,cup.describe ,
-            back.img_url ,ctype.type_name,cist.interest_string ,
-            cast(st_distance_sphere(geom,'${location}') /1000   AS decimal(10,2))  AS distance
-            FROM  ce_user cu LEFT JOIN ce_user_pattern  cup ON  cup.user_id=cu.id  LEFT JOIN  ce_user_background back
-            ON back.pattern=cup.id   LEFT JOIN  ce_user_interest cist ON  cist.pattern_id = cup.id  LEFT JOIN
-            ce_interest_type ctype  ON ctype.id=cist.interest_type_id
-            WHERE  cup.type=#{type}
-
-            <foreach collection="list" item="id" separator="," open="and cu.id in(" close=")">
-                #{id}
-            </foreach>
-        </select>
-
-        &lt;!&ndash;热度用户&ndash;&gt;
-        <select id="queryHeatUser"  parameterType="map"  resultType="java.lang.Integer" >
-            SELECT (cu.id) FROM ce_user cu LEFT JOIN  ce_user_pattern  cup ON  cup.user_id=cu.id
-            WHERE
-            <if test="gender!=null">
-                cu.gender=#{gender} AND
-            </if>
-            <if test="startAge!=null and endAge!=null" >
-                cu.birthday  BETWEEN #{startAge}  AND  #{endAge}  AND
-            </if>
-            cu.account_status='yes'  AND  cup.type=#{type}
-            ORDER BY  cup.like_sum  DESC
-            LIMIT  #{count}  OFFSET  0
-        </select>-->
+      -->
 
 </mapper>

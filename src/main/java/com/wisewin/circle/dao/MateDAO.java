@@ -79,4 +79,5 @@ public interface MateDAO {
      */
     IncidentMsgBO queryIncident(Long userId);
 
+    List<UserMsgBO> getUserMsg2(Map<String, Object> paramMap);
 }
