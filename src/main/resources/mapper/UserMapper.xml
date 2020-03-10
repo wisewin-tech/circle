@@ -16,7 +16,7 @@
 
 
     <!--新增用户-->
-    <insert id="addUser" parameterType="com.wisewin.circle.entity.bo.UserBO">
+    <insert id="addUser"  useGeneratedKeys="true" keyProperty="id" parameterType="com.wisewin.circle.entity.bo.UserBO">
      INSERT INTO "ci_user"( "phone", "password", "create_time", "latitude", "longitude", "certification_status", "car_status", "user_status", "robot_status")
                     VALUES (#{phone},#{password}, now(),#{latitude},#{longitude},
                               #{certificationStatus},#{carStatus}, #{userStatus}, #{robotStatus});

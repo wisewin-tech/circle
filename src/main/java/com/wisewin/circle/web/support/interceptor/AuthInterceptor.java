@@ -73,13 +73,15 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 //                setLastRequestUrl(response, requestUri);
 //            }
 //        }
-        UserBO userBO=baseCotroller.getLoginUser(request);
-        if(userBO==null){
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000000"));
-            baseCotroller.safeJsonPrint(response, json);
-            return false;
-        }
-        userService.updStatisticalRecords(userBO.getId());
+
+
+//        UserBO userBO=baseCotroller.getLoginUser(request);
+//        if(userBO==null){
+//            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000000"));
+//            baseCotroller.safeJsonPrint(response, json);
+//            return false;
+//        }
+//        userService.updStatisticalRecords(userBO.getId());
         return true;
     }
 

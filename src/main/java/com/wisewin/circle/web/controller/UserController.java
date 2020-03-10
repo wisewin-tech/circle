@@ -51,6 +51,7 @@ public class UserController extends BaseCotroller {
      */
     @RequestMapping("/send")
     public void send(String phone, HttpServletResponse response) {
+        System.out.println("===========");
         //手机号非空+格式判断
         if (this.phoneFormt(phone, response)) {
             String time = RedissonHandler.getInstance().get(phone + UserConstants.VERIFY_LOSE.getValue());
@@ -132,17 +133,18 @@ public class UserController extends BaseCotroller {
         UserBO userBO = userService.selectByPhone(phone);
 
         if (UserConstants.PASSWORD.getValue().equals(type)) {
-            if (userBO==null){
-                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000004"));
-                super.safeJsonPrint(response, json);
-                return;
-            }
             //密码登录
             if (StringUtils.isEmpty(password)) {
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
                 super.safeJsonPrint(response, json);
                 return;
             }
+            if (userBO==null){
+                String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000004"));
+                super.safeJsonPrint(response, json);
+                return;
+            }
+
             if (MD5Util.digest(password).equals(userBO.getPassword())) {
                 this.putUser(response, userBO);
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(userBO));
@@ -189,7 +191,7 @@ public class UserController extends BaseCotroller {
     }
 
     /**
-     * 设置密码
+     * 设置密码，注册
      * @param phone
      * @param password
      * @param request
@@ -217,7 +219,7 @@ public class UserController extends BaseCotroller {
             userService.addUser(user);
 
             //三种模式下的初始化用户资料
-            modelService.addDefault(userBO.getId(), phone);
+            modelService.addDefault(user.getId(), phone);
         }
         //将只带有手机号的user对象存入cookie中
         this.putUser(response, user);
