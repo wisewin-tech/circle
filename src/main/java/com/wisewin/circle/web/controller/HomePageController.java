@@ -44,6 +44,7 @@ public class HomePageController extends BaseCotroller {
      */
     @RequestMapping(value = "/information",method = RequestMethod.POST)
     public void information(HttpServletRequest request, HttpServletResponse response, String model){
+        System.out.println("homepage-information");
         String loginID = super.getLoginID(request);
         log.info("model:{}",model);
         ResultDTO homepage = homePageService.homepage(model, Integer.parseInt(loginID));

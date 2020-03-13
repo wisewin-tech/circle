@@ -394,11 +394,11 @@
       <version>0.9.2</version>
     </dependency>
 
-    <dependency>
-      <groupId>com.alipay</groupId>
-      <artifactId>sdk-java</artifactId>
-      <version>20171123203126</version>
-    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>com.alipay</groupId>-->
+<!--      <artifactId>sdk-java</artifactId>-->
+<!--      <version>20171123203126</version>-->
+<!--    </dependency>-->
 
     <dependency>
       <groupId>org.jdom</groupId>

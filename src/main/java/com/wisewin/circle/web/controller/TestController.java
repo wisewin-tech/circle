@@ -39,7 +39,7 @@ public class TestController extends BaseCotroller {
 
     @RequestMapping("/test")
     public void test(HttpServletResponse response, HttpServletRequest request) {
-
+        System.out.println("test --- 成功键入方法");
     }
 
     public static void main(String[] args) throws ParseException {
