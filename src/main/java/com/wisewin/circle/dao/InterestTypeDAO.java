@@ -3,6 +3,8 @@ package com.wisewin.circle.dao;
 
 
 import com.wisewin.circle.entity.bo.InterestType;
+import com.wisewin.circle.entity.bo.InterestTypeW;
+import com.wisewin.circle.entity.bo.UserInterestCustomBO;
 import com.wisewin.circle.entity.dto.param.UserInterestParam;
 import org.apache.ibatis.annotations.Param;
 
@@ -13,7 +15,11 @@ import java.util.List;
  * */
 public interface InterestTypeDAO {
 
-
+    /**
+     * 获取系统兴趣分类
+     * @return
+     */
+    List<InterestTypeW> selectType();
 
 
     /**
@@ -22,11 +28,19 @@ public interface InterestTypeDAO {
      */
     List<InterestType> selectciInterestType();
 
+
     /**
      * 获取用户自定义兴趣
      * @return
      */
     List<InterestType> selectciUserInterestCustom(@Param("modelId")Integer modelId);
+
+    /**
+     * 获取用户自定义兴趣wy
+     * @return
+     */
+    List<UserInterestCustomBO> getUserInterestCustom(@Param("modelId")Integer modelId);
+
 
     /**
      * 获取用户选中兴趣

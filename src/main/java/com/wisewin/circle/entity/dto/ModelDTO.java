@@ -17,7 +17,15 @@ public class ModelDTO {
     private Integer beLikeCount;
     private Integer beSuperLikeCount;
     private String sex;
+    private String name;//昵称
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public Integer getId() {
         return id;

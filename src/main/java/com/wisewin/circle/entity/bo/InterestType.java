@@ -1,6 +1,7 @@
 package com.wisewin.circle.entity.bo;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author: Wang bin

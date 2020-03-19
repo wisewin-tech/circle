@@ -5,7 +5,12 @@
 <!-- 【兴趣】 -->
 <mapper namespace="com.wisewin.circle.dao.UserInterestDAO">
     <!-- 根据模式id查询兴趣相关信息 -->
-    <select id="selectInterestByPatternId" resultType="com.wisewin.circle.entity.bo.UserInterestBO" parameterType="java.lang.Integer">
-        select * from ce_user_interest where pattern_id=#{pattern_id}
+    <select id="selectInterestByPatternId" resultType="com.wisewin.circle.entity.bo.UserInterestBOV2" parameterType="java.lang.Long">
+        select * from ci_user_interest where model_id=#{modelId}
+    </select>
+
+    <!-- 查询所有系统配置的兴趣 -->
+    <select id="selectInterestAll" resultType="com.wisewin.circle.entity.bo.UserInterestBOV2">
+        select * from ci_interest
     </select>
 </mapper>

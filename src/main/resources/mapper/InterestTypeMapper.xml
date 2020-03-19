@@ -11,12 +11,22 @@
         where ci_interest.type_id = ci_interest_type.id
     </select>
 
+    <select id="selectType" resultType="com.wisewin.circle.entity.bo.InterestTypeW">
+        select * from ci_interest_type
+    </select>
+
     <select id="selectciUserInterestCustom" resultType="com.wisewin.circle.entity.bo.InterestType">
         select ci_user_interest_custom.type_id as typeId,ci_user_interest_custom.custom_name as interestName,
         ci_interest_type.type_name as  typeName
         from ci_user_interest_custom, ci_interest_type
         where ci_user_interest_custom.type_id = ci_interest_type.id and
         ci_user_interest_custom.model_id = #{modelId}
+    </select>
+
+    <select id="getUserInterestCustom" resultType="com.wisewin.circle.entity.bo.UserInterestCustomBO">
+        select *
+        from ci_user_interest_custom
+        where model_id = #{modelId}
     </select>
 
     <select id="selectciUserInterest" resultType="com.wisewin.circle.entity.bo.InterestType">

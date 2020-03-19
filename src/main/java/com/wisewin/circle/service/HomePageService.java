@@ -1,6 +1,7 @@
 package com.wisewin.circle.service;
 
 import com.wisewin.circle.dao.*;
+import com.wisewin.circle.entity.bo.InterestTypeW;
 import com.wisewin.circle.entity.bo.*;
 import com.wisewin.circle.entity.dto.ModelDTO;
 import com.wisewin.circle.entity.dto.ResultDTO;
@@ -38,23 +39,27 @@ public class HomePageService {
     @Resource
     private KeyValDAO keyValDAO;
 
+    @Resource
+    UserInterestDAO userInterestDAO;
+
     private static final Logger log = LoggerFactory.getLogger(HomePageService.class);
 
     /**
      * 获取主页信息
-     * @param model 模式
+     *
+     * @param model  模式
      * @param userId 用户id
      * @return
      */
-    public ResultDTO homepage(String model,Integer userId){
+    public ResultDTO homepage(String model, Integer userId) {
         Map<String, Object> map = new HashMap<String, Object>();
-        if(StringUtils.isEmpty(model)){
-          return ResultDTOBuilder.failure("0000001");
+        if (StringUtils.isEmpty(model)) {
+            return ResultDTOBuilder.failure("0000001");
         }
-        System.err.println("model"+model+"userId"+userId);
+        System.err.println("model" + model + "userId" + userId);
         //获取用户基本信息
         Model models = modelDAO.selectModel(model, userId);
-        if(org.springframework.util.StringUtils.isEmpty(model)){
+        if (org.springframework.util.StringUtils.isEmpty(model)) {
             return ResultDTOBuilder.failure("0000004");
         }
         ModelDTO mdto = new ModelDTO();
@@ -67,99 +72,138 @@ public class HomePageService {
         mdto.setHeight(models.getHeight());
         mdto.setEducation(models.getEducation());
         mdto.setBirthplace(models.getBirthplace());
-        map.put("model", mdto);
+        mdto.setName(models.getName());
+
         //获取用户背景图
         List<UserPicture> userPictures = userPictureDAO.selectUserPicture(models.getId());
-        log.info("获取用户背景图:{}",userPictures);
-        if(!CollectionUtils.isEmpty(userPictures)){
-            map.put("userPicture",userPictures) ;
-        } else {
-            map.put("userPicture","") ;
+        //添加头像
+        if(userPictures!=null && userPictures.size()!=0){
+            map.put("headPic",userPictures.get(0));
         }
-        //获取系统兴趣
-        List<InterestType> interestTypes = interestTypeDAO.selectciInterestType();
-        System.err.println("系统兴趣"+interestTypes);
+        //添加model信息
+        map.put("model", mdto);
+        log.info("获取用户背景图:{}", userPictures);
+        if (!CollectionUtils.isEmpty(userPictures)) {
+            List<String> userPictureStrList = new ArrayList<String>();
+            for (UserPicture up : userPictures) {
+                userPictureStrList.add(up.getPictureUrl());
+            }
+            map.put("userPicture", userPictureStrList);
+        } else {
+            map.put("userPicture", "");
+        }
+        //获取系统兴趣分类
+        List<InterestTypeW> interestTypes = interestTypeDAO.selectType();
         //获取用户自定义兴趣
-        List<InterestType> interestTypes2 = interestTypeDAO.selectciUserInterestCustom(models.getId());
-        System.err.println("用户自定义兴趣"+interestTypes2);
-        if(!CollectionUtils.isEmpty(interestTypes2)){
-            //合并
-            interestTypes.addAll(interestTypes);
+        System.out.println("models.getId()" + models.getId());
+        List<UserInterestCustomBO> userInterestCustom = interestTypeDAO.getUserInterestCustom(models.getId());
+        for (InterestTypeW it : interestTypes) {
+            for (UserInterestCustomBO itc : userInterestCustom) {
+                if (it.getId().equals(itc.getTypeId())) {
+                    it.getCustomInterestBOList().add(itc);
+                }
+            }
         }
-        System.err.println("兴趣合并"+interestTypes);
-        map.put("interest", interestTypes);
-        //获取用户选中的兴趣
-        List<InterestType> interestTypes1 = interestTypeDAO.selectciUserInterest(models.getId());
-        System.err.println("用户选中的兴趣"+interestTypes1);
-        if(!CollectionUtils.isEmpty(interestTypes1)){
-            map.put("userInterest",interestTypes1) ;
-        } else {
-            map.put("userInterest","") ;
-        }
-        return ResultDTOBuilder.success(map,"1000000");
-    }
 
+        //获取系统的兴趣
+        List<UserInterestBOV2> InterestBOAll = userInterestDAO.selectInterestAll();
+        //获取用户选中的系统兴趣
+        List<UserInterestBOV2> userInterestBO = userInterestDAO.selectInterestByPatternId(new Long(models.getId()));
+        //进行对比，选中的把系统的兴趣状态修改为yes，然后添加到对应分类当中
+        for (UserInterestBOV2 all : InterestBOAll) {
+            for (UserInterestBOV2 userInterest : userInterestBO) {
+                if (all.getId().equals(userInterest.getId())) {
+                    all.setStatus("yes");
+                }
+            }
+            for (InterestTypeW it : interestTypes) {
+                if(all.getTypeId().equals(it.getId())){
+                    it.getInterestBOList().add(all);
+                }
+            }
+        }
+
+
+        //合并
+        //interestTypes.addAll(interestTypes);
+//            System.err.println("自定义兴趣" + interestTypes);
+//            map.put("userInterest", interestTypes);
+
+        //获取用户选中的兴趣
+//            List<InterestType> interestTypes1 = interestTypeDAO.selectciUserInterest(models.getId());
+//            System.err.println("用户选中的兴趣" + interestTypes1);
+//            if (!CollectionUtils.isEmpty(interestTypes1)) {
+//                map.put("interest", interestTypes1);
+//            } else {
+//                map.put("interest", "");
+//            }
+
+        map.put("interestTypes", interestTypes);
+        return ResultDTOBuilder.success(map, "1000000");
+    }
 
     /**
      * 修改模式个人信息
+     *
      * @param modelParam
      * @return
      */
-    public ResultDTO updateModel(ModelParam modelParam){
+    public ResultDTO updateModel(ModelParam modelParam) {
 
         Model model = modelDAO.selectModel(modelParam.getModel(), modelParam.getUserId());
-        if(org.springframework.util.StringUtils.isEmpty(modelParam)){
+        if (org.springframework.util.StringUtils.isEmpty(modelParam)) {
             return ResultDTOBuilder.failure("0000001");
         }
 
         String sexCount = keyValDAO.selectKey("sexCount");
-        if(!StringUtils.isNotBlank(modelParam.getSex())){
-            if(model.getSexCount() >= Integer.parseInt(sexCount)){
-                return ResultDTOBuilder.failure("1111111","不可修改性别");
+        if (!StringUtils.isNotBlank(modelParam.getSex())) {
+            if (model.getSexCount() >= Integer.parseInt(sexCount)) {
+                return ResultDTOBuilder.failure("1111111", "不可修改性别");
             }
         }
         int i = modelDAO.updateModel(modelParam);
-        if(i > 0 ){
-            return ResultDTOBuilder.success("","1000000");
+        if (i > 0) {
+            return ResultDTOBuilder.success("", "1000000");
         }
         return ResultDTOBuilder.failure("1111111");
     }
 
 
-
     /**
      * 修改背景图
+     *
      * @param userPictureParam
      * @return
      */
-    public ResultDTO saveUserPircture(List<UserPictureParam> userPictureParam){
-        if(CollectionUtils.isEmpty(userPictureParam)){
+    public ResultDTO saveUserPircture(List<UserPictureParam> userPictureParam) {
+        if (CollectionUtils.isEmpty(userPictureParam)) {
             return ResultDTOBuilder.failure("0000001");
         }
         //删除之前背景图
         int i = userPictureDAO.deleteUserPicture(userPictureParam.get(0).getModelId());
         //插入最新背景图
         i = userPictureDAO.insertUserPicture(userPictureParam);
-        if(i > 0){
-            return ResultDTOBuilder.success("","1000000");
+        if (i > 0) {
+            return ResultDTOBuilder.success("", "1000000");
         }
         return ResultDTOBuilder.failure("1111111");
     }
 
     /**
      * 修改兴趣
+     *
      * @param userInterestParams
      * @return
      */
-    public ResultDTO saveUserInterest(List<UserInterestParam> userInterestParams){
-        if(CollectionUtils.isEmpty(userInterestParams)){
+    public ResultDTO saveUserInterest(List<UserInterestParam> userInterestParams) {
+        if (CollectionUtils.isEmpty(userInterestParams)) {
             return ResultDTOBuilder.failure("0000001");
         }
         //删除之前选中兴趣
         int i = interestTypeDAO.deleteUserInterest(userInterestParams.get(0).getModelId());
         i = interestTypeDAO.insetUserInterest(userInterestParams);
-        if(i > 0){
-            return ResultDTOBuilder.success("","1000000");
+        if (i > 0) {
+            return ResultDTOBuilder.success("", "1000000");
         }
         return ResultDTOBuilder.failure("1111111");
     }
@@ -167,55 +211,58 @@ public class HomePageService {
 
     /**
      * 修改自定义兴趣
+     *
      * @param list
      * @return
      */
-    public ResultDTO saveUserInterestCustom(List<UserInterestCustom> list){
-        if(CollectionUtils.isEmpty(list)){
+    public ResultDTO saveUserInterestCustom(List<UserInterestCustom> list) {
+        if (CollectionUtils.isEmpty(list)) {
             return ResultDTOBuilder.failure("0000001");
         }
         int i = userInterestCustomDAO.deleteUserInterestCuston(list.get(0).getModelId());
         i = userInterestCustomDAO.insertUserInterestCuston(list);
-        if(i > 0){
-            return ResultDTOBuilder.success("","1000000");
+        if (i > 0) {
+            return ResultDTOBuilder.success("", "1000000");
         }
         return ResultDTOBuilder.failure("1111111");
     }
 
     /**
      * 添加自定义兴趣
+     *
      * @param userInterestCustom
      * @return
      */
-    public ResultDTO insertUserInterestCustom(UserInterestCustom userInterestCustom){
-        if(org.springframework.util.StringUtils.isEmpty(userInterestCustom)){
+    public ResultDTO insertUserInterestCustom(UserInterestCustom userInterestCustom) {
+        if (org.springframework.util.StringUtils.isEmpty(userInterestCustom)) {
             return ResultDTOBuilder.failure("0000001");
         }
         List<UserInterestCustom> list = new ArrayList<UserInterestCustom>();
         list.add(userInterestCustom);
         int i = userInterestCustomDAO.insertUserInterestCuston(list);
-        if(i > 0){
-            return ResultDTOBuilder.success("","1000000");
+        if (i > 0) {
+            return ResultDTOBuilder.success("", "1000000");
         }
         return ResultDTOBuilder.failure("1111111");
     }
 
     /**
      * 切换模式
+     *
      * @param userId
      * @param model
      * @return
      */
-    public ResultDTO handoverModel(Integer userId, String model){
-        if(userId == null){
+    public ResultDTO handoverModel(Integer userId, String model) {
+        if (userId == null) {
             return ResultDTOBuilder.failure("0000001");
         }
-        if(StringUtils.isNotBlank(model)){
+        if (StringUtils.isNotBlank(model)) {
             return ResultDTOBuilder.failure("0000001");
         }
         //判断是否第一次进入这个模式
         ModelBO i = modelDAO.selectModelCount(userId, model);
-        if(i != null){
+        if (i != null) {
             //模式开关
             modelDAO.updateModelFirst(i.getId().intValue(), "yes");
         }
@@ -223,7 +270,7 @@ public class HomePageService {
         i.setModel(model);
         i.setFirst("no");
         modelDAO.addDefault(i);
-        return ResultDTOBuilder.success("","1000000");
+        return ResultDTOBuilder.success("", "1000000");
     }
 
 
