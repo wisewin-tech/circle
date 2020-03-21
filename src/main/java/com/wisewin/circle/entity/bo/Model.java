@@ -35,7 +35,15 @@ public class Model {
     private String name;
     private Date slideTime;
     private Long slideCount;
+    private String quietStatus;
 
+    public String getQuietStatus() {
+        return quietStatus;
+    }
+
+    public void setQuietStatus(String quietStatus) {
+        this.quietStatus = quietStatus;
+    }
 
     public Integer getId() {
         return id;

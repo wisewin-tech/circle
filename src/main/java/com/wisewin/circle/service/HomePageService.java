@@ -73,25 +73,22 @@ public class HomePageService {
         mdto.setEducation(models.getEducation());
         mdto.setBirthplace(models.getBirthplace());
         mdto.setName(models.getName());
-
+        mdto.setSexCount(models.getSexCount());
         //获取用户背景图
         List<UserPicture> userPictures = userPictureDAO.selectUserPicture(models.getId());
         //添加头像
-        if(userPictures!=null && userPictures.size()!=0){
-            map.put("headPic",userPictures.get(0));
+        if (userPictures != null && userPictures.size() != 0) {
+            map.put("headPic", userPictures.get(0));
         }
         //添加model信息
         map.put("model", mdto);
         log.info("获取用户背景图:{}", userPictures);
-        if (!CollectionUtils.isEmpty(userPictures)) {
-            List<String> userPictureStrList = new ArrayList<String>();
-            for (UserPicture up : userPictures) {
-                userPictureStrList.add(up.getPictureUrl());
-            }
-            map.put("userPicture", userPictureStrList);
-        } else {
-            map.put("userPicture", "");
+        List<String> userPictureStrList = new ArrayList<String>();
+        for (UserPicture up : userPictures) {
+            userPictureStrList.add(up.getPictureUrl());
         }
+        map.put("userPicture", userPictureStrList);
+
         //获取系统兴趣分类
         List<InterestTypeW> interestTypes = interestTypeDAO.selectType();
         //获取用户自定义兴趣
@@ -117,7 +114,7 @@ public class HomePageService {
                 }
             }
             for (InterestTypeW it : interestTypes) {
-                if(all.getTypeId().equals(it.getId())){
+                if (all.getTypeId().equals(it.getId())) {
                     it.getInterestBOList().add(all);
                 }
             }

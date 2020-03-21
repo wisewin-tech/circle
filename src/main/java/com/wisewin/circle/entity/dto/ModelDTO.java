@@ -18,6 +18,24 @@ public class ModelDTO {
     private Integer beSuperLikeCount;
     private String sex;
     private String name;//昵称
+    private Integer sexCount;//性别修改次数
+    private String quietStatus;
+
+    public String getQuietStatus() {
+        return quietStatus;
+    }
+
+    public void setQuietStatus(String quietStatus) {
+        this.quietStatus = quietStatus;
+    }
+
+    public Integer getSexCount() {
+        return sexCount;
+    }
+
+    public void setSexCount(Integer sexCount) {
+        this.sexCount = sexCount;
+    }
 
     public String getName() {
         return name;
