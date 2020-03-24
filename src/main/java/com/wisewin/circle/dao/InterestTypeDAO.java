@@ -4,6 +4,7 @@ package com.wisewin.circle.dao;
 
 import com.wisewin.circle.entity.bo.InterestType;
 import com.wisewin.circle.entity.bo.InterestTypeW;
+import com.wisewin.circle.entity.bo.UserInterestBOV2;
 import com.wisewin.circle.entity.bo.UserInterestCustomBO;
 import com.wisewin.circle.entity.dto.param.UserInterestParam;
 import org.apache.ibatis.annotations.Param;
@@ -56,11 +57,19 @@ public interface InterestTypeDAO {
      */
     int deleteUserInterest(@Param("modelId")Integer modelId);
 
+    int deleteCustomUserInterest(@Param("modelId")Integer modelId);
+
     /**
      * 插入用户新选中兴趣
      * @param list
      * @return
      */
     int insetUserInterest(List<UserInterestParam> list);
+
+    //插入用户新选中的wy
+    int insetUserInterestW(List<UserInterestBOV2> list);
+
+    //插入用户自定义的wy
+    int insetCustomUserInterest(List<UserInterestCustomBO> list);
 
 }

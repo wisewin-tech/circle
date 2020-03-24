@@ -89,6 +89,9 @@
             <if test="describe != null and describe != ''">
                 describe =  #{describe},
             </if>
+            <if test="name != null and name != ''">
+                name =  #{name}
+            </if>
         </set>
           where id = #{id}
     </update>

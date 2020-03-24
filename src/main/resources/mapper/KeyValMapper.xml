@@ -9,9 +9,9 @@
     <select id="selectKey" resultType="java.lang.String"
             parameterType="java.lang.String">
 
-        SELECT `values` FROM sys_key_value
+        SELECT values FROM sys_key_value
         where
-          `key`=#{key}
+          key=#{key}
     </select>
 
 

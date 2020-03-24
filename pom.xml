@@ -434,6 +434,12 @@
       <version>3.3.0</version>
     </dependency>
 
+
+    <dependency>
+    <groupId>org.codehaus.jackson</groupId>
+    <artifactId>jackson-mapper-asl</artifactId>
+    <version>1.9.9</version>
+    </dependency>
     <!-- aliyun-sdk-oss -->
     <dependency>
       <groupId>com.aliyun.oss</groupId>

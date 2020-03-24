@@ -14,6 +14,16 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class JsonUtils {
 	public static final String LONG_DATE_PATTERN = "yyyy-MM-dd HH:mm:ss";
+	//把json字符串 转换为对应类型的集合
+	public static <T> List<T> getJSONtoList(String jsonString, Class cls) {
+		List<T> list = new ArrayList<T>();
+		try {
+			list = com.alibaba.fastjson.JSON.parseArray(jsonString, cls);
+		} catch (Exception e) {
+		}
+		return list;
+	}
+
 	/**
 	 * 将JAVA对象转化为对象字符串
 	 */

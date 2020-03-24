@@ -1,6 +1,9 @@
 package com.wisewin.circle.service;
 
 import com.wisewin.circle.dao.*;
+
+import org.codehaus.jackson.type.TypeReference;
+import org.codehaus.jackson.map.ObjectMapper;
 import com.wisewin.circle.entity.bo.InterestTypeW;
 import com.wisewin.circle.entity.bo.*;
 import com.wisewin.circle.entity.dto.ModelDTO;
@@ -9,6 +12,7 @@ import com.wisewin.circle.entity.dto.ResultDTOBuilder;
 import com.wisewin.circle.entity.dto.param.ModelParam;
 import com.wisewin.circle.entity.dto.param.UserInterestParam;
 import com.wisewin.circle.entity.dto.param.UserPictureParam;
+import com.alibaba.fastjson.JSON;
 import com.wisewin.circle.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -145,8 +150,7 @@ public class HomePageService {
      * @param modelParam
      * @return
      */
-    public ResultDTO updateModel(ModelParam modelParam) {
-
+    public ResultDTO updateModel(ModelParam modelParam,String interestBOList,String CustomInterestBOList) throws IOException {
         Model model = modelDAO.selectModel(modelParam.getModel(), modelParam.getUserId());
         if (org.springframework.util.StringUtils.isEmpty(modelParam)) {
             return ResultDTOBuilder.failure("0000001");
@@ -158,7 +162,39 @@ public class HomePageService {
                 return ResultDTOBuilder.failure("1111111", "不可修改性别");
             }
         }
+        //修改模式信息
+        modelParam.setId(model.getId());
         int i = modelDAO.updateModel(modelParam);
+        //解析兴趣JSON
+        List<UserInterestBOV2> userInterestBOV2List = JSON.parseArray(interestBOList, UserInterestBOV2.class);
+        //ObjectMapper mapper = new ObjectMapper();//定义 org.codehaus.jackson
+        //MltWaitLendReco 是你要转换的bean
+        //List<UserInterestBOV2> userInterestBOV2List = JsonUtils.getJSONtoList(interestBOList, UserInterestBOV2.class);
+        //List<UserInterestBOV2> userInterestBOV2List = mapper.readValue(interestBOList,new TypeReference<List<UserInterestBOV2>>() { });
+        //new TypeReference<List<MltWaitLendReco>>() { }写法很重要，写成List.class是不行的
+
+        List<UserInterestCustomBO> userInterestCustomBOList = JSON.parseArray(CustomInterestBOList, UserInterestCustomBO.class);
+        //List<UserInterestCustomBO> userInterestCustomBOList = mapper.readValue(CustomInterestBOList,new TypeReference<List<UserInterestCustomBO>>() { });
+        //List<UserInterestCustomBO> userInterestCustomBOList = JsonUtils.getJSONtoList(CustomInterestBOList, UserInterestCustomBO.class);
+
+        //添加模式
+        for (UserInterestBOV2 userInterestBOV2:userInterestBOV2List) {
+            userInterestBOV2.setModelId(new Long(modelParam.getId()));
+        }
+        for (UserInterestCustomBO userInterestCustomBO:userInterestCustomBOList) {
+            userInterestCustomBO.setModelId(new Long(modelParam.getId()));
+        }
+        //删除兴趣
+        interestTypeDAO.deleteUserInterest(modelParam.getId());
+        interestTypeDAO.deleteCustomUserInterest(modelParam.getId());
+        //添加兴趣
+        if(userInterestBOV2List.size()!=0){
+            interestTypeDAO.insetUserInterestW(userInterestBOV2List);
+        }
+        if(userInterestCustomBOList.size()!=0){
+            interestTypeDAO.insetCustomUserInterest(userInterestCustomBOList);
+        }
+
         if (i > 0) {
             return ResultDTOBuilder.success("", "1000000");
         }

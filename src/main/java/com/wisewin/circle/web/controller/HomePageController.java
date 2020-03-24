@@ -2,6 +2,7 @@ package com.wisewin.circle.web.controller;
 
 import com.wisewin.circle.entity.bo.UserInterestCustom;
 import com.wisewin.circle.entity.dto.ResultDTO;
+import com.wisewin.circle.entity.dto.ResultDTOBuilder;
 import com.wisewin.circle.entity.dto.param.ModelParam;
 import com.wisewin.circle.entity.dto.param.UserInterestParam;
 import com.wisewin.circle.entity.dto.param.UserPictureParam;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -60,8 +62,12 @@ public class HomePageController extends BaseCotroller {
      * @param modelParam
      */
     @RequestMapping(value = "/modificationModel",method = RequestMethod.POST)
-    public void modificationModel(HttpServletRequest request, HttpServletResponse response, ModelParam modelParam){
-        ResultDTO resultDTO = homePageService.updateModel(modelParam);
+    public void modificationModel(HttpServletRequest request, HttpServletResponse response, ModelParam modelParam) throws IOException {
+        if(modelParam.getUserId()==null){
+            ResultDTOBuilder.failure("0000001");
+        }
+
+        ResultDTO resultDTO = homePageService.updateModel(modelParam,modelParam.getInterestBOList(),modelParam.getCustomInterestBOList());
         String jsonString4JavaPOJO = JsonUtils.getJsonString4JavaPOJO(resultDTO);
         super.safeJsonPrint(response, jsonString4JavaPOJO);
         return;

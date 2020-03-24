@@ -5,7 +5,9 @@ import com.wisewin.circle.entity.bo.ModelBO;
 import com.wisewin.circle.entity.bo.ScreenParamBO;
 import com.wisewin.circle.entity.dto.param.ModelParam;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
 
+@Component
 public interface ModelDAO {
 
     /**

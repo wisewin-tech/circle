@@ -1,6 +1,7 @@
 package com.wisewin.circle.entity.dto.param;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author: Wang bin
@@ -20,7 +21,34 @@ public class ModelParam {
     private Integer beSuperLikeCount;
     private String sex;
     private Integer userId;
+    private String name;
 
+    private String interestBOList;
+    private String customInterestBOList;
+
+    public String getInterestBOList() {
+        return interestBOList;
+    }
+
+    public void setInterestBOList(String interestBOList) {
+        this.interestBOList = interestBOList;
+    }
+
+    public String getCustomInterestBOList() {
+        return customInterestBOList;
+    }
+
+    public void setCustomInterestBOList(String customInterestBOList) {
+        this.customInterestBOList = customInterestBOList;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public Integer getId() {
         return id;

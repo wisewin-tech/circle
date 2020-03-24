@@ -12,7 +12,7 @@
     </select>
 
     <select id="selectType" resultType="com.wisewin.circle.entity.bo.InterestTypeW">
-        select * from ci_interest_type
+        select * from ci_interest_type order by id asc
     </select>
 
     <select id="selectciUserInterestCustom" resultType="com.wisewin.circle.entity.bo.InterestType">
@@ -40,15 +40,30 @@
     <delete id="deleteUserInterest">
         DELETE from  ci_user_interest where model_id = ${modelId}
     </delete>
+    <delete id="deleteCustomUserInterest">
+        DELETE from  ci_user_interest_custom where model_id = ${modelId}
+    </delete>
 
-    <insert id="insetUserInterest" parameterType="java.util.List" useGeneratedKeys="false">
+
+    <insert id="insetUserInterestW" parameterType="java.util.List" useGeneratedKeys="false">
         insert into ci_user_interest
         (model_id, type_id, interest_name)
         values
-        <foreach collection="list" item="item" index="index" separator=",">
-            #{item.modelId},
+        <foreach collection="list" item="item"  separator="," open="" close="">
+            (#{item.modelId},
             #{item.typeId},
-            #{item.interestName}
+            #{item.interestName})
+        </foreach>
+    </insert>
+
+    <insert id="insetCustomUserInterest" parameterType="java.util.List" useGeneratedKeys="false">
+        insert into ci_user_interest_custom
+        (model_id, type_id, custom_name)
+        values
+        <foreach collection="list" item="item" separator="," open="" close="">
+            ( #{item.modelId},
+            #{item.typeId},
+            #{item.customName})
         </foreach>
     </insert>
 
