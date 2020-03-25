@@ -114,7 +114,7 @@ public class HomePageService {
         //进行对比，选中的把系统的兴趣状态修改为yes，然后添加到对应分类当中
         for (UserInterestBOV2 all : InterestBOAll) {
             for (UserInterestBOV2 userInterest : userInterestBO) {
-                if (all.getId().equals(userInterest.getId())) {
+                if (all.getInterestName().equals(userInterest.getInterestName())) {
                     all.setStatus("yes");
                 }
             }
