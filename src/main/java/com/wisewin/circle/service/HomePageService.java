@@ -150,50 +150,49 @@ public class HomePageService {
      * @param modelParam
      * @return
      */
-    public ResultDTO updateModel(ModelParam modelParam,String interestBOList,String CustomInterestBOList) throws IOException {
+    public ResultDTO updateModel(ModelParam modelParam, String interestBOList, String CustomInterestBOList) throws IOException {
         Model model = modelDAO.selectModel(modelParam.getModel(), modelParam.getUserId());
         if (org.springframework.util.StringUtils.isEmpty(modelParam)) {
             return ResultDTOBuilder.failure("0000001");
         }
 
-        String sexCount = keyValDAO.selectKey("sexCount");
-        if (!StringUtils.isNotBlank(modelParam.getSex())) {
-            if (model.getSexCount() >= Integer.parseInt(sexCount)) {
+        if (modelParam.getSex() != null && !modelParam.getSex().equals(model.getSex())) {
+            String sexCount = keyValDAO.selectKey("sexCount");
+            if (model.getSexCount() != null && model.getSexCount() >= Integer.parseInt(sexCount)) {
                 return ResultDTOBuilder.failure("1111111", "不可修改性别");
             }
         }
+
         //修改模式信息
         modelParam.setId(model.getId());
         int i = modelDAO.updateModel(modelParam);
         //解析兴趣JSON
-        List<UserInterestBOV2> userInterestBOV2List = JSON.parseArray(interestBOList, UserInterestBOV2.class);
-        //ObjectMapper mapper = new ObjectMapper();//定义 org.codehaus.jackson
-        //MltWaitLendReco 是你要转换的bean
-        //List<UserInterestBOV2> userInterestBOV2List = JsonUtils.getJSONtoList(interestBOList, UserInterestBOV2.class);
-        //List<UserInterestBOV2> userInterestBOV2List = mapper.readValue(interestBOList,new TypeReference<List<UserInterestBOV2>>() { });
-        //new TypeReference<List<MltWaitLendReco>>() { }写法很重要，写成List.class是不行的
+        if (interestBOList != null && !interestBOList.equals("")) {
+            List<UserInterestBOV2> userInterestBOV2List = JSON.parseArray(interestBOList, UserInterestBOV2.class);
+            //添加模式
+            for (UserInterestBOV2 userInterestBOV2 : userInterestBOV2List) {
+                userInterestBOV2.setModelId(new Long(modelParam.getId()));
+            }
+            //删除兴趣
+            interestTypeDAO.deleteUserInterest(modelParam.getId());
+            //添加兴趣
+            if (userInterestBOV2List.size() != 0) {
+                interestTypeDAO.insetUserInterestW(userInterestBOV2List);
+            }
+        }
+        //解析兴趣JSON
+        if (CustomInterestBOList != null && !CustomInterestBOList.equals("")) {
+            List<UserInterestCustomBO> userInterestCustomBOList = JSON.parseArray(CustomInterestBOList, UserInterestCustomBO.class);
+            //添加模式
+            for (UserInterestCustomBO userInterestCustomBO : userInterestCustomBOList) {
+                userInterestCustomBO.setModelId(new Long(modelParam.getId()));
+            }
+            interestTypeDAO.deleteCustomUserInterest(modelParam.getId());
+            if (userInterestCustomBOList.size() != 0) {
+                interestTypeDAO.insetCustomUserInterest(userInterestCustomBOList);
+            }
+        }
 
-        List<UserInterestCustomBO> userInterestCustomBOList = JSON.parseArray(CustomInterestBOList, UserInterestCustomBO.class);
-        //List<UserInterestCustomBO> userInterestCustomBOList = mapper.readValue(CustomInterestBOList,new TypeReference<List<UserInterestCustomBO>>() { });
-        //List<UserInterestCustomBO> userInterestCustomBOList = JsonUtils.getJSONtoList(CustomInterestBOList, UserInterestCustomBO.class);
-
-        //添加模式
-        for (UserInterestBOV2 userInterestBOV2:userInterestBOV2List) {
-            userInterestBOV2.setModelId(new Long(modelParam.getId()));
-        }
-        for (UserInterestCustomBO userInterestCustomBO:userInterestCustomBOList) {
-            userInterestCustomBO.setModelId(new Long(modelParam.getId()));
-        }
-        //删除兴趣
-        interestTypeDAO.deleteUserInterest(modelParam.getId());
-        interestTypeDAO.deleteCustomUserInterest(modelParam.getId());
-        //添加兴趣
-        if(userInterestBOV2List.size()!=0){
-            interestTypeDAO.insetUserInterestW(userInterestBOV2List);
-        }
-        if(userInterestCustomBOList.size()!=0){
-            interestTypeDAO.insetCustomUserInterest(userInterestCustomBOList);
-        }
 
         if (i > 0) {
             return ResultDTOBuilder.success("", "1000000");
