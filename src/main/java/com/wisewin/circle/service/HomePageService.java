@@ -158,6 +158,7 @@ public class HomePageService {
 
         if (modelParam.getSex() != null && !modelParam.getSex().equals(model.getSex())) {
             String sexCount = keyValDAO.selectKey("sexCount");
+            modelParam.setSexCount(1);
             if (model.getSexCount() != null && model.getSexCount() >= Integer.parseInt(sexCount)) {
                 return ResultDTOBuilder.failure("1111111", "不可修改性别");
             }

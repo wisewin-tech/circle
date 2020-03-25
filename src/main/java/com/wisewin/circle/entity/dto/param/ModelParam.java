@@ -1,5 +1,7 @@
 package com.wisewin.circle.entity.dto.param;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 import java.util.List;
 
@@ -11,7 +13,9 @@ public class ModelParam {
     private Integer id;
     private String model;
     private String describe;
-    private String birthday;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date birthday;
     private String constellation;
     private String height;
     private String weight;
@@ -22,9 +26,17 @@ public class ModelParam {
     private String sex;
     private Integer userId;
     private String name;
-
+    private Integer sexCount;
     private String interestBOList;
     private String customInterestBOList;
+
+    public Integer getSexCount() {
+        return sexCount;
+    }
+
+    public void setSexCount(Integer sexCount) {
+        this.sexCount = sexCount;
+    }
 
     public String getInterestBOList() {
         return interestBOList;
@@ -74,11 +86,11 @@ public class ModelParam {
         this.describe = describe;
     }
 
-    public String getBirthday() {
+    public Date getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(String birthday) {
+    public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
 

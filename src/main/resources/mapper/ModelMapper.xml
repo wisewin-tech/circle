@@ -68,6 +68,9 @@
             <if test="sex != null and sex != ''">
                sex =  #{sex},
             </if>
+            <if test="sexCount != null and sexCount != ''">
+                sex_count =  #{sexCount},
+            </if>
             <if test="birthplace != null and birthplace != ''">
                 birthplace =  #{birthplace},
             </if>
