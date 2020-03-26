@@ -36,6 +36,15 @@ public class Model {
     private Date slideTime;
     private Long slideCount;
     private String quietStatus;
+    private String headPic;
+
+    public String getHeadPic() {
+        return headPic;
+    }
+
+    public void setHeadPic(String headPic) {
+        this.headPic = headPic;
+    }
 
     public String getQuietStatus() {
         return quietStatus;

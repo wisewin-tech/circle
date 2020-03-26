@@ -29,6 +29,24 @@ public class ModelParam {
     private Integer sexCount;
     private String interestBOList;
     private String customInterestBOList;
+    private String userPictureList;//背景图json
+    private String headPic;//头像
+
+    public String getHeadPic() {
+        return headPic;
+    }
+
+    public void setHeadPic(String headPic) {
+        this.headPic = headPic;
+    }
+
+    public String getUserPictureList() {
+        return userPictureList;
+    }
+
+    public void setUserPictureList(String userPictureList) {
+        this.userPictureList = userPictureList;
+    }
 
     public Integer getSexCount() {
         return sexCount;

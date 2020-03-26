@@ -9,6 +9,7 @@ import com.wisewin.circle.entity.dto.param.UserPictureParam;
 import com.wisewin.circle.service.HomePageService;
 import com.wisewin.circle.service.ModelService;
 import com.wisewin.circle.util.JsonUtils;
+import com.wisewin.circle.util.StringUtils;
 import com.wisewin.circle.web.controller.base.BaseCotroller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +47,9 @@ public class HomePageController extends BaseCotroller {
      */
     @RequestMapping(value = "/information",method = RequestMethod.POST)
     public void information(HttpServletRequest request, HttpServletResponse response, String model){
-        System.out.println("homepage-information");
+        if (StringUtils.isEmpty(model)) {
+            ResultDTOBuilder.failure("0000001");
+        }
         String loginID = super.getLoginUser(request).getId()+"";
         log.info("model:{}",model);
         ResultDTO homepage = homePageService.homepage(model, Integer.parseInt(loginID));
@@ -64,6 +67,9 @@ public class HomePageController extends BaseCotroller {
     @RequestMapping(value = "/modificationModel",method = RequestMethod.POST)
     public void modificationModel(HttpServletRequest request, HttpServletResponse response, ModelParam modelParam) throws IOException {
         if(modelParam.getUserId()==null){
+            ResultDTOBuilder.failure("0000001");
+        }
+        if (org.springframework.util.StringUtils.isEmpty(modelParam)) {
             ResultDTOBuilder.failure("0000001");
         }
 

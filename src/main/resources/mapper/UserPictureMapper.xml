@@ -20,16 +20,15 @@
 
     <insert id="insertUserPicture" parameterType="java.util.List" useGeneratedKeys="false">
         insert  into  ci_user_picture (
-        model_id,picture_url, sort, picture_status, create_time, update_time
-        )
+        model_id,picture_url, sort, picture_status, create_time, update_time)
         values
         <foreach collection="list" item="item" index="index" separator=",">
-            #{item.modelId},
+            (#{item.modelId},
             #{item.pictureUrl},
             #{item.sort},
-            '',
+            'yes',
             now(),
-            now()
+            now())
         </foreach>
     </insert>
 </mapper>

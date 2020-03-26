@@ -25,6 +25,8 @@
         where "user_id"=#{userId} and "incident_status"='yes'
     </update>
 
+
+
     <!--查询用户是否提交过或审核通过-->
     <select id="queryCarStatus"  parameterType="java.lang.Long"  resultType="int" >
             SELECT count(id)  FROM "ci_user"  WHERE

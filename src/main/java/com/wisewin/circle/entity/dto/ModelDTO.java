@@ -20,8 +20,15 @@ public class ModelDTO {
     private String name;//昵称
     private Integer sexCount;//性别修改次数
     private String quietStatus;
+    private String headPic;//头像
 
+    public String getHeadPic() {
+        return headPic;
+    }
 
+    public void setHeadPic(String headPic) {
+        this.headPic = headPic;
+    }
 
     public String getQuietStatus() {
         return quietStatus;

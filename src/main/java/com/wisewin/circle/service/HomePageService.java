@@ -43,6 +43,8 @@ public class HomePageService {
     private UserInterestCustomDAO userInterestCustomDAO;
     @Resource
     private KeyValDAO keyValDAO;
+    @Resource
+    private UserCertificationDAO userCertificationDAO;
 
     @Resource
     UserInterestDAO userInterestDAO;
@@ -58,9 +60,7 @@ public class HomePageService {
      */
     public ResultDTO homepage(String model, Integer userId) {
         Map<String, Object> map = new HashMap<String, Object>();
-        if (StringUtils.isEmpty(model)) {
-            return ResultDTOBuilder.failure("0000001");
-        }
+
         System.err.println("model" + model + "userId" + userId);
         //获取用户基本信息
         Model models = modelDAO.selectModel(model, userId);
@@ -79,15 +79,18 @@ public class HomePageService {
         mdto.setBirthplace(models.getBirthplace());
         mdto.setName(models.getName());
         mdto.setSexCount(models.getSexCount());
-        //获取用户背景图
-        List<UserPicture> userPictures = userPictureDAO.selectUserPicture(models.getId());
-        //添加头像
-        if (userPictures != null && userPictures.size() != 0) {
-            map.put("headPic", userPictures.get(0));
-        }
+        mdto.setHeadPic(models.getHeadPic());
+
         //添加model信息
         map.put("model", mdto);
-        log.info("获取用户背景图:{}", userPictures);
+
+        //获取车量认证信息***********8
+        List<CarCertificationBO> carCertificationBO=userCertificationDAO.queryCarStatusW(new Long(userId));
+        map.put("carCertificationStatus", carCertificationBO);
+
+        //获取用户背景图
+        List<UserPicture> userPictures = userPictureDAO.selectUserPicture(models.getId());
+        //添加背景图
         List<String> userPictureStrList = new ArrayList<String>();
         for (UserPicture up : userPictures) {
             userPictureStrList.add(up.getPictureUrl());
@@ -146,16 +149,13 @@ public class HomePageService {
 
     /**
      * 修改模式个人信息
-     *
      * @param modelParam
      * @return
      */
     public ResultDTO updateModel(ModelParam modelParam, String interestBOList, String CustomInterestBOList) throws IOException {
         Model model = modelDAO.selectModel(modelParam.getModel(), modelParam.getUserId());
-        if (org.springframework.util.StringUtils.isEmpty(modelParam)) {
-            return ResultDTOBuilder.failure("0000001");
-        }
 
+        //判断性别，性别次数，修改性别
         if (modelParam.getSex() != null && !modelParam.getSex().equals(model.getSex())) {
             String sexCount = keyValDAO.selectKey("sexCount");
             modelParam.setSexCount(1);
@@ -166,7 +166,8 @@ public class HomePageService {
 
         //修改模式信息
         modelParam.setId(model.getId());
-        int i = modelDAO.updateModel(modelParam);
+        modelDAO.updateModel(modelParam);
+
         //解析兴趣JSON
         if (interestBOList != null && !interestBOList.equals("")) {
             List<UserInterestBOV2> userInterestBOV2List = JSON.parseArray(interestBOList, UserInterestBOV2.class);
@@ -194,11 +195,29 @@ public class HomePageService {
             }
         }
 
+        //解析背景图JSON
+        String userPicture = modelParam.getUserPictureList();
+        if (userPicture != null && !userPicture.equals("")) {
+            List<UserPictureParam> userPictureList = JSON.parseArray(userPicture, UserPictureParam.class);
 
-        if (i > 0) {
-            return ResultDTOBuilder.success("", "1000000");
+            //添加模式和排序
+            int i=1;
+            for (UserPictureParam userPictureParam : userPictureList) {
+                userPictureParam.setSort(i);
+                userPictureParam.setModelId(new Integer(modelParam.getId()));
+                i++;
+            }
+
+            //删除原来的背景
+            userPictureDAO.deleteUserPicture(modelParam.getId());
+
+            //添加新背景图
+            if (userPictureList.size() != 0) {
+                userPictureDAO.insertUserPicture(userPictureList);
+            }
         }
-        return ResultDTOBuilder.failure("1111111");
+
+        return ResultDTOBuilder.success("", "1000000");
     }
 
 

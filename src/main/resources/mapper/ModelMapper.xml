@@ -93,7 +93,10 @@
                 describe =  #{describe},
             </if>
             <if test="name != null and name != ''">
-                name =  #{name}
+                name =  #{name},
+            </if>
+            <if test="headPic != null and headPic != ''">
+                head_pic =  #{headPic}
             </if>
         </set>
           where id = #{id}

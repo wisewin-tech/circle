@@ -1,6 +1,9 @@
 package com.wisewin.circle.dao;
 
+import com.wisewin.circle.entity.bo.CarCertificationBO;
 import com.wisewin.circle.entity.bo.UserCertification;
+
+import java.util.List;
 
 /**
  * @Author: Wang bin
@@ -9,4 +12,6 @@ import com.wisewin.circle.entity.bo.UserCertification;
 public interface UserCertificationDAO {
 
     int insertUserCertification(UserCertification userCertification);
+
+    List<CarCertificationBO> queryCarStatusW(Long userId);
 }

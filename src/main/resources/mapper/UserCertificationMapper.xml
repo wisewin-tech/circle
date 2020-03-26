@@ -22,4 +22,10 @@
       )
     </insert>
 
+
+  <!--WY查询用户车辆认证信息-->
+    <select id="queryCarStatusW"  parameterType="java.lang.Long"  resultType="com.wisewin.circle.entity.bo.CarCertificationBO" >
+            SELECT * FROM "ci_car_certification"
+            WHERE  id=#{userId}
+    </select>
 </mapper>
