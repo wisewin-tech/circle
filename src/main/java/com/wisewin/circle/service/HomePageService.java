@@ -84,9 +84,21 @@ public class HomePageService {
         //添加model信息
         map.put("model", mdto);
 
-        //获取车量认证信息***********8
-        List<CarCertificationBO> carCertificationBO=userCertificationDAO.queryCarStatusW(new Long(userId));
-        map.put("carCertificationStatus", carCertificationBO);
+        //获取车量认证信息***********
+        List<CarCertificationBO> carCertificationBO = userCertificationDAO.queryCarStatusW(new Long(userId));
+        if (carCertificationBO == null || carCertificationBO.size() == 0) {
+            map.put("carCertificationStatus", "empty");
+        } else {
+            map.put("carCertificationStatus", carCertificationBO.get(0).getCarCertificationStatus());
+        }
+
+        //获取用户认证信息***********
+        UserCertification userCertification=userCertificationDAO.queryUserCertification(new Long(userId));
+        if(userCertification==null){
+            map.put("userCertificationStatus", "not");
+        }else{
+            map.put("userCertificationStatus", userCertification.getStatus());
+        }
 
         //获取用户背景图
         List<UserPicture> userPictures = userPictureDAO.selectUserPicture(models.getId());
@@ -149,6 +161,7 @@ public class HomePageService {
 
     /**
      * 修改模式个人信息
+     *
      * @param modelParam
      * @return
      */
@@ -201,7 +214,7 @@ public class HomePageService {
             List<UserPictureParam> userPictureList = JSON.parseArray(userPicture, UserPictureParam.class);
 
             //添加模式和排序
-            int i=1;
+            int i = 1;
             for (UserPictureParam userPictureParam : userPictureList) {
                 userPictureParam.setSort(i);
                 userPictureParam.setModelId(new Integer(modelParam.getId()));

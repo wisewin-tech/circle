@@ -14,4 +14,8 @@ public interface UserCertificationDAO {
     int insertUserCertification(UserCertification userCertification);
 
     List<CarCertificationBO> queryCarStatusW(Long userId);
+
+    //获取用户认证状态
+    UserCertification queryUserCertification(Long userId);
+
 }

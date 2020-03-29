@@ -3,6 +3,7 @@ package com.wisewin.circle.entity.bo;
 import com.wisewin.circle.common.base.BaseModel;
 
 import java.util.Date;
+import java.util.List;
 
 public class CarCertificationBO extends BaseModel {
     private Long id;//车辆认证
@@ -21,6 +22,15 @@ public class CarCertificationBO extends BaseModel {
     private Date updateTime;
     private String carType;
     private String garagePicture;//车库的车照片
+    private List<String> carPic;//汽车照片
+
+    public List<String> getCarPic() {
+        return carPic;
+    }
+
+    public void setCarPic(List<String> carPic) {
+        this.carPic = carPic;
+    }
 
     public String getGaragePicture() {
         return garagePicture;

@@ -6,8 +6,15 @@
 <mapper namespace="com.wisewin.circle.dao.CarPictureDAO">
 
     <insert id="addCarPicture" >
-        insert into ci_car_picture (user_id,picture_url,create_time) values (#{userId},#{pictureUrl},now())
+        insert into car_pic (cer_id,car_pic) values (#{cerId},#{carPic})
     </insert>
 
+    <select id="getCarCertificationBO" parameterType="java.lang.Long" resultType="com.wisewin.circle.entity.bo.CarCertificationBO">
+        select * from ci_car_certification where user_id=#{userId}
+    </select>
+
+    <select id="getCarPic" parameterType="java.lang.Long" resultType="java.lang.String">
+        select car_pic from car_pic where cer_id=#{cerId}
+    </select>
 
 </mapper>

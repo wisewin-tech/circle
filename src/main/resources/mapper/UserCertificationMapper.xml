@@ -26,6 +26,11 @@
   <!--WY查询用户车辆认证信息-->
     <select id="queryCarStatusW"  parameterType="java.lang.Long"  resultType="com.wisewin.circle.entity.bo.CarCertificationBO" >
             SELECT * FROM "ci_car_certification"
-            WHERE  id=#{userId}
+            WHERE  user_id=#{userId}
+    </select>
+
+    <select id="queryUserCertification"  parameterType="java.lang.Long"  resultType="com.wisewin.circle.entity.bo.UserCertification" >
+            SELECT * FROM "ci_user_certification"
+            WHERE  user_id=#{userId}
     </select>
 </mapper>

@@ -195,8 +195,20 @@ public class UserService {
 
     //添加车辆认证
     public Integer addCarCertificationBO(CarCertificationBO carCertificationBO) {
-        carPictureDAO.addCarPicture(carCertificationBO.getGaragePicture(),carCertificationBO.getUserId());
+        //carPictureDAO.addCarPicture(carCertificationBO.getGaragePicture(),carCertificationBO.getUserId());
         return userDAO.addCarCertificationBO(carCertificationBO);
+    }
+
+    //获取座驾信息
+    public CarCertificationBO getCarInfo(Long userId) {
+        CarCertificationBO carCertificationBO=carPictureDAO.getCarCertificationBO(userId);
+        carCertificationBO.setCarPic(carPictureDAO.getCarPic(carCertificationBO.getId()));
+        return carCertificationBO;
+    }
+
+    //添加车图片
+    public Integer addCarPic(Long cerId,String carPic){
+       return carPictureDAO.addCarPicture(cerId,carPic);
     }
 
 }
