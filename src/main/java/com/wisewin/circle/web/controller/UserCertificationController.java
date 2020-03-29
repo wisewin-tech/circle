@@ -1,5 +1,6 @@
 package com.wisewin.circle.web.controller;
 
+import com.wisewin.circle.entity.bo.UserBO;
 import com.wisewin.circle.entity.bo.UserCertification;
 import com.wisewin.circle.entity.dto.ResultDTO;
 import com.wisewin.circle.service.UserCertificationService;
@@ -31,8 +32,8 @@ public class UserCertificationController extends BaseCotroller {
      */
     @RequestMapping(value = "/insertUserCertification",method = RequestMethod.POST)
     public void insertUserCertification(HttpServletRequest request, HttpServletResponse response, UserCertification userCertification){
-        String loginID = super.getLoginID(request);
-        ResultDTO resultDTO = userCertificationService.insertUserCertification(userCertification, Integer.parseInt(loginID));
+        UserBO userBO=super.getLoginUser(request);
+        ResultDTO resultDTO = userCertificationService.insertUserCertification(userCertification, userBO.getId());
         String jsonString4JavaPOJO = JsonUtils.getJsonString4JavaPOJO(resultDTO);
         super.safeJsonPrint(response, jsonString4JavaPOJO);
         return;

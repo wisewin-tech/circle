@@ -9,6 +9,10 @@
         insert into car_pic (cer_id,car_pic) values (#{cerId},#{carPic})
     </insert>
 
+    <delete id="delCarPic" >
+        delete from car_pic where cer_id=#{cerId} and car_pic=#{carPic}
+    </delete>
+
     <select id="getCarCertificationBO" parameterType="java.lang.Long" resultType="com.wisewin.circle.entity.bo.CarCertificationBO">
         select * from ci_car_certification where user_id=#{userId}
     </select>

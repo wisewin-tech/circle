@@ -25,7 +25,7 @@ public class UserCertificationService {
      * 添加认证信息到审核
      * @return
      */
-    public ResultDTO insertUserCertification(UserCertification userCertification, Integer userId){
+    public ResultDTO insertUserCertification(UserCertification userCertification, Long userId){
         if(org.springframework.util.StringUtils.isEmpty(userCertification)){
             return ResultDTOBuilder.failure("0000001");
         }

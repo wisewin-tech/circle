@@ -211,4 +211,9 @@ public class UserService {
        return carPictureDAO.addCarPicture(cerId,carPic);
     }
 
+    //删除车图片
+    public Integer delCarPic(Long cerId,String carPic){
+        return carPictureDAO.delCarPic(cerId,carPic);
+    }
+
 }

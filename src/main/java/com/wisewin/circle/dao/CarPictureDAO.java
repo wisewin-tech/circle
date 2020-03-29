@@ -10,6 +10,9 @@ public interface CarPictureDAO {
     //添加车图片
     Integer addCarPicture(@Param("cerId") Long cerId, @Param("carPic")String carPic);
 
+    //删除车图片
+    Integer delCarPic(@Param("cerId") Long cerId, @Param("carPic")String carPic);
+
     //获取车认证信息
     CarCertificationBO getCarCertificationBO(Long userId);
 

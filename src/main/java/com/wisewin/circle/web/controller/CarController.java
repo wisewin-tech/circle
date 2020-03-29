@@ -45,12 +45,17 @@ public class CarController extends BaseCotroller {
 
     //添加座驾照片
     @RequestMapping("/addCarPic")
-    public void addCarPic(HttpServletResponse response, HttpServletRequest request,Long cerId,String carPic) {
+    public void addCarPic(HttpServletResponse response, HttpServletRequest request,Long cerId,String carPic,String type) {
         //获取当前用户
         //UserBO loginUser = super.getLoginUser(request);
-        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(userService.addCarPic(cerId,carPic)));
-        super.safeJsonPrint(response, json);
+        if(type.equals("del")){
+            userService.delCarPic(cerId,carPic);
+        }else{
+            userService.addCarPic(cerId,carPic);
+        }
 
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(null));
+        super.safeJsonPrint(response, json);
         return;
     }
 

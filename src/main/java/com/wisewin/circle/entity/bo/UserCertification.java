@@ -8,7 +8,7 @@ import java.util.Date;
  */
 public class UserCertification {
     private Integer id;
-    private Integer userId;
+    private Long userId;
     private Integer demoId;
     private Integer userPicture;
     private Date createDate;
@@ -26,11 +26,11 @@ public class UserCertification {
         this.id = id;
     }
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

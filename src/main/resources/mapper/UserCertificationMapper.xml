@@ -8,13 +8,13 @@
     <insert id="insertUserCertification" parameterType="com.wisewin.circle.entity.bo.UserCertification">
       insert into ci_user_certification
       (user_id, demo_id, user_picture, create_time,
-      remark, status, admin_id, demo-picture)
+      remark, status, admin_id, demo_picture)
       values
       (
       #{userId},
       #{demoId},
       #{userPicture},
-      now{},
+      now(),
       #{remark},
       #{status},
       #{adminId},
