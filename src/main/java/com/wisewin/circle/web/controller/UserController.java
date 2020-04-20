@@ -2,12 +2,10 @@ package com.wisewin.circle.web.controller;
 
 import com.wisewin.circle.common.constants.SysConstants;
 import com.wisewin.circle.common.constants.UserConstants;
-import com.wisewin.circle.entity.bo.CarCertificationBO;
-import com.wisewin.circle.entity.bo.ChinaRegionBO;
-import com.wisewin.circle.entity.bo.ScreenParamBO;
-import com.wisewin.circle.entity.bo.UserBO;
+import com.wisewin.circle.entity.bo.*;
 import com.wisewin.circle.entity.dto.ResultDTOBuilder;
 import com.wisewin.circle.entity.dto.param.DatepatternParam;
+import com.wisewin.circle.example.entity.RegUser;
 import com.wisewin.circle.service.CarIncidentService;
 import com.wisewin.circle.service.ModelService;
 import com.wisewin.circle.service.UserService;
@@ -17,6 +15,7 @@ import com.wisewin.circle.util.MD5Util;
 import com.wisewin.circle.util.StringUtils;
 import com.wisewin.circle.util.redisUtils.RedissonHandler;
 import com.wisewin.circle.web.controller.base.BaseCotroller;
+import io.swagger.client.model.RegisterUsers;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -147,13 +146,15 @@ public class UserController extends BaseCotroller {
 
             if (MD5Util.digest(password).equals(userBO.getPassword())) {
                 this.putUser(response, userBO);
+                //set头像
+                Model model=modelService.selectModel("date",userBO.getId());
+                userBO.setHeadPic(model.getHeadPic());
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(userBO));
                 super.safeJsonPrint(response, json);
                 return;
             }
 
         } else {
-
             //验证码登录
             if (code == null) {
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
@@ -174,11 +175,13 @@ public class UserController extends BaseCotroller {
                     super.safeJsonPrint(response, json);
                     return;
                 }
-
                 //没有设置过需要设置之后才可以登录
                 this.putUser(response, userBO);
                 String key = phone + UserConstants.VERIFY.getValue();
                 RedissonHandler.getInstance().delete(key);
+                //set头像
+                Model model=modelService.selectModel("date",userBO.getId());
+                userBO.setHeadPic(model.getHeadPic());
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(userBO));
                 super.safeJsonPrint(response, json);
                 return;
@@ -217,9 +220,9 @@ public class UserController extends BaseCotroller {
         UserBO userBO = userService.selectByPhone(phone);
         if (userBO==null) {
             userService.addUser(user);
-
             //三种模式下的初始化用户资料
             modelService.addDefault(user.getId(), phone);
+
         }
         //将只带有手机号的user对象存入cookie中
         this.putUser(response, user);
@@ -289,10 +292,10 @@ public class UserController extends BaseCotroller {
             }
             ScreenParamBO screenParamBO = modelService.selectScreen(model,loginUser.getId());
             UserBO userBO = userService.selectById(loginUser.getId());
-            Map map = new HashMap();
-            map.put("screenBO",screenParamBO);
-            map.put("certificationStatus",userBO.getCertificationStatus());
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(map));
+//            Map map = new HashMap();
+//            map.put("screenBO",screenParamBO);
+//            map.put("certificationStatus",userBO.getCertificationStatus());
+            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(screenParamBO));
             super.safeJsonPrint(response, json);
             return;
 

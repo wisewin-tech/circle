@@ -1,5 +1,7 @@
 package com.wisewin.circle.entity.bo;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 /**
@@ -10,8 +12,10 @@ public class UserCertification {
     private Integer id;
     private Long userId;
     private Integer demoId;
-    private Integer userPicture;
+    private String userPicture;
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date createDate;
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date updateTime;
     private String remark;
     private String status;
@@ -42,11 +46,11 @@ public class UserCertification {
         this.demoId = demoId;
     }
 
-    public Integer getUserPicture() {
+    public String getUserPicture() {
         return userPicture;
     }
 
-    public void setUserPicture(Integer userPicture) {
+    public void setUserPicture(String userPicture) {
         this.userPicture = userPicture;
     }
 

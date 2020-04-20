@@ -21,7 +21,7 @@ public interface ModelDAO {
      * @param model 模式类型
      * @param userId 用户id
      */
-    Model selectModel(@Param("model")String model, @Param("userId")int userId);
+    Model selectModel(@Param("model")String model, @Param("userId")Long userId);
 
     /**
      * 修改用户筛选条件

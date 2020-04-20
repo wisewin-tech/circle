@@ -63,7 +63,7 @@ public class HomePageService {
 
         System.err.println("model" + model + "userId" + userId);
         //获取用户基本信息
-        Model models = modelDAO.selectModel(model, userId);
+        Model models = modelDAO.selectModel(model, new Long(userId));
         if (org.springframework.util.StringUtils.isEmpty(model)) {
             return ResultDTOBuilder.failure("0000004");
         }
@@ -166,7 +166,7 @@ public class HomePageService {
      * @return
      */
     public ResultDTO updateModel(ModelParam modelParam, String interestBOList, String CustomInterestBOList) throws IOException {
-        Model model = modelDAO.selectModel(modelParam.getModel(), modelParam.getUserId());
+        Model model = modelDAO.selectModel(modelParam.getModel(), new Long(modelParam.getUserId()));
 
         //判断性别，性别次数，修改性别
         if (modelParam.getSex() != null && !modelParam.getSex().equals(model.getSex())) {
@@ -313,7 +313,6 @@ public class HomePageService {
 
     /**
      * 切换模式
-     *
      * @param userId
      * @param model
      * @return

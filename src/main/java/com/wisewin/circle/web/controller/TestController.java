@@ -40,6 +40,8 @@ public class TestController extends BaseCotroller {
     @RequestMapping("/test")
     public void test(HttpServletResponse response, HttpServletRequest request) {
         System.out.println("test --- 成功键入方法");
+        String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("设置成功！？？？？？？？？"));
+        super.safeJsonPrint(response, json);
     }
 
     public static void main(String[] args) throws ParseException {

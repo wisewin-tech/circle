@@ -142,7 +142,6 @@ public class HomePageController extends BaseCotroller {
      */
     @RequestMapping("/handoverModel")
     public void handoverModel(HttpServletRequest request, HttpServletResponse response, Integer userId, String model){
-        //查看是否第一次进入该模式
         ResultDTO resultDTO = homePageService.handoverModel(userId, model);
         String result = JsonUtils.getJsonString4JavaPOJO(resultDTO) ;
         super.safeJsonPrint(response, result);

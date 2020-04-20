@@ -40,6 +40,22 @@
     <servlet-name>circle</servlet-name>
     <url-pattern>/</url-pattern>
   </servlet-mapping>
+  <!-- Jersey -->
+  <!--<servlet>-->
+    <!--<servlet-name>JerseyServletContainer</servlet-name>-->
+    <!--<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>-->
+    <!--<init-param>-->
+      <!--&lt;!&ndash; 用于扫描jersey中REST服务类所在的包 &ndash;&gt;-->
+      <!--<param-name>com.wisewin.circle.jersey</param-name>-->
+      <!--<param-value>cn.wolfcode.jersey</param-value>-->
+    <!--</init-param>-->
+    <!--<load-on-startup>1</load-on-startup>-->
+  <!--</servlet>-->
+  <!--<servlet-mapping>-->
+    <!--<servlet-name>JerseyServletContainer</servlet-name>-->
+    <!--<url-pattern>/webapi/*</url-pattern>-->
+  <!--</servlet-mapping>-->
+
 
   <filter>
     <filter-name>Character Encoding</filter-name>

@@ -1,8 +1,15 @@
 package com.wisewin.circle.service;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.wisewin.circle.dao.ModelDAO;
+import com.wisewin.circle.entity.bo.Model;
 import com.wisewin.circle.entity.bo.ModelBO;
 import com.wisewin.circle.entity.bo.ScreenParamBO;
+import com.wisewin.circle.example.api.impl.EasemobIMUsers;
+import com.wisewin.circle.example.entity.RegUser;
+import io.swagger.client.model.RegisterUsers;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +22,17 @@ public class ModelService {
     @Resource
     private ModelDAO modelDAO;
 
+    private static final Gson gson = new GsonBuilder().serializeNulls().create();
+
+    private final static EasemobIMUsers easemobIMUsers = new EasemobIMUsers();
+    /**
+     * 查询用户主页信息
+     * @param model 模式类型
+     * @param userId 用户id
+     */
+    public Model selectModel(String model,Long userId){
+        return modelDAO.selectModel(model,userId);
+    }
     /**
      * 初始化用户三个模式资料
      */
@@ -40,12 +58,21 @@ public class ModelService {
         modelBO.setBeSuperLikeCount(0);//被超级喜欢次数
         modelBO.setSuperLikeCount(0);//超级喜欢次数
         modelBO.setBeShieldingCount(0);//被屏蔽次数
-        modelBO.setModel("date");//添加一个默认模式为异性模式
-        modelDAO.addDefault(modelBO);
-//        String[] models = new String[]{"car","date","friend"};
-//        for (int i=0;i<models.length;i++) {
-//
-//        }
+        String[] models = new String[]{"car","date","friend"};
+        for (int i=0;i<models.length;i++) {
+            modelBO.setModel(models[i]);//添加一个默认模式为异性模式
+            modelDAO.addDefault(modelBO);
+
+            //添加IM人员
+            RegUser regUser = new RegUser();
+            regUser.setUsername(phone+"_"+models[i]);
+            regUser.setPassword("123456");
+            RegisterUsers registerUsers = new RegisterUsers();
+            io.swagger.client.model.User p = new io.swagger.client.model.User().username(regUser.getUsername()).password(regUser.getPassword());
+            registerUsers.add(p);
+            Object result = easemobIMUsers.createNewIMUserSingle(registerUsers);
+            System.out.println(gson.toJson(result));
+        }
 
     }
 

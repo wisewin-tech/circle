@@ -5,7 +5,7 @@ import com.wisewin.circle.entity.bo.common.base.BaseModel;
 import java.util.Date;
 import java.util.Map;
 
-public class UserBO extends BaseModel {
+public class  UserBO extends BaseModel {
     private Long id; //用户
     private String phone; //手机
     private String password;
@@ -18,6 +18,16 @@ public class UserBO extends BaseModel {
     private String robotStatus;//yes为机器人，no为用户
     private Map<String,String> frist;
     private String driver;//yes/no 是否是司机
+    private String headPic;//头像
+
+    public String getHeadPic() {
+        return headPic;
+    }
+
+    public void setHeadPic(String headPic) {
+        this.headPic = headPic;
+    }
+
     public Long getId() {
         return id;
     }

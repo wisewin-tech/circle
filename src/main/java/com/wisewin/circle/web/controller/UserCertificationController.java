@@ -3,6 +3,7 @@ package com.wisewin.circle.web.controller;
 import com.wisewin.circle.entity.bo.UserBO;
 import com.wisewin.circle.entity.bo.UserCertification;
 import com.wisewin.circle.entity.dto.ResultDTO;
+import com.wisewin.circle.entity.dto.ResultDTOBuilder;
 import com.wisewin.circle.service.UserCertificationService;
 import com.wisewin.circle.util.JsonUtils;
 import com.wisewin.circle.web.controller.base.BaseCotroller;
@@ -30,8 +31,17 @@ public class UserCertificationController extends BaseCotroller {
      * @param request
      * @param response
      */
-    @RequestMapping(value = "/insertUserCertification",method = RequestMethod.POST)
+    @RequestMapping(value = "/insertUserCertification")
     public void insertUserCertification(HttpServletRequest request, HttpServletResponse response, UserCertification userCertification){
+        UserBO userBO=super.getLoginUser(request);
+        ResultDTO resultDTO = userCertificationService.insertUserCertification(userCertification, userBO.getId());
+        String jsonString4JavaPOJO = JsonUtils.getJsonString4JavaPOJO(resultDTO);
+        super.safeJsonPrint(response, jsonString4JavaPOJO);
+        return;
+    }
+
+    @RequestMapping("/addUserCertification")
+    public void addCarPic(HttpServletResponse response, HttpServletRequest request,UserCertification userCertification) {
         UserBO userBO=super.getLoginUser(request);
         ResultDTO resultDTO = userCertificationService.insertUserCertification(userCertification, userBO.getId());
         String jsonString4JavaPOJO = JsonUtils.getJsonString4JavaPOJO(resultDTO);

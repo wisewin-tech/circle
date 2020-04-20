@@ -57,7 +57,7 @@ public class MatchingService {
         String slide = keyValDAO.selectKey("slide");
 
 
-        Model car = modelDAO.selectModel("car", matching.getUserId().intValue());
+        Model car = modelDAO.selectModel("car", matching.getUserId());
 
         //获取最后一次滑动更新时间
         //是今天 判断此时是否小于等于上限
@@ -147,7 +147,7 @@ public class MatchingService {
         String slide = keyValDAO.selectKey("slide");
 
 
-        Model friend = modelDAO.selectModel("friend", matching.getUserId().intValue());
+        Model friend = modelDAO.selectModel("friend", matching.getUserId());
 
         if(isToday(friend.getSlideTime())){
             //是今天
@@ -235,7 +235,7 @@ public class MatchingService {
         //获取每日滑动次数上限
         String slide = keyValDAO.selectKey("slide");
 
-        Model date = modelDAO.selectModel("date", matching.getUserId().intValue());
+        Model date = modelDAO.selectModel("date", matching.getUserId());
 
         if(isToday(date.getSlideTime())){
             //是今天

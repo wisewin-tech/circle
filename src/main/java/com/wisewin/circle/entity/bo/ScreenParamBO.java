@@ -8,7 +8,7 @@ public class ScreenParamBO extends BaseModel {
     private String searchDistance;//搜索距离
     private String searchSex;//搜索性别
     private String searchAge;//搜索年龄
-    private String sexStatus;//真实性别开关
+    private String sexStatus;//真实性开关
     private String carCertificationStatus;//汽车认证开关
 
     public Long getUserId() {
