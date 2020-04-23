@@ -59,10 +59,10 @@
         <if test="model=='car'" >
             <if test="driver=='yes'" >
                 AND c.incident_status='yes'
-                AND u.dirver='no'
+                AND u.driver='no'
             </if>
             <if test="driver=='no'" >
-                AND u.dirver='yes'
+                AND u.driver='yes'
             </if>
         </if>
         AND u.robot_status='no'
@@ -96,10 +96,10 @@
         <if test="model=='car'" >
             <if test="driver=='yes'" >
                 AND c.incident_status='yes'
-                AND u.dirver='no'
+                AND u.driver='no'
             </if>
             <if test="driver=='no'" >
-                AND u.dirver='yes'
+                AND u.driver='yes'
             </if>
         </if>
         AND u.robot_status='no'
