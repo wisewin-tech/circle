@@ -31,9 +31,12 @@ public class UserCertificationService {
         }
         userCertification.setUserId(userId);
         userCertification.setStatus("not");
-        int i = userCertificationDAO.insertUserCertification(userCertification);
-        if(i > 0){
-            return ResultDTOBuilder.success("","1000000");
+        UserCertification userCertification1=userCertificationDAO.queryUserCertification(userId);
+        if(userCertification1==null||userCertification1.equals("no")){
+            int i = userCertificationDAO.insertUserCertification(userCertification);
+            if(i > 0){
+                return ResultDTOBuilder.success("","1000000");
+            }
         }
         return ResultDTOBuilder.failure("1111111");
     }

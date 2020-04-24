@@ -31,6 +31,6 @@
 
     <select id="queryUserCertification"  parameterType="java.lang.Long"  resultType="com.wisewin.circle.entity.bo.UserCertification" >
             SELECT * FROM "ci_user_certification"
-            WHERE  user_id=#{userId}
+            WHERE  user_id=#{userId} order by create_time desc
     </select>
 </mapper>
