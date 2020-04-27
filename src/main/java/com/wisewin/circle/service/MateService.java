@@ -26,13 +26,17 @@ public class MateService {
         List<Long> resultList = new ArrayList<Long>();
         //喜欢的用户
         List<Long> like = this.like(search);
+        for (String string:search.keySet()) {
+            System.out.println(string+"===="+search.get(string));
+        }
         resultList.addAll(like);
         //热度用户
+        System.out.println("热度用户sql查询中");
         List<Long> heat = this.heat(search, resultList);
+        System.out.println("热度用户查询sql返回");
         resultList.addAll(heat);
         List<Long> distance = this.distance(search, resultList, 30 - this.nullCount(resultList));
         resultList.addAll(distance);
-
         //更新匹配记录
         updateArise(resultList,model,user.getId());
         //转化为用户信息
@@ -83,11 +87,7 @@ public class MateService {
         map.put("ageEnd", DateUtils.getStartDate(Integer.parseInt(age[0])));
         map.put("ageStart",DateUtils.getStartDate(Integer.parseInt(age[1])));
         //性别
-        if("friend".equals(model) &&  conditionDTO.getSex().equals("女")){
-            map.put("searchSex",conditionDTO.getSex());
-        }else{
-            map.put("searchSex",conditionDTO.getSearchSex());
-        }
+        map.put("searchSex",conditionDTO.getSearchSex());
         //搜索距离 千米转为米
         map.put("dist",Integer.parseInt(conditionDTO.getSearchDistance())*1000);
         //自己的位置
@@ -135,6 +135,7 @@ public class MateService {
         search.put("num",num);
         search.put("ids",this.nullList(ids));
         search.put("activeTime",DateUtils.lsatTime());
+
         return mateDAO.distance(search);
     }
 

@@ -18,4 +18,6 @@ public interface UserCertificationDAO {
     //获取用户认证状态
     UserCertification queryUserCertification(Long userId);
 
+    int delUserCertification(Long userId);
+
 }

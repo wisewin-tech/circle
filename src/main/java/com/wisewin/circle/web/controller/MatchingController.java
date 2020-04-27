@@ -28,14 +28,9 @@ public class MatchingController extends BaseCotroller {
 
     @RequestMapping(value = "/accouplement",method = RequestMethod.POST)
     public void matching(HttpServletRequest request, HttpServletResponse response,String model, String forUser, String status){
-        String loginID = super.getLoginID(request);
+        Long loginID = super.getLoginUser(request).getId();
         Matching matching = new Matching();
-        if(StringUtils.isEmpty(loginID)){
-            String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000000"));
-            super.safeJsonPrint(response, json);
-            return;
-        }
-        matching.setUserId(Long.parseLong(loginID));
+        matching.setUserId(loginID);
         if(StringUtils.isEmpty(model)){
             String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001"));
             super.safeJsonPrint(response, json);
@@ -59,10 +54,10 @@ public class MatchingController extends BaseCotroller {
              resultDTO = matchingService.dateMatching(matching);
         }
         if("car".equals(model)){
-             resultDTO = matchingService.dateMatching(matching);
+             resultDTO = matchingService.carMatching(matching);
         }
         if("friend".equals(model)){
-             resultDTO = matchingService.dateMatching(matching);
+             resultDTO = matchingService.friendMatching(matching);
         }
         String jsonString4JavaPOJO = JsonUtils.getJsonString4JavaPOJO(resultDTO);
         super.safeJsonPrint(response, jsonString4JavaPOJO);

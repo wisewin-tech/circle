@@ -21,6 +21,17 @@ public class UserMsgBO extends BaseModel {
     private String longitude;//东经
     private String distance;//距离(米)
     private String name;//昵称
+
+    private String phone;//手机号
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     //图片
     private List<String> picture;
     //兴趣

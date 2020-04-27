@@ -48,21 +48,21 @@ public interface ModelDAO {
      * @param modelId
      * @return
      */
-    int updateLikeCount(@Param("modelId")String modelId);
+    int updateLikeCount(@Param("modelId")Long modelId);
 
     /**
      * 被超级喜欢次数加一
      * @param modelId
      * @return
      */
-    int updateSuperLikeCount(@Param("modelId")String modelId);
+    int updateSuperLikeCount(@Param("modelId")Long modelId);
 
     /**
      * 被屏蔽次数加一
      * @param modelId
      * @return
      */
-    int updateshieldingCount(@Param("modelId")String modelId);
+    int updateshieldingCount(@Param("modelId")Long modelId);
 
 
     /**

@@ -48,7 +48,11 @@
             LEFT JOIN ci_car_incident c  ON c.user_id = u.id
         </if>
         WHERE
-        m.model=#{model} AND m.sex=#{searchSex} AND (m.birthday >#{ageStart} AND m.birthday &lt;= #{ageEnd})
+        m.model=#{model}
+        <if test="searchSex!='不限'">
+            AND m.sex=#{searchSex}
+        </if>
+         AND (m.birthday >#{ageStart} AND m.birthday &lt;= #{ageEnd})
         AND  ST_DWithin(where_is ,'${place}',#{dist})
         <if test="auth=='yes' " >
             AND  u.certification_status=#{auth}
@@ -85,7 +89,11 @@
             LEFT JOIN ci_car_incident c  ON c.user_id = u.id
         </if>
         WHERE
-        m.model=#{model} AND m.sex=#{searchSex} AND (m.birthday >#{ageStart} AND m.birthday &lt;= #{ageEnd})
+        m.model=#{model}
+        <if test="searchSex!='不限'">
+            AND m.sex=#{searchSex}
+        </if>
+         AND (m.birthday >#{ageStart} AND m.birthday &lt;= #{ageEnd})
         AND  ST_DWithin(where_is ,'${place}',#{dist})
         <if test="auth=='yes' " >
             AND  u.certification_status=#{auth}
@@ -131,7 +139,7 @@
     <!--用户基础信息2.0-->
 
     <select id="getUserMsg2"  parameterType="java.util.Map" resultMap="getUserMsg2Map">
-        SELECT  u.id,m.id AS modelId ,
+        SELECT  u.id,m.id AS modelId ,u.phone,
         u.certification_status,u.car_status ,m.describe ,m.sex ,m.name ,
         m.birthday,m.constellation,m.education,m.birthplace,u.latitude,u.longitude ,
         ST_DISTANCE(where_is, '${location}') as  distance  ,i.origin,i.destination,i.incident_time,i.incident ,
@@ -151,6 +159,7 @@
     </select>
     <resultMap id="getUserMsg2Map" type="com.wisewin.circle.entity.bo.UserMsgBO" >
         <id     column="id" property="id" ></id>
+        <result column="phone" property="phone" ></result>
         <result column="modelId" property="modelId" ></result>
         <result column="certification_status" property="certificationStatus" ></result>
         <result column="car_status" property="carStatus" ></result>

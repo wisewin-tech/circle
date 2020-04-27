@@ -149,6 +149,7 @@ public class UserController extends BaseCotroller {
                 //set头像
                 Model model=modelService.selectModel("date",userBO.getId());
                 userBO.setHeadPic(model.getHeadPic());
+                userBO.setName(model.getName());
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(userBO));
                 super.safeJsonPrint(response, json);
                 return;
@@ -182,6 +183,7 @@ public class UserController extends BaseCotroller {
                 //set头像
                 Model model=modelService.selectModel("date",userBO.getId());
                 userBO.setHeadPic(model.getHeadPic());
+                userBO.setName(model.getName());
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(userBO));
                 super.safeJsonPrint(response, json);
                 return;

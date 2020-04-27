@@ -72,7 +72,7 @@ public class HomePageService {
         mdto.setModel(models.getModel());
         mdto.setDescribe(models.getDescribe());
         mdto.setSex(models.getSex());
-        mdto.setBirthday(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(models.getBirthday()));
+        mdto.setBirthday(new SimpleDateFormat("yyyy-MM-dd").format(models.getBirthday()));
         mdto.setConstellation(models.getConstellation());
         mdto.setHeight(models.getHeight());
         mdto.setEducation(models.getEducation());

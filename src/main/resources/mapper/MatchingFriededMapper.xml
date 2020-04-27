@@ -10,7 +10,7 @@
         (user_id,friends_id,model,friends_status,create_time
          ,close_time,remark)
          values (
-         #{userId},#{friendsId},#{model},'yes',now(),'',#{remark}
+         #{userId},#{friendsId},#{model},'yes',now(),null,#{remark}
          )
     </insert>
 

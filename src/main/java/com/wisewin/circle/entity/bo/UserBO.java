@@ -19,6 +19,15 @@ public class  UserBO extends BaseModel {
     private Map<String,String> frist;
     private String driver;//yes/no 是否是司机
     private String headPic;//头像
+    private String name;//昵称
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getHeadPic() {
         return headPic;

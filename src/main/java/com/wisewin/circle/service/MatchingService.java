@@ -62,7 +62,7 @@ public class MatchingService {
         //获取最后一次滑动更新时间
         //是今天 判断此时是否小于等于上限
 
-        if(isToday(car.getSlideTime())){
+        if(car.getSlideTime()!=null&&isToday(car.getSlideTime())){
             //是今天
             //判断今天次数是否大于上限
             if(car.getSlideCount() > Long.parseLong(slide)){
@@ -92,11 +92,11 @@ public class MatchingService {
             mathchingDAO.insertMatchingCar(matching);
             //foruser被喜欢次数+1
             if("like".equals(matching.getOperationStatus())){
-                modelDAO.updateLikeCount(matching.getForUser()+"");
+                modelDAO.updateLikeCount(matching.getForUser());
             }else {
                 Date superLikeCountTime = car.getSuperLikeCountTime();
                 //判断最后一次超级喜欢时间是不是今天
-                if(isToday(superLikeCountTime)){
+                if(superLikeCountTime!=null&&isToday(superLikeCountTime)){
                     //判断是否超过上限
                     if(car.getSuperLikeCount() >= Integer.parseInt(likeCount)){
                         return ResultDTOBuilder.failure("1111111","超级喜欢次数超过今日上限");
@@ -108,7 +108,7 @@ public class MatchingService {
                     modelDAO.updateSuperLikeCount1("car",matching.getUserId());
                 }
                 //被超级喜欢次数加一
-                modelDAO.updateSuperLikeCount(matching.getForUser()+"");
+                modelDAO.updateSuperLikeCount(matching.getForUser());
             }
             return ResultDTOBuilder.success("","1000000");
 
@@ -124,7 +124,7 @@ public class MatchingService {
             //插入记录
             mathchingDAO.insertMatchingCar(matching);
             //foruser被屏蔽次数加一
-            modelDAO.updateshieldingCount(matching.getForUser()+"");
+            modelDAO.updateshieldingCount(matching.getForUser());
             return ResultDTOBuilder.success("","1000000");
         }
         if(flag){
@@ -149,7 +149,7 @@ public class MatchingService {
 
         Model friend = modelDAO.selectModel("friend", matching.getUserId());
 
-        if(isToday(friend.getSlideTime())){
+        if(friend.getSlideTime()!=null&&isToday(friend.getSlideTime())){
             //是今天
             //判断今天次数是否大于上限
             if(friend.getSlideCount() > Long.parseLong(slide)){
@@ -180,11 +180,11 @@ public class MatchingService {
             mathchingDAO.insertMatchingFriend(matching);
             //foruser被喜欢次数+1
             if("like".equals(matching.getOperationStatus())){
-                modelDAO.updateLikeCount(matching.getForUser()+"");
+                modelDAO.updateLikeCount(matching.getForUser());
             }else {
                 Date superLikeCountTime = friend.getSuperLikeCountTime();
                 //判断最后一次超级喜欢时间是不是今天
-                if(isToday(superLikeCountTime)){
+                if(superLikeCountTime!=null&&isToday(superLikeCountTime)){
                     //判断是否超过上限
                     if(friend.getSuperLikeCount() >= Integer.parseInt(likeCount)){
                         return ResultDTOBuilder.failure("1111111","超级喜欢次数超过今日上限");
@@ -196,7 +196,7 @@ public class MatchingService {
                     modelDAO.updateSuperLikeCount1("friend",matching.getUserId());
                 }
                 //被超级喜欢次数加一
-                modelDAO.updateSuperLikeCount(matching.getForUser()+"");
+                modelDAO.updateSuperLikeCount(matching.getForUser());
             }
 
             if(flag){
@@ -216,7 +216,7 @@ public class MatchingService {
             //插入记录
             mathchingDAO.insertMatchingDate(matching);
             //foruser被屏蔽次数加一
-            modelDAO.updateshieldingCount(matching.getForUser()+"");
+            modelDAO.updateshieldingCount(matching.getForUser());
             return ResultDTOBuilder.success("","1000000");
         }
         return ResultDTOBuilder.failure("1111111");
@@ -236,8 +236,8 @@ public class MatchingService {
         String slide = keyValDAO.selectKey("slide");
 
         Model date = modelDAO.selectModel("date", matching.getUserId());
-
-        if(isToday(date.getSlideTime())){
+        System.out.println(date.getSlideTime()+"=======");
+        if(date.getSlideTime()!=null&&isToday(date.getSlideTime())){
             //是今天
             //判断今天次数是否大于上限
             if(date.getSlideCount() > Long.parseLong(slide)){
@@ -268,11 +268,11 @@ public class MatchingService {
             mathchingDAO.insertMatchingDate(matching);
             //foruser被喜欢次数+1
             if("like".equals(matching.getOperationStatus())){
-                modelDAO.updateLikeCount(matching.getForUser()+"");
+                modelDAO.updateLikeCount(matching.getForUser());
             }else {
                 Date superLikeCountTime = date.getSuperLikeCountTime();
                 //判断最后一次超级喜欢时间是不是今天
-                if(isToday(superLikeCountTime)){
+                if(superLikeCountTime!=null&&isToday(superLikeCountTime)){
                     //判断是否超过上限
                     if(date.getSuperLikeCount() >= Integer.parseInt(likeCount)){
                         return ResultDTOBuilder.failure("1111111","超级喜欢次数超过今日上限");
@@ -284,7 +284,7 @@ public class MatchingService {
                     modelDAO.updateSuperLikeCount1("date",matching.getUserId());
                 }
                 //被超级喜欢次数加一
-                modelDAO.updateSuperLikeCount(matching.getForUser()+"");
+                modelDAO.updateSuperLikeCount(matching.getForUser());
             }
             return ResultDTOBuilder.success("","1000000");
         }
@@ -299,7 +299,7 @@ public class MatchingService {
             //插入记录
             mathchingDAO.insertMatchingDate(matching);
             //foruser被屏蔽次数加一
-            modelDAO.updateshieldingCount(matching.getForUser()+"");
+            modelDAO.updateshieldingCount(matching.getForUser());
             return ResultDTOBuilder.success("","1000000");
         }
 
@@ -312,6 +312,7 @@ public class MatchingService {
 
 
     public static boolean isToday(Date inputJudgeDate) {
+        System.out.println("========");
         boolean flag = false;
         //获取当前系统时间
         long longDate = System.currentTimeMillis();
@@ -329,8 +330,10 @@ public class MatchingService {
             paseEndTime = dateFormat.parse(endTime);
 
         } catch (ParseException e) {
-
+            e.printStackTrace();
         }
+        System.out.println(paseBeginTime);
+        System.out.println(paseEndTime);
         if(inputJudgeDate.after(paseBeginTime) && inputJudgeDate.before(paseEndTime)) {
             flag = true;
         }

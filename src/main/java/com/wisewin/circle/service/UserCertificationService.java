@@ -23,21 +23,19 @@ public class UserCertificationService {
 
     /**
      * 添加认证信息到审核
+     *
      * @return
      */
-    public ResultDTO insertUserCertification(UserCertification userCertification, Long userId){
-        if(org.springframework.util.StringUtils.isEmpty(userCertification)){
+    public ResultDTO insertUserCertification(UserCertification userCertification, Long userId) {
+        if (org.springframework.util.StringUtils.isEmpty(userCertification)) {
             return ResultDTOBuilder.failure("0000001");
         }
         userCertification.setUserId(userId);
-        userCertification.setStatus("not");
-        UserCertification userCertification1=userCertificationDAO.queryUserCertification(userId);
-        if(userCertification1==null||userCertification1.equals("no")){
-            int i = userCertificationDAO.insertUserCertification(userCertification);
-            if(i > 0){
-                return ResultDTOBuilder.success("","1000000");
-            }
-        }
-        return ResultDTOBuilder.failure("1111111");
+        userCertification.setStatus("audit");
+        //UserCertification userCertification1 = userCertificationDAO.queryUserCertification(userId);
+        userCertificationDAO.delUserCertification(userId);
+        userCertificationDAO.insertUserCertification(userCertification);
+        return ResultDTOBuilder.success("", "1000000");
+
     }
 }

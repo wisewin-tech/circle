@@ -46,7 +46,6 @@ public class MateController extends BaseCotroller {
             super.safeJsonPrint(response, result);
             return;
         }
-
         List<UserMsgBO> matching = mateService.matching(model, loginUser,search);
         String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(matching)) ;
         super.safeJsonPrint(response, result);
