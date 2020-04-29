@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.*;
 
 @Service("MateService")
@@ -48,7 +49,7 @@ public class MateService {
         //打乱顺序
         Collections.shuffle(resultList);
 
-        List<UserMsgBO> userMsg = getUserMsg(resultList, model, (String) search.get("place"), (String) search.get("driver"));
+        List<UserMsgBO> userMsg = getUserMsg(resultList, model, (String) search.get("place"), (String) search.get("driver"),(BigDecimal)search.get("latitude"),(BigDecimal)search.get("longitude"));
         return userMsg;
     }
 
@@ -103,6 +104,9 @@ public class MateService {
         //用户id
         map.put("userId",userId);
         map.put("index",userId.hashCode());
+
+        map.put("latitude",conditionDTO.getLatitude());
+        map.put("longitude",conditionDTO.getLongitude());
         return map;
     }
 
@@ -184,12 +188,14 @@ public class MateService {
     /**
      * 用户信息
      */
-     public List<UserMsgBO> getUserMsg(List<Long> ids,String model,String location,String driver){
+     public List<UserMsgBO> getUserMsg(List<Long> ids,String model,String location,String driver,BigDecimal latitude,BigDecimal longitude){
          Map<String,Object> paramMap=new HashMap<String, Object>();
          paramMap.put("ids",ids);
          paramMap.put("model",model);
          paramMap.put("location",location);
          paramMap.put("driver",driver);
+         paramMap.put("latitude",latitude);
+         paramMap.put("longitude",longitude);
          //2.0
          List<UserMsgBO> userMsgBOS=mateDAO.getUserMsg2(paramMap);
 

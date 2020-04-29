@@ -49,7 +49,7 @@ public class ModelService {
         modelBO.setWeight(50);//默认体重
         modelBO.setEducation("大专");//默认学历
         modelBO.setBirthplace("北京-东城");//默认出生地
-        modelBO.setSearchDistance("50");//默认搜索距离
+        modelBO.setSearchDistance("5000");//默认搜索距离
         modelBO.setSearchSex("男");//默认搜索性别
         modelBO.setSearchAge("18-25");//默认搜索年龄
         modelBO.setSexStatus("no");//真实性别开关

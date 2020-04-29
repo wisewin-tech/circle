@@ -1,5 +1,7 @@
 package com.wisewin.circle.entity.dto;
 
+import java.math.BigDecimal;
+
 /**
  * 用户查询条件
  */
@@ -14,7 +16,8 @@ public class ConditionDTO {
     private String sex;//自己的性别
     private String driver;
     private String join;
-
+    private BigDecimal  latitude;
+    private BigDecimal  longitude;
 
     public String getDriver() {
         return driver;
@@ -94,5 +97,21 @@ public class ConditionDTO {
 
     public void setSex(String sex) {
         this.sex = sex;
+    }
+
+    public BigDecimal getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(BigDecimal latitude) {
+        this.latitude = latitude;
+    }
+
+    public BigDecimal getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(BigDecimal longitude) {
+        this.longitude = longitude;
     }
 }

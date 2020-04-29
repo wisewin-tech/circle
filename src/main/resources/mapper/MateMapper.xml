@@ -27,7 +27,7 @@
     <!--查询用户搜索条件-->
     <select id="userCondition" resultType="com.wisewin.circle.entity.dto.ConditionDTO">
       SELECT u.where_is, m.model,m.search_distance,m.search_sex,m.search_age,m.sex_status,
-        m.car_certification_status ,m.sex ,u.driver
+        m.car_certification_status ,m.sex ,u.driver,u.latitude,u.longitude
         FROM ci_user u LEFT JOIN ci_model m ON m.user_id=u.id WHERE u.id=#{userId} AND m.model=#{model}
     </select>
 
@@ -53,7 +53,7 @@
             AND m.sex=#{searchSex}
         </if>
          AND (m.birthday >#{ageStart} AND m.birthday &lt;= #{ageEnd})
-        AND  ST_DWithin(where_is ,'${place}',#{dist})
+        AND  earth_box(ll_to_earth(#{latitude},#{longitude}),#{dist}) @> ll_to_earth(u.latitude, u.longitude)
         <if test="auth=='yes' " >
             AND  u.certification_status=#{auth}
         </if>
@@ -94,7 +94,7 @@
             AND m.sex=#{searchSex}
         </if>
          AND (m.birthday >#{ageStart} AND m.birthday &lt;= #{ageEnd})
-        AND  ST_DWithin(where_is ,'${place}',#{dist})
+        AND   earth_box(ll_to_earth(#{latitude},#{longitude}),#{dist})  @> ll_to_earth(u.latitude, u.longitude)
         <if test="auth=='yes' " >
             AND  u.certification_status=#{auth}
         </if>
@@ -121,7 +121,7 @@
                 #{id}
             </foreach>
         </if>
-        ORDER BY  ST_DISTANCE(where_is, '${place}')   asc  limit #{num}  offset 0
+        ORDER BY   earth_distance(ll_to_earth(u.latitude, u.longitude), ll_to_earth(#{latitude},#{longitude}))    asc  limit #{num}  offset 0
     </select>
 
 
@@ -142,7 +142,7 @@
         SELECT  u.id,m.id AS modelId ,u.phone,
         u.certification_status,u.car_status ,m.describe ,m.sex ,m.name ,
         m.birthday,m.constellation,m.education,m.birthplace,u.latitude,u.longitude ,
-        ST_DISTANCE(where_is, '${location}') as  distance  ,i.origin,i.destination,i.incident_time,i.incident ,
+        earth_distance(ll_to_earth(u.latitude, u.longitude), ll_to_earth(#{latitude},#{longitude}))  as  distance  ,i.origin,i.destination,i.incident_time,i.incident ,
         t.id,t.id AS tid,t.type_name,e.interest_name , p.picture_url
         FROM  ci_user u LEFT JOIN ci_car_incident c  ON c.user_id = u.id
         LEFT JOIN ci_model m  ON m.user_id=u.id  LEFT JOIN
