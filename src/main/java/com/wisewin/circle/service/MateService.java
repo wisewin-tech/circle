@@ -8,6 +8,7 @@ import com.wisewin.circle.entity.bo.UserMSgInterest;
 import com.wisewin.circle.entity.bo.UserMsgBO;
 import com.wisewin.circle.entity.dto.ConditionDTO;
 import com.wisewin.circle.util.DateUtils;
+import io.swagger.models.auth.In;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -108,6 +109,22 @@ public class MateService {
         map.put("latitude",conditionDTO.getLatitude());
         map.put("longitude",conditionDTO.getLongitude());
         return map;
+    }
+
+    /**
+     *   查询用户 筛选条件
+     * @param userId 用户id
+     * @param model 模式
+     */
+    public Map<String,Object> userConditionW(Long userId, String model){
+        Map<String,Object>  map=new HashMap<String, Object>();
+        ConditionDTO conditionDTO = mateDAO.userCondition(userId, model);
+        //自己的位置
+        map.put("place",conditionDTO.getWhereIs());
+        map.put("latitude",conditionDTO.getLatitude());
+        map.put("longitude",conditionDTO.getLongitude());
+        return map;
+
     }
 
 
@@ -225,6 +242,23 @@ public class MateService {
         }*/
          return userMsgBOS;
      }
+
+
+
+    /**
+     * 他人主页
+     */
+    public UserMsgBO getUserMsgW(Integer userId, String model, BigDecimal latitude, BigDecimal longitude){
+        Map<String,Object> paramMap=new HashMap<String, Object>();
+        paramMap.put("userId",userId);
+        paramMap.put("model",model);
+        paramMap.put("latitude",latitude);
+        paramMap.put("longitude",longitude);
+
+        //2.0
+        UserMsgBO userMsgBOS=mateDAO.getUserMsgW(paramMap);
+        return userMsgBOS;
+    }
 
 
 }

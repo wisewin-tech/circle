@@ -147,8 +147,12 @@ public class UserController extends BaseCotroller {
             if (MD5Util.digest(password).equals(userBO.getPassword())) {
                 this.putUser(response, userBO);
                 //set头像
+                //获取用户背景图
                 Model model=modelService.selectModel("date",userBO.getId());
-                userBO.setHeadPic(model.getHeadPic());
+                List<UserPicture> userPictures = userService.selectUserPicture(new Long(model.getId()));
+                if(userPictures!=null&&userPictures.size()!=0){
+                    userBO.setHeadPic(model.getHeadPic());//头像不再是单独的，是背景图第一张
+                }
                 userBO.setName(model.getName());
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(userBO));
                 super.safeJsonPrint(response, json);
@@ -181,8 +185,12 @@ public class UserController extends BaseCotroller {
                 String key = phone + UserConstants.VERIFY.getValue();
                 RedissonHandler.getInstance().delete(key);
                 //set头像
+                //获取用户背景图
                 Model model=modelService.selectModel("date",userBO.getId());
-                userBO.setHeadPic(model.getHeadPic());
+                List<UserPicture> userPictures = userService.selectUserPicture(new Long(model.getId()));
+                if(userPictures!=null&&userPictures.size()!=0){
+                    userBO.setHeadPic(model.getHeadPic());//头像不再是单独的，是背景图第一张
+                }
                 userBO.setName(model.getName());
                 String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(userBO));
                 super.safeJsonPrint(response, json);

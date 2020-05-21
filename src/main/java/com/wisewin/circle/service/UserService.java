@@ -6,10 +6,12 @@ import com.wisewin.circle.dao.CarPictureDAO;
 import com.wisewin.circle.dao.StatisticalRecordsDAO;
 import com.wisewin.circle.dao.UserDAO;
 
+import com.wisewin.circle.dao.UserPictureDAO;
 import com.wisewin.circle.entity.bo.CarCertificationBO;
 import com.wisewin.circle.entity.bo.ChinaRegionBO;
 import com.wisewin.circle.entity.bo.UserBO;
 
+import com.wisewin.circle.entity.bo.UserPicture;
 import com.wisewin.circle.util.DateUtils;
 import com.wisewin.circle.util.MD5Util;
 import com.wisewin.circle.util.RandomUtils;
@@ -33,6 +35,9 @@ public class UserService {
 
     @Resource
     StatisticalRecordsDAO statisticalRecordsDAO;
+
+    @Resource
+    UserPictureDAO userPictureDAO;
 
     /**
      * 发送验证码
@@ -214,6 +219,12 @@ public class UserService {
     //删除车图片
     public Integer delCarPic(Long cerId,String carPic){
         return carPictureDAO.delCarPic(cerId,carPic);
+    }
+
+    //获取用户背景图
+    public List<UserPicture> selectUserPicture(Long modelId){
+        List<UserPicture> userPictures = userPictureDAO.selectUserPicture(modelId.intValue());
+        return userPictures;
     }
 
 }

@@ -157,6 +157,21 @@
         </if>
 
     </select>
+
+
+    <select id="getUserMsgW"  parameterType="java.util.Map" resultMap="getUserMsg2Map">
+        SELECT  u.id,m.id AS modelId ,u.phone,
+        u.certification_status,u.car_status ,m.describe ,m.sex ,m.name ,
+        m.birthday,m.constellation,m.education,m.birthplace,u.latitude,u.longitude ,
+        earth_distance(ll_to_earth(u.latitude, u.longitude), ll_to_earth(#{latitude},#{longitude}))  as  distance  ,i.origin,i.destination,i.incident_time,i.incident ,
+        t.id,t.id AS tid,t.type_name,e.interest_name , p.picture_url
+        FROM  ci_user u LEFT JOIN ci_car_incident c  ON c.user_id = u.id
+        LEFT JOIN ci_model m  ON m.user_id=u.id  LEFT JOIN
+        ci_user_interest e ON e.model_id =u.id  LEFT JOIN ci_interest_type t   ON e.type_id=t.id  LEFT JOIN
+        ci_user_picture  p ON p.model_id =u.id  LEFT JOIN ci_car_incident i ON i.user_id=u.id
+        WHERE m.model=#{model}  AND u.id=#{userId}
+    </select>
+
     <resultMap id="getUserMsg2Map" type="com.wisewin.circle.entity.bo.UserMsgBO" >
         <id     column="id" property="id" ></id>
         <result column="phone" property="phone" ></result>

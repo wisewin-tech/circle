@@ -79,7 +79,7 @@ public class HomePageService {
         mdto.setBirthplace(models.getBirthplace());
         mdto.setName(models.getName());
         mdto.setSexCount(models.getSexCount());
-        mdto.setHeadPic(models.getHeadPic());
+        mdto.setHeadPic(models.getHeadPic());//头像，是模式表单独的，后面重新set成背景图第一张
 
         //添加model信息
         map.put("model", mdto);
@@ -108,6 +108,9 @@ public class HomePageService {
             userPictureStrList.add(up.getPictureUrl());
         }
         map.put("userPicture", userPictureStrList);
+        if(userPictureStrList.size()!=0){
+            mdto.setHeadPic(userPictureStrList.get(0));//用户头像不再是单独的，而是背景图第一张
+        }
 
         //获取系统兴趣分类
         List<InterestTypeW> interestTypes = interestTypeDAO.selectType();

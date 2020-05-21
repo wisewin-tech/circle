@@ -1,18 +1,24 @@
 package com.wisewin.circle.web.controller;
 
+import com.wisewin.circle.entity.bo.UserBO;
 import com.wisewin.circle.entity.bo.UserInterestCustom;
+import com.wisewin.circle.entity.bo.UserMsgBO;
+import com.wisewin.circle.entity.dto.ConditionDTO;
 import com.wisewin.circle.entity.dto.ResultDTO;
 import com.wisewin.circle.entity.dto.ResultDTOBuilder;
 import com.wisewin.circle.entity.dto.param.ModelParam;
 import com.wisewin.circle.entity.dto.param.UserInterestParam;
 import com.wisewin.circle.entity.dto.param.UserPictureParam;
 import com.wisewin.circle.service.HomePageService;
+import com.wisewin.circle.service.MateService;
 import com.wisewin.circle.service.ModelService;
 import com.wisewin.circle.util.JsonUtils;
 import com.wisewin.circle.util.StringUtils;
 import com.wisewin.circle.web.controller.base.BaseCotroller;
+import io.swagger.models.auth.In;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,7 +27,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: Wang bin
@@ -55,6 +63,30 @@ public class HomePageController extends BaseCotroller {
         ResultDTO homepage = homePageService.homepage(model, Integer.parseInt(loginID));
         String jsonString4JavaPOJO = JsonUtils.getJsonString4JavaPOJO(homepage);
         super.safeJsonPrint(response, jsonString4JavaPOJO);
+        return;
+    }
+
+    @Autowired
+    MateService mateService;
+
+    @RequestMapping("/othersInformation")
+    public void othersInformation(HttpServletRequest  request, HttpServletResponse response,String model,Integer userId){
+        UserBO loginUser = super.getLoginUser(request);
+        if(StringUtils.isEmpty(model) || loginUser==null){
+            String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000000")) ;
+            super.safeJsonPrint(response, result);
+            return;
+        }
+        //不能获取位置信息不能进行匹配
+        Map<String, Object> search =mateService.userConditionW(loginUser.getId(), model);
+        if(search.get("place")==null){
+            String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000014")) ;
+            super.safeJsonPrint(response, result);
+            return;
+        }
+        UserMsgBO matching = mateService.getUserMsgW(userId,model,new BigDecimal(search.get("latitude").toString()),new BigDecimal(search.get("longitude").toString()));
+        String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(matching)) ;
+        super.safeJsonPrint(response, result);
         return;
     }
 
