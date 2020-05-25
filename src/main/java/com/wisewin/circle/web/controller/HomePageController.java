@@ -12,9 +12,11 @@ import com.wisewin.circle.entity.dto.param.UserPictureParam;
 import com.wisewin.circle.service.HomePageService;
 import com.wisewin.circle.service.MateService;
 import com.wisewin.circle.service.ModelService;
+import com.wisewin.circle.service.UserService;
 import com.wisewin.circle.util.JsonUtils;
 import com.wisewin.circle.util.StringUtils;
 import com.wisewin.circle.web.controller.base.BaseCotroller;
+import io.swagger.client.model.User;
 import io.swagger.models.auth.In;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,6 +50,12 @@ public class HomePageController extends BaseCotroller {
     @Resource
     private ModelService modelService;
 
+    @Autowired
+    MateService mateService;
+
+    @Autowired
+    UserService userService;
+
     /**
      * 个人主页
      * @param request
@@ -66,11 +74,9 @@ public class HomePageController extends BaseCotroller {
         return;
     }
 
-    @Autowired
-    MateService mateService;
 
     @RequestMapping("/othersInformation")
-    public void othersInformation(HttpServletRequest  request, HttpServletResponse response,String model,Integer userId){
+    public void othersInformation(HttpServletRequest  request, HttpServletResponse response,String model,Long userId,String phone){
         UserBO loginUser = super.getLoginUser(request);
         if(StringUtils.isEmpty(model) || loginUser==null){
             String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000000")) ;
@@ -83,6 +89,10 @@ public class HomePageController extends BaseCotroller {
             String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000014")) ;
             super.safeJsonPrint(response, result);
             return;
+        }
+        if(userId==null){
+            UserBO userBO=userService.selectByPhone(phone);
+            userId=userBO.getId();
         }
         UserMsgBO matching = mateService.getUserMsgW(userId,model,new BigDecimal(search.get("latitude").toString()),new BigDecimal(search.get("longitude").toString()));
         String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(matching)) ;

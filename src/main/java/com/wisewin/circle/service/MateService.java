@@ -248,7 +248,7 @@ public class MateService {
     /**
      * 他人主页
      */
-    public UserMsgBO getUserMsgW(Integer userId, String model, BigDecimal latitude, BigDecimal longitude){
+    public UserMsgBO getUserMsgW(Long userId, String model, BigDecimal latitude, BigDecimal longitude){
         Map<String,Object> paramMap=new HashMap<String, Object>();
         paramMap.put("userId",userId);
         paramMap.put("model",model);
